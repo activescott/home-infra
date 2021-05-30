@@ -3,8 +3,11 @@ FROM node:14.17-alpine
 
 WORKDIR /app
 
-ARG ZWAVE_JS_SERVER=@zwave-js/server@1.7.0
-RUN npm install $ZWAVE_JS_SERVER
+# the version (only) for the main zwave-js-server (@zwave-js/server):
+ARG ZWAVE_JS_SERVER_VER=1.7.0
+# zwave-js is a peer dependency of zwave-js-server, so we have to include it too:
+ARG ZWAVE_JS_VER=^7.6.0
+RUN npm install "zwave-js@${ZWAVE_JS_VER}" "@zwave-js/server@${ZWAVE_JS_SERVER_VER}"
 
 ENV NODE_ENV=production
 
