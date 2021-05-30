@@ -22,4 +22,4 @@ ARG USB_PATH=/dev/zwave
 ARG CONFIG_PATH=/config/config.js
 ARG CACHE_DIR=/cache
 
-CMD ./node_modules/.bin/zwave-server --config "$CONFIG_PATH" "$USB_PATH"
+CMD ["./node_modules/.bin/zwave-server", "--config", "$CONFIG_PATH", "$USB_PATH"]
