@@ -18,8 +18,8 @@ RUN npm install "zwave-js@${ZWAVE_JS_VER}" "@zwave-js/server@${ZWAVE_JS_SERVER_V
 ENV NODE_ENV=production
 
 # docker-compose.yml should map the Z-Wave USB stick to /dev/zwave
-ARG USB_PATH=/dev/zwave
-ARG CONFIG_PATH=/config/config.js
-ARG CACHE_DIR=/cache
+ENV USB_PATH=/dev/zwave
+# docker-compose.yml should map the ZWave JS Config file in /config/config.js
+ENV CONFIG_PATH=/config/config.js
 
-CMD ["./node_modules/.bin/zwave-server", "--config", "$CONFIG_PATH", "$USB_PATH"]
+CMD ./node_modules/.bin/zwave-server --config ${CONFIG_PATH} ${USB_PATH}

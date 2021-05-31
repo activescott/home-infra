@@ -9,20 +9,13 @@ services:
     restart: unless-stopped
     network_mode: host
     volumes:
-      # Z-Wave cache on QNAP 
-      #- ./cache:/cache
+      # ZWave cache on QNAP
       - /share/CACHEDEV1_DATA/app-data/home-assistant-zwave-js/cache:/cache
-      # Z-Wave cache on local dev:
-      #- ./cache:/cache
-      # zwave-js config on QNAP
+      # ZWave-js config on QNAP
       - /share/CACHEDEV1_DATA/app-data/home-assistant-zwave-js/config:/config
-      # zwave-js config on local dev
-      #- ./config-zwave-js:/config
     devices:
       # QNAP zwave (note the /dev/zwave is configured in the Dockerfile/image)
       - /dev/ttyUSB0:/dev/zwave
-      # dev (macOS w/ Silicon Labs' CP210x USB to UART Bridge VCP Drivers):
-      #- '/dev/tty.GoControl_zwave:/dev/zwave'
   
   homeassistant:
     container_name: homeassistant
