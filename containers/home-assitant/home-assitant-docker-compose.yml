@@ -4,8 +4,8 @@ services:
     #build:
     #  context: .
     #  dockerfile: zwave-js-server.Dockerfile
-    # TODO: use the explicit tag/version so that editing the docker-compose file in QNAP Container Station will force it to pull a new image:
-    image: activescott/zwave-js-server:latest
+    # using the explicit tag/version so that editing the docker-compose file in QNAP Container Station will force it to pull a new image:
+    image: activescott/zwave-js-server:release-1.0.0
     restart: unless-stopped
     network_mode: host
     volumes:
@@ -23,6 +23,8 @@ services:
     image: homeassistant/home-assistant:2021.5.5
     restart: unless-stopped
     network_mode: host
+    depends_on:
+      - zwavejs
     volumes:
       # Use host's time:
       - /etc/localtime:/etc/localtime:ro
