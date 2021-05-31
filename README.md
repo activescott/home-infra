@@ -25,3 +25,8 @@ A couple interesting notes setting up Z-Wave:
 
 Every update to master will publish a new container to https://hub.docker.com/repository/docker/activescott/zwave-js-server
 Update `containers/home-assitant/zwave-js-server.Dockerfile` and use a git tag on the commit with a tag that meets the regex `^zwave-js-server-([0-9.]+)` and dockerhub should detect the git tag and publish an image from that commit with the tag `release-<version>`. For example the git tag `zwave-js-server-1.0.0` should result in a docker tag `release-1.0.0` and a valid image reference from docker-compose of `activescott/zwave-js-server:release-1.0.0`.
+
+
+# containers/unifi-controller
+
+A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-controller/README.md](containers/unifi-controller/README.md)
