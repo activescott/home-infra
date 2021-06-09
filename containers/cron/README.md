@@ -1,4 +1,4 @@
-# cron contianer
+# cron container
 
 A container to run cron jobs. Notably a way to renew letsencrypt certificates.
 
@@ -22,9 +22,11 @@ For certificates, I let cron container periodically kick off a job in a separate
 
 Both the cerbot container and the containers using certs (such as home assistant) mount the `/share/CACHEDEV1_DATA/app-data/letsencrypt/` directory. cerbot puts it certs there by mounting that volume to `/etc/letsencrypt/`. [Certbot puts generated keys and issued certificates in `/etc/letsencrypt/live/$domain`, where $domain is the certificate name](https://certbot.eff.org/docs/using.html#where-are-my-certificates)). Other containers mount that same directory (as read-only) and pull their cert from there.
 
+> NOTE: The permissions certbot uses are quite restrictive here and may cause issues. They can be relaxed and certbot docs explain more [here](https://certbot.eff.org/docs/using.html#where-are-my-certificates).
+
 ## Publishing activescott/cron Docker Hub
 
 The `activescott/cron` container is on dockerhub at https://hub.docker.com/repository/docker/activescott/cron
-A manual build to build the container from the Dockerfile source  in the `main` branch in this repo can be published by clicking on "Trigger" button for the `latest` dockerhub tag at https://hub.docker.com/repository/docker/activescott/cron/builds
+A manual build to build the container from the Dockerfile source in the `main` branch in this repo can be published by clicking on "Trigger" button for the `latest` dockerhub tag at https://hub.docker.com/repository/docker/activescott/cron/builds
 
 Update `containers/cron/cron.Dockerfile` and use a git tag on the commit with a tag that meets the regex `^cron-([0-9.]+)` and dockerhub should detect the git tag and automatically publish an image from that commit with the tag `release-<version>`. For example the git tag `cron-1.0.0` should result in a docker tag `cron-1.0.0` and a valid image reference from docker-compose of `activescott/cron:release-1.0.0`.
