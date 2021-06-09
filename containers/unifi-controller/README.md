@@ -1,4 +1,6 @@
-# My Ubiquity/Unifi Controller app setup.
+# containers/home-assistant
+
+My Ubiquity/Unifi Network Controller app setup.
 
 This is designed specifically for running on qnap's "Container Station" app. However, there probably isn't anything all that unique to qnap about this.
 
