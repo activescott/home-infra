@@ -1,4 +1,4 @@
-# containers/home-assistant
+# containers/unifi-controller
 
 My Ubiquity/Unifi Network Controller app setup.
 
