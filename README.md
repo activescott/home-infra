@@ -12,3 +12,8 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 # containers/cron
 
 A generic setup for running cron jobs at home (e.g. for automated certificate renewal). See [containers/cron/README.md](containers/cron/README.md)
+
+
+# TODO:
+- home-assistant has a cert now, but still need to set it up to restart using home assistant automation
+- Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?

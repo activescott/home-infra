@@ -32,6 +32,8 @@ services:
       - /share/CACHEDEV1_DATA/app-data/home-assistant:/config
       # Config on dev:
       #- ./config-home-assistant:/config
+      # Certificates on QNAP:
+      - /share/CACHEDEV1_DATA/app-data/letsencrypt:/etc/letsencrypt:ro
     devices:
       # QNAP zigbee?
       - /dev/ttyUSB1:/dev/ttyUSB1
