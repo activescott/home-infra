@@ -92,3 +92,22 @@
       message: Garage is {{states('cover.garage_door_controller')}} and Sun is {{
         states('sun.sun')}}!
   mode: restart
+- id: '1623308610166'
+  alias: alert when hass cert about to expire
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: /23
+  condition:
+  - condition: template
+    value_template: '{{as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
+      - as_timestamp(now()) < 30 * 24 * 60 * 60}}'
+  action:
+  - service: notify.mobile_app_fatboy
+    data:
+      title: Home Assistant's cert expring
+      message: Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
+        - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Please restarting
+        Home Assistant (hoping cron updated the cert already 🤞).  Note to self...
+        Should the restart be an action in this automation too?
+  mode: restart
