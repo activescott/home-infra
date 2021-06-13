@@ -3,6 +3,6 @@ version: '3'
 services:
   cron:
     container_name: cron
-    image: activescott/cron:release-1.0.0
+    image: activescott/cron:release-1.0.1
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
