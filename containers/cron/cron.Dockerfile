@@ -5,4 +5,4 @@ RUN apk add docker
 
 COPY ./cron_tasks_folder /etc/periodic
 
-CMD crond -f -l 8
+CMD crond -f -l 2
