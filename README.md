@@ -16,4 +16,5 @@ A generic setup for running cron jobs at home (e.g. for automated certificate re
 
 # TODO:
 - home-assistant has a cert now, but still need to set it up to restart using home assistant automation
+- docker hub won't support auto-build soon. So need to push containers from this repo in github actions
 - Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?
