@@ -1,0 +1,27 @@
+# Groups allow the user to combine multiple entities into one. - https://www.home-assistant.io/integrations/group/
+
+perimeter_sensors:
+  name: Perimeter Sensors
+  entities:
+    - binary_sensor.front_door_deck
+    - binary_sensor.kitchen_door
+    - binary_sensor.office_sliding_door
+    - binary_sensor.living_room_window
+    - binary_sensor.dining_window
+    - binary_sensor.master_bedroom_window
+    - binary_sensor.east_bedroom_window_jonah_s
+    - binary_sensor.west_bedroom_window_micah_s
+    - binary_sensor.laundry_window
+    - cover.garage_door_controller
+
+motion_sensors:
+  name: Motion Sensors
+  entities:
+    - binary_sensor.front_motion
+    - binary_sensor.master_bedroom_motion
+
+family_presence:
+  name: Family Presence
+  entities:
+    - person.scott_willeke
+    - person.oksana

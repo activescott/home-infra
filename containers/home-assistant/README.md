@@ -77,3 +77,24 @@ Planned for internal lighting.
 #### Zooz Z-Wave Plus S2 MultiRelay ZEN16 with 3 Dry Contact Relays
 
 I don't yet have a _real_ need for this, but it is so cool I'm sure it won' be long :)
+
+
+## Templates Notes
+[Jinja Templates](https://jinja.palletsprojects.com/en/latest/templates/) are hard to read and filters are weak. Here's a couple notes:
+
+Iterating through a sequence of objects and mapping them to a format:
+
+An example of people and their presence:
+
+    {% for pp in expand('group.family_presence') %}{{ state_attr(pp.entity_id, 'friendly_name') }} is {{ states(pp.entity_id) }}
+    {% endfor %}
+
+An example for sensors:
+
+    {% for s in expand('group.perimeter_sensors') %}{{ state_attr(s.entity_id, 'friendly_name') }} is {{ states(s.entity_id) }}
+    {% endfor %}
+
+
+## Groups
+
+Groups work good for conditions and checking a single state, but are hard to work with to understand what happened in a trigger. For example, `group.perimeter_sensors` is a great way to check if every perimeter sensor is closed/off. However, when using it as a trigger, you cant tell in the automation's event trigger data _which_ sensor triggered it (only that the group state changed).

@@ -17,4 +17,5 @@ A generic setup for running cron jobs at home (e.g. for automated certificate re
 # TODO:
 - home-assistant has a cert now, but still need to set it up to restart using home assistant automation
 - docker hub won't support auto-build soon. So need to push containers from this repo in github actions
+- Need to automate running `insmod /usr/local/modules/cp210x.ko` to get zwave container to start automatically. See ZWave notes in [containers/home-assistant/README.md](containers/home-assistant/README.md)
 - Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?
