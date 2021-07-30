@@ -1,0 +1,86 @@
+
+# randomly decide to toggle a switch:
+# NOTE: random_toggle_light and random_toggle_switch are duplicates other than one uses `light.turn_on/off` and one uses `switch.turn_on/off` to support the different types of lights/switches :facepalm:
+# Call it like this:
+# ```
+# action:
+#  service: script.random_toggle_switch
+#  data:
+#    toggle_entity: switch.<yourid>
+# ```
+random_toggle_switch:
+  description: "Randomly decides to turn a switch on or off"
+  variables:
+    toggle_entity: "<not provided>"
+  fields:
+    toggle_entity:
+      description: "The entity id of the switch to toggle"
+      example: "switch.z_wave_plus_700_series_s2_on_off_switch_2"
+      required: true
+      selector:
+        entity:
+          domain: switch
+  sequence:
+    - choose:
+      # IF true, turn it on:
+      - conditions: "{{ [true, false] | random }}"
+        sequence:
+          - event: random_toggle_switch_log
+            event_data:
+              name: random_toggle_switch_log
+              customData: "Turning ON '{{ toggle_entity }}'..."
+          - service: switch.turn_on
+            target:
+              entity_id: "{{ toggle_entity }}"
+      # ELSE, turn it off:
+      default:
+        - event: random_toggle_switch_log
+          event_data:
+            name: random_toggle_switch_log
+            customData: "Turning OFF '{{ toggle_entity }}'..."
+        - service: switch.turn_off
+          target:
+            entity_id: "{{ toggle_entity }}"
+
+# randomly decide to toggle a light:
+# NOTE: random_toggle_light and random_toggle_switch are duplicates other than one uses `light.turn_on/off` and one uses `switch.turn_on/off` to support the different types of lights/switches :facepalm:
+# Call it like this:
+# ```
+# action:
+#  service: script.random_toggle_light
+#  data:
+#    toggle_entity: light.<yourid>
+# ```
+random_toggle_light:
+  description: "Randomly decides to turn a light on or off"
+  variables:
+    toggle_entity: "<not provided>"
+  fields:
+    toggle_entity:
+      description: "The entity id of the light to toggle"
+      example: "light.z_wave_plus_700_series_s2_dimmer_switch"
+      required: true
+      selector:
+        entity:
+          domain: light
+  sequence:
+    - choose:
+      # IF true, turn it on:
+      - conditions: "{{ [true, false] | random }}"
+        sequence:
+          - event: random_toggle_light_log
+            event_data:
+              name: random_toggle_light_log
+              customData: "Turning ON '{{ toggle_entity }}'..."
+          - service: light.turn_on
+            target:
+              entity_id: "{{ toggle_entity }}"
+      # ELSE, turn it off:
+      default:
+        - event: random_toggle_light_log
+          event_data:
+            name: random_toggle_light_log
+            customData: "Turning OFF '{{ toggle_entity }}'..."
+        - service: light.turn_off
+          target:
+            entity_id: "{{ toggle_entity }}"

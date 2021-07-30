@@ -20,6 +20,8 @@ motion_sensors:
     - binary_sensor.front_motion
     - binary_sensor.master_bedroom_motion
 
+# Use to detect if family is "home".
+# when any member of the group is home then the group is home: 
 family_presence:
   name: Family Presence
   entities:
