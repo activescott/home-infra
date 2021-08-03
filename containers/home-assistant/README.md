@@ -20,7 +20,9 @@ A couple interesting notes setting up Z-Wave:
   - It is published by dockerhub listening for pushes in the github repo and building automatically.
 - The Z-Wave USB Stick only works in USB 2.0 ports - it will _not_ work in the USB 3.0 ports. No idea why but someone mentioned that in a thread and it was a problem for me too!
 - In the docker-compose file you can see where I map the Z-Wave USB Stick device from the host QNAP (`/dev/ttyUSB0`) to `/dev/zwave` inside of the container.
-- To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`)
+- To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`).
+  - I have this set up in the QNAP host as part of some autorun script that QNAP supports. **TODO:** Document where that file is!
+
 
 ### Publishing activescott/zwave-js-server Docker Hub
 
@@ -98,3 +100,7 @@ An example for sensors:
 ## Groups
 
 Groups work good for conditions and checking a single state, but are hard to work with to understand what happened in a trigger. For example, `group.perimeter_sensors` is a great way to check if every perimeter sensor is closed/off. However, when using it as a trigger, you cant tell in the automation's event trigger data _which_ sensor triggered it (only that the group state changed).
+
+## TODO / Roadmap
+
+* [ ] It appears that home-assistant prefers docker users use the container from https://github.com/zwave-js/zwavejs2mqtt. I have no idea why I didn't see this before and ended up creating my own.

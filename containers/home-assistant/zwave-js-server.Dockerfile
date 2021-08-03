@@ -9,9 +9,11 @@ WORKDIR /app
 RUN apk add --no-cache make gcc g++ python linux-headers udev
 
 # the version (only) for the main zwave-js-server (@zwave-js/server):
-ARG ZWAVE_JS_SERVER_VER=1.7.0
+## https://github.com/zwave-js/zwave-js-server
+ARG ZWAVE_JS_SERVER_VER=1.9.2
 # zwave-js is a peer dependency of zwave-js-server, so we have to include it too:
-ARG ZWAVE_JS_VER=^7.6.0
+## https://github.com/zwave-js/node-zwave-js
+ARG ZWAVE_JS_VER=8.0.7
 
 RUN npm install "zwave-js@${ZWAVE_JS_VER}" "@zwave-js/server@${ZWAVE_JS_SERVER_VER}"
 
