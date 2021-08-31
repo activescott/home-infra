@@ -3,6 +3,7 @@
 # Certbot command-line options: https://certbot.eff.org/docs/using.html#certbot-command-line-options
 docker run --rm --name certbot \
             -v "/share/CACHEDEV1_DATA/app-data/letsencrypt:/etc/letsencrypt" \
+            -v "/share/CACHEDEV1_DATA/app-data/letsencrypt-logs:/var/log/letsencrypt" \
             certbot/dns-cloudflare certonly \
             -d "*.activescott.com" \
             --dns-cloudflare \
