@@ -16,7 +16,7 @@ Essentially alpine includes the following directories, where you can put a shell
 
 ## Certificates with Lets Encrypt & certbot
 
-For certificates, I let cron container periodically kick off a job in a separate docker container containing certbot. I launch the second docker container _on the host's_ docker daemon by mounting the host's Docker Daemon's `/var/run/docker.sock` as a volume ([this article explained](https://devopscube.com/run-docker-in-docker/) this best for me). THis prevnts the need for the cron container from having to install certbot or whatever other dependencies may be needed for other jobs. The exact file for launching certbot is in `./cron_tasks_folder/weekly/renew-certificates.sh`.
+For certificates, I let cron container periodically kick off a job in a separate docker container containing certbot. I launch the second docker container _on the host's_ docker daemon by mounting the host's Docker Daemon's `/var/run/docker.sock` as a volume ([this article explained](https://devopscube.com/run-docker-in-docker/) this best for me). This prevents the need for the cron container from having to install certbot or whatever other dependencies may be needed for other jobs. The exact file for launching certbot is in `./cron_tasks_folder/daily/renew-certificates.sh`.
 
 ### Certificates Folder Structure: Sharing Certificates between Containers
 
@@ -27,6 +27,9 @@ Both the cerbot container and the containers using certs (such as home assistant
 ## Publishing activescott/cron Docker Hub
 
 The `activescott/cron` container is on dockerhub at https://hub.docker.com/repository/docker/activescott/cron
-A manual build to build the container from the Dockerfile source in the `main` branch in this repo can be published by clicking on "Trigger" button for the `latest` dockerhub tag at https://hub.docker.com/repository/docker/activescott/cron/builds
 
-Update `containers/cron/cron.Dockerfile` and use a git tag on the commit with a tag that meets the regex `^cron-([0-9.]+)` and dockerhub should detect the git tag and automatically publish an image from that commit with the tag `release-<version>`. For example the git tag `cron-1.0.0` should result in a docker tag `cron-1.0.0` and a valid image reference from docker-compose of `activescott/cron:release-1.0.0`.
+To build and publish the container see `./cron-publish.sh`.
+
+NOTE: The below no longer works since Dockerhub has made the dockerhub build feature a paid feature. TODO: Restore this via github actions? Semantic-release?
+~~A manual build to build the container from the Dockerfile source in the `main` branch in this repo can be published by clicking on "Trigger" button for the `latest` dockerhub tag at https://hub.docker.com/repository/docker/activescott/cron/builds~~
+~~Update `containers/cron/cron.Dockerfile` and use a git tag on the commit with a tag that meets the regex `^cron-([0-9.]+)` and dockerhub should detect the git tag and automatically publish an image from that commit with the tag `release-<version>`. For example the git tag `cron-1.0.0` should result in a docker tag `cron-1.0.0` and a valid image reference from docker-compose of `activescott/cron:release-1.0.0`.~~

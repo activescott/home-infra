@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# NOTE: Scripts inside of cron_tasks_folder have to be without extension
+echo "beat from $0"
