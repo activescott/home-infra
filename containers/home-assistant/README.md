@@ -12,17 +12,15 @@ The [contaienrs/cron](../cron/README.md) container runs holds a cron script to a
 
 ## Z-Wave & ZWave JS Server
 
-For Z-Wave support, I use a Nortek Security & Control Zigbee & Z-Wave USB Controller (model number HUSBZB-1) plugged into the USB port on the QNAP and have the USB port mapped to a [ZWave JS Server](https://github.com/zwave-js/zwave-js-server) container. Then Home Assistant connects to ZWave JS Server via a websocket to have a gateway to Z-Wave.
+For Z-Wave support, I use a Nortek Security & Control Zigbee & Z-Wave USB Controller (model number HUSBZB-1) plugged into the USB port on the QNAP and have the USB port mapped to a [ZWave JS Zwavejs2Mqtt](https://github.com/zwave-js/zwavejs2mqtt) container. Then Home Assistant connects to Zwavejs2Mqtt Server via a websocket to have a gateway to Z-Wave.
 
 A couple interesting notes setting up Z-Wave:
 
-- ZWave JS Server doesn't provide its own container so I have one defined at `containers/home-assitant/zwave-js-server.Dockerfile` and published at https://hub.docker.com/repository/docker/activescott/zwave-js-server
-  - It is published by dockerhub listening for pushes in the github repo and building automatically.
+- Originally I created a ZWave JS Server container defined at `containers/home-assitant/zwave-js-server.Dockerfile` and [published it](https://hub.docker.com/repository/docker/activescott/zwave-js-server). However, I later discovered https://github.com/zwave-js/zwavejs2mqtt and am now using that. For detail see it's configuration in `home-assitant-docker-compose.yml` in this repo.
 - The Z-Wave USB Stick only works in USB 2.0 ports - it will _not_ work in the USB 3.0 ports. No idea why but someone mentioned that in a thread and it was a problem for me too!
 - In the docker-compose file you can see where I map the Z-Wave USB Stick device from the host QNAP (`/dev/ttyUSB0`) to `/dev/zwave` inside of the container.
 - To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`).
   - I have this set up in the QNAP host as part of some autorun script that QNAP supports. **TODO:** Document where that file is!
-
 
 ### Publishing activescott/zwave-js-server Docker Hub
 
@@ -80,8 +78,8 @@ Planned for internal lighting.
 
 I don't yet have a _real_ need for this, but it is so cool I'm sure it won' be long :)
 
-
 ## Templates Notes
+
 [Jinja Templates](https://jinja.palletsprojects.com/en/latest/templates/) are hard to read and filters are weak. Here's a couple notes:
 
 Iterating through a sequence of objects and mapping them to a format:
@@ -96,11 +94,6 @@ An example for sensors:
     {% for s in expand('group.perimeter_sensors') %}{{ state_attr(s.entity_id, 'friendly_name') }} is {{ states(s.entity_id) }}
     {% endfor %}
 
-
 ## Groups
 
 Groups work good for conditions and checking a single state, but are hard to work with to understand what happened in a trigger. For example, `group.perimeter_sensors` is a great way to check if every perimeter sensor is closed/off. However, when using it as a trigger, you cant tell in the automation's event trigger data _which_ sensor triggered it (only that the group state changed).
-
-## TODO / Roadmap
-
-* [ ] It appears that home-assistant prefers docker users use the container from https://github.com/zwave-js/zwavejs2mqtt. I have no idea why I didn't see this before and ended up creating my own.
