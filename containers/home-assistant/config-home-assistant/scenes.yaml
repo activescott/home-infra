@@ -1,24 +1,25 @@
 - id: '1625024022694'
   name: Nightime Lights
   entities:
-    switch.z_wave_plus_700_series_s2_on_off_switch_2:
+    # TODO: Switch to group of common_area_lights?
+    switch.z_wave_dining_table_light:
       friendly_name: Dining Table Light
       icon: hass:lightbulb
       state: 'off'
-    light.z_wave_plus_700_series_s2_dimmer_switch:
+    light.z_wave_great_room_track_light_dimmer:
       supported_color_modes:
       - brightness
       friendly_name: Great Room Track Lighting
       supported_features: 33
       state: 'off'
-    switch.z_wave_plus_700_series_s2_on_off_switch:
+    switch.z_wave_kitchen_main_light:
       friendly_name: Kitchen Light
       icon: hass:lightbulb
       state: 'off'
 - id: '1625024157942'
   name: TV Lights
   entities:
-    light.z_wave_plus_700_series_s2_dimmer_switch:
+    light.z_wave_great_room_track_light_dimmer:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -26,11 +27,15 @@
       friendly_name: Great Room Track Lighting
       supported_features: 33
       state: 'on'
-    switch.z_wave_plus_700_series_s2_on_off_switch_2:
+    switch.z_wave_dining_table_light:
       friendly_name: Dining Table Light
       icon: hass:lightbulb
       state: 'off'
-    switch.z_wave_plus_700_series_s2_on_off_switch:
+    switch.z_wave_kitchen_main_light:
+      friendly_name: Kitchen Light
+      icon: hass:lightbulb
+      state: 'off'
+    switch.z_wave_kitchen_sink_light:
       friendly_name: Kitchen Light
       icon: hass:lightbulb
       state: 'off'

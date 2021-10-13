@@ -1,4 +1,28 @@
 # Groups allow the user to combine multiple entities into one. - https://www.home-assistant.io/integrations/group/
+# See also https://www.home-assistant.io/docs/configuration/templating/#working-with-groups
+
+all_lights:
+  name: All Lights
+  entities:
+    - switch.z_wave_dining_table_light
+    - light.z_wave_great_room_track_light_dimmer_switch
+    - switch.z_wave_hall_light_switch
+    - switch.z_wave_kitchen_main_light
+    - switch.z_wave_kitchen_sink_light
+
+common_area_lights:
+  name: Common Area Lights
+  entities:
+    - switch.z_wave_dining_table_light
+    - light.z_wave_great_room_track_light_dimmer_switch
+    - switch.z_wave_hall_light_switch
+    - switch.z_wave_kitchen_main_light
+    - switch.z_wave_kitchen_sink_light
+
+#outdoor_lights:
+#  name: Outdoor Lights
+#  entities:
+#    - ""
 
 perimeter_sensors:
   name: Perimeter Sensors
@@ -21,7 +45,7 @@ motion_sensors:
     - binary_sensor.master_bedroom_motion
 
 # Use to detect if family is "home".
-# when any member of the group is home then the group is home: 
+# when any member of the group is home then the group is home:
 family_presence:
   name: Family Presence
   entities:

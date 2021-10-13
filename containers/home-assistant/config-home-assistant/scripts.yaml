@@ -15,7 +15,7 @@ random_toggle_switch:
   fields:
     toggle_entity:
       description: "The entity id of the switch to toggle"
-      example: "switch.z_wave_plus_700_series_s2_on_off_switch_2"
+      example: "switch.z_wave_dining_table_light"
       required: true
       selector:
         entity:
@@ -58,7 +58,7 @@ random_toggle_light:
   fields:
     toggle_entity:
       description: "The entity id of the light to toggle"
-      example: "light.z_wave_plus_700_series_s2_dimmer_switch"
+      example: "light.z_wave_great_room_track_light_dimmer"
       required: true
       selector:
         entity:

@@ -47,7 +47,7 @@
   action:
   - service: notify.notify
     data:
-      title: Garage activity at night!
+      title: Garage activity at night
       message: Garage is {{states('cover.garage_door_controller')}} and Sun is {{
         states('sun.sun')}}!
   mode: queued
@@ -75,7 +75,7 @@
   description: Repeatedly notifies when the garage door is open at night
   trigger:
   - platform: time_pattern
-    minutes: /30
+    hours: /1
   condition:
   - condition: and
     conditions:
@@ -103,7 +103,7 @@
     value_template: '{{as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
       - as_timestamp(now()) < 30 * 24 * 60 * 60}}'
   action:
-  - service: notify.mobile_app_fatboy
+  - service: notify.scott
     data:
       title: Home Assistant's cert expring
       message: Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
@@ -120,9 +120,9 @@
   condition:
   - condition: numeric_state
     entity_id: sensor.lumi_lumi_weather_4c47b206_temperature
-    above: 85
+    above: '90'
   action:
-  - service: notify.notify
+  - service: notify.scott
     data:
       title: Server Room Temp is High!
       message: Server room temp is {{ states('sensor.lumi_lumi_weather_4c47b206_temperature')
@@ -162,7 +162,7 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: light.z_wave_plus_700_series_s2_dimmer_switch
+    entity_id: light.z_wave_great_room_track_light_dimmer
     from: 'off'
     to: 'on'
   condition:
@@ -170,13 +170,13 @@
     entity_id: sun.sun
     state: above_horizon
   - condition: numeric_state
-    entity_id: light.z_wave_plus_700_series_s2_dimmer_switch
+    entity_id: light.z_wave_great_room_track_light_dimmer
     attribute: brightness
     below: '254'
   action:
   - type: turn_on
     device_id: 8d5f323769e100c3f1166338884295d5
-    entity_id: light.z_wave_plus_700_series_s2_dimmer_switch
+    entity_id: light.z_wave_great_room_track_light_dimmer
     domain: light
     brightness_pct: 100
   mode: single
@@ -198,10 +198,10 @@
       minutes: '{{ range(1, 30) | random }}'
   - service: script.random_toggle_light
     data:
-      toggle_entity: light.z_wave_plus_700_series_s2_dimmer_switch
+      toggle_entity: light.z_wave_great_room_track_light_dimmer
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.z_wave_plus_700_series_s2_on_off_switch_2
+      toggle_entity: switch.z_wave_dining_table_light
   - service: script.random_toggle_switch
     data:
       toggle_entity: switch.jonahs_lamp_on_off
@@ -224,12 +224,12 @@
   - delay: '{{ range(1, 30) | random }}'
   - service: light.turn_off
     target:
-      entity_id: light.z_wave_plus_700_series_s2_dimmer_switch
+      entity_id: light.z_wave_great_room_track_light_dimmer
   - service: switch.turn_off
     target:
       entity_id:
-      - switch.z_wave_plus_700_series_s2_on_off_switch_2
-      - switch.z_wave_plus_700_series_s2_on_off_switch
+      - switch.z_wave_dining_table_light
+      - switch.z_wave_kitchen_main_light
       - switch.jonahs_lamp_on_off
       - switch.mommas_lamp_on_off
   mode: single

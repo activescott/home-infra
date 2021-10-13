@@ -3,6 +3,8 @@
 # except, lets snapshot the key config files in git:
 !/containers/home-assistant/config-home-assistant/*.yaml
 # ...and lets keep this handy shell script to copy over the latest from home assistant
-!/containers/home-assistant/config-home-assistant/copy-config-to-git.sh
+!/containers/home-assistant/config-home-assistant/*.sh
 # but don't ever commit any secrets used in the config:
 /containers/home-assistant/config-home-assistant/secrets.yaml
+
+.secrets

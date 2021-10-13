@@ -1,4 +1,3 @@
-
 # Configure a default setup of Home Assistant (frontend, api, etc)
 default_config:
 
@@ -25,29 +24,21 @@ notify:
     services:
       - service: mobile_app_fatboy
 
-# In order to add the zooz switches to a "light group", we have to expose the switches as lights: https://www.home-assistant.io/integrations/light.switch/
-# WHY THE HELL are the zooz switches `switch` not `light`?
+# In order to add the zooz switches to a "light group", we have to expose the switches as lights
+# Unclear why the Zooz ZEN76 is a `switch` but the ZEN77 (dimmer) is a `light`, but 🤷‍♂️
+# See https://www.home-assistant.io/integrations/light.switch/
+# Once these are defined as a `light`, it will derive a `light.*` entity id for it based on the name of the light here. 
+# For example, `name: Kitchen Sink Light Switch Light` will generate entity id `light.kitchen_sink_light_switch_light`
 light:
   - platform: switch
-    name: Kitchen Light Switch Light
-    entity_id: switch.z_wave_plus_700_series_s2_on_off_switch
-  - platform: switch
     name: Dining Table Light Switch Light
-    entity_id: switch.z_wave_plus_700_series_s2_on_off_switch_2
+    entity_id: switch.z_wave_dining_table_light
   - platform: switch
-    name: Jonah's Lamp Switch Light
-    entity_id: switch.jonahs_lamp_on_off
-    # A set of lights to toggle during "vacation" while people are away
-    # A Light Group entity to combine lights that should be toggled during "vacation mode" (while people are away at night-ish)
-    # THIS SHIT DON'T WORK:
-  - platform: group
-    name: Vacation Lights
-    entities:
-      # Great Room Track Light 
-      - light.z_wave_plus_700_series_s2_dimmer_switch
-      # Kitchen Light
-      - light.kitchen_light_switch_light
-      # Dining Table Light:
-      - light.dining_table_light_switch_light
-      # Jonah's Lamp
-      - light.jonah_s_lamp_switch_light
+    name: Hall Light Switch Light
+    entity_id: switch.z_wave_hall_light_switch
+  - platform: switch
+    name: Kitchen Light Switch Light
+    entity_id: switch.z_wave_kitchen_main_light
+  - platform: switch
+    name: Kitchen Sink Light Switch Light
+    entity_id: switch.z_wave_kitchen_sink_light
