@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  cron:
+    container_name: cloudflared
+    image: cloudflare/cloudflared:2021.7.4
+    command: tunnel run
+    volumes:
+      - /share/CACHEDEV1_DATA/app-data/cloudflared:/etc/cloudflared
