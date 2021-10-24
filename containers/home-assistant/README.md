@@ -37,7 +37,13 @@ For Z-Wave and Zigbee support. Plugged into a QNAP on the host and device mapped
 
 ### GoControl Linear GD00Z-4 Z-Wave Smart Garage Door Controller/with tilt sensor
 
-Easy to hook up and works like a champ. It is picky if the power goes out. You MUST follow the instructions to "resync" it by using another control (push button or remote) to raise the garage up and than down again completely. Then it works perfect.
+~~Easy to hook up and works like a champ. It is picky if the power goes out. You MUST follow the instructions to "resync" it by using another control (push button or remote) to raise the garage up and than down again completely. Then it works perfect.~~ This worked at first fine, but after about two months it stopped controlling the garage. I found a fair bit of similar experiences on the web.
+
+I have since switched to a Zooz ZEN17 Universal Relay to control the garage (see below).
+
+#### Zooz Z-Wave Plus 700 Series Universal Relay ZEN17 with 2 NO & NC Relays (20A, 10A)
+
+I use this to control the garage door now. I do not _yet_ have it hooked up for the full "garage" integration in Home Assistant so it looks more like a switch than a garage door at the moment.
 
 ### Ubiquity UniFi
 
@@ -53,7 +59,7 @@ Home Assistant's whole world seems to appear in the Apple "Home" app on my phone
 
 ### Apple TV
 
-I turned this on but I'm not entirely clear what it does or what to use it for 🤷‍♂️
+I turned this on but I'm not entirely clear what it does or what to use it for 🤷‍♂️ I think I uninstalled it.
 
 ### Integration Roadmap / Plans
 
@@ -74,10 +80,6 @@ Planned for internal lighting.
 
 Planned for internal lighting.
 
-#### Zooz Z-Wave Plus S2 MultiRelay ZEN16 with 3 Dry Contact Relays
-
-I don't yet have a _real_ need for this, but it is so cool I'm sure it won' be long :)
-
 ## Templates Notes
 
 [Jinja Templates](https://jinja.palletsprojects.com/en/latest/templates/) are hard to read and filters are weak. Here's a couple notes:
@@ -93,6 +95,79 @@ An example for sensors:
 
     {% for s in expand('group.perimeter_sensors') %}{{ state_attr(s.entity_id, 'friendly_name') }} is {{ states(s.entity_id) }}
     {% endfor %}
+
+### One thing I want to do is expand groups into a yaml array of entity IDs, but can't figure out how to do it:
+
+Here is what I've tried:
+
+#### Filter:
+
+```yaml
+type: entities
+entities: {
+    {
+      expand('group.common_area_lights')
+      | map(attribute='entity_id')
+      | map("format")
+      | list(),
+    },
+  }
+title: Common Area Lights
+show_header_toggle: true
+```
+
+#### For Loop:
+
+```yaml
+type: entities
+entities:
+{% for light in expand('group.common_area_lights') -%}
+{{ "\n  - {}".format(light.entity_id) -}}
+{% endfor -%}
+title: Common Area Lights
+show_header_toggle: true
+```
+
+#### Using namespaced list
+
+Based on https://community.home-assistant.io/t/expand-group-select-attr-includes-unavailable-sensors/342708/7
+
+```yaml
+type: entities
+entities: >-
+  {% set ns = namespace(entity_list=[]) %}
+  {% set entity_list = expand('group.common_area_lights') | list %}
+  {% for entity in entity_list %}
+    {% set ns.entity_list = [entity.entity_id] + ns.entity_list %}
+  {%endfor%}
+  {{ns.entity_list | join(', ')}}
+```
+
+#### Using something else
+
+based on https://community.home-assistant.io/t/jinja-template-sensor-question/133698/20
+
+```yaml
+type: entities
+entities: >
+  {% set entities = expand('group.common_area_lights') %}
+  {% for x in entities %}
+    {%- if not loop.first %}, {% endif -%}
+    {{- x.entity_id -}}
+  {% endfor %}
+title: Common Area Lights
+show_header_toggle: true
+```
+
+---
+
+Here is another template using "filters" that converts a group's list of items into a list of entity_id strings. I'm not sure what to do with this yet, it doesn't work in a lovelace card:
+
+    {{ expand('group.common_area_lights') | map(attribute='entity_id') | list() }}
+
+Here is another one using full expressions but doesn't seem to work right for a lovelace card:
+
+    {% for light in expand('group.common_area_lights') %}{{ "\n  - {}".format(light.entity_id) }}{% endfor %}
 
 ## Groups
 

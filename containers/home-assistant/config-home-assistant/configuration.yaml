@@ -9,6 +9,7 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
+light: !include lights.yaml
 
 # Setup certificates via the HTTP integration/component
 # https://www.home-assistant.io/integrations/http:
@@ -23,22 +24,3 @@ notify:
     platform: group
     services:
       - service: mobile_app_fatboy
-
-# In order to add the zooz switches to a "light group", we have to expose the switches as lights
-# Unclear why the Zooz ZEN76 is a `switch` but the ZEN77 (dimmer) is a `light`, but 🤷‍♂️
-# See https://www.home-assistant.io/integrations/light.switch/
-# Once these are defined as a `light`, it will derive a `light.*` entity id for it based on the name of the light here. 
-# For example, `name: Kitchen Sink Light Switch Light` will generate entity id `light.kitchen_sink_light_switch_light`
-light:
-  - platform: switch
-    name: Dining Table Light Switch Light
-    entity_id: switch.z_wave_dining_table_light
-  - platform: switch
-    name: Hall Light Switch Light
-    entity_id: switch.z_wave_hall_light_switch
-  - platform: switch
-    name: Kitchen Light Switch Light
-    entity_id: switch.z_wave_kitchen_main_light
-  - platform: switch
-    name: Kitchen Sink Light Switch Light
-    entity_id: switch.z_wave_kitchen_sink_light

@@ -101,15 +101,15 @@
   condition:
   - condition: template
     value_template: '{{as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
-      - as_timestamp(now()) < 30 * 24 * 60 * 60}}'
+      - as_timestamp(now()) < 15 * 24 * 60 * 60}}'
   action:
   - service: notify.scott
     data:
       title: Home Assistant's cert expring
       message: Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
-        - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Please restarting
-        Home Assistant (hoping cron updated the cert already 🤞).  Note to self...
-        Should the restart be an action in this automation too?
+        - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Restarting Home
+        Assistant (hoping cron updated the cert already 🤞)...
+  - service: homeassistant.restart
   mode: restart
 - id: '1624428508974'
   alias: Server Room High Temp (repeated)
