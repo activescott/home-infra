@@ -96,71 +96,6 @@ An example for sensors:
     {% for s in expand('group.perimeter_sensors') %}{{ state_attr(s.entity_id, 'friendly_name') }} is {{ states(s.entity_id) }}
     {% endfor %}
 
-### One thing I want to do is expand groups into a yaml array of entity IDs, but can't figure out how to do it:
-
-Here is what I've tried:
-
-#### Filter:
-
-```yaml
-type: entities
-entities: {
-    {
-      expand('group.common_area_lights')
-      | map(attribute='entity_id')
-      | map("format")
-      | list(),
-    },
-  }
-title: Common Area Lights
-show_header_toggle: true
-```
-
-#### For Loop:
-
-```yaml
-type: entities
-entities:
-{% for light in expand('group.common_area_lights') -%}
-{{ "\n  - {}".format(light.entity_id) -}}
-{% endfor -%}
-title: Common Area Lights
-show_header_toggle: true
-```
-
-#### Using namespaced list
-
-Based on https://community.home-assistant.io/t/expand-group-select-attr-includes-unavailable-sensors/342708/7
-
-```yaml
-type: entities
-entities: >-
-  {% set ns = namespace(entity_list=[]) %}
-  {% set entity_list = expand('group.common_area_lights') | list %}
-  {% for entity in entity_list %}
-    {% set ns.entity_list = [entity.entity_id] + ns.entity_list %}
-  {%endfor%}
-  {{ns.entity_list | join(', ')}}
-```
-
-#### Using something else
-
-based on https://community.home-assistant.io/t/jinja-template-sensor-question/133698/20
-
-```yaml
-type: entities
-entities: >
-  {% set entities = expand('group.common_area_lights') %}
-  {% for x in entities %}
-    {%- if not loop.first %}, {% endif -%}
-    {{- x.entity_id -}}
-  {% endfor %}
-title: Common Area Lights
-show_header_toggle: true
-```
-
----
-
 Here is another template using "filters" that converts a group's list of items into a list of entity_id strings. I'm not sure what to do with this yet, it doesn't work in a lovelace card:
 
     {{ expand('group.common_area_lights') | map(attribute='entity_id') | list() }}
@@ -168,6 +103,10 @@ Here is another template using "filters" that converts a group's list of items i
 Here is another one using full expressions but doesn't seem to work right for a lovelace card:
 
     {% for light in expand('group.common_area_lights') %}{{ "\n  - {}".format(light.entity_id) }}{% endfor %}
+
+### One thing I want to do is expand groups into a yaml array of entity IDs, but can't figure out how to do it:
+And it was [confirmed on the forum that this isn't supported](https://community.home-assistant.io/t/how-do-expand-groups-for-lovelace-entities-card-with-jinja/349892) 🙁
+
 
 ## Groups
 

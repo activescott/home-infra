@@ -24,16 +24,22 @@ then
 
   # use rsync to get a list of files that are different:
   echo "Checking which files are different..."
-  FILES_TO_DIFF=$(rsync -vrn --rsh "ssh -S \"$CONTROL_PATH\"" --include="**/*.yaml" --exclude="*" $HASS_DIR/ ./ | sed '1d;/^$/q')
+  FILES_TO_DIFF=$(rsync -vrn --delete --rsh "ssh -S \"$CONTROL_PATH\"" --exclude-from="rsync-excluded-files" $HASS_DIR/ $GIT_DIR | sed '1d;s/^deleting \(.*\)$/\1/;/^$/q')
   printf "Found files that need diffed: %s\n" "$FILES_TO_DIFF"
   echo ""
+  exit
 fi
 
 echo "Performing diffs..."
 
 for FNAME in $FILES_TO_DIFF; do
   printf "\n##### %s #####\n" "$FNAME"
-  diff -u --minimal ${GIT_DIR}/${FNAME} <(ssh -S "$CONTROL_PATH" "$HASS_HOST" cat "${HASS_PATH}/${FNAME}")
+  if [ -f "${GIT_DIR}/${FNAME}" ];
+  then
+    diff -u --minimal "${GIT_DIR}/${FNAME}" <(ssh -S "$CONTROL_PATH" "$HASS_HOST" [ -f "${HASS_PATH}/${FNAME}" ] && cat "${HASS_PATH}/${FNAME}" || printf "")
+  else
+    printf "MISSING FILE: ${GIT_DIR}/${FNAME}"
+  fi
 done
 
 echo "Performing diffs complete."

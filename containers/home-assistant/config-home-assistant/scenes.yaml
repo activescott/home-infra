@@ -1,41 +1,37 @@
 - id: '1625024022694'
-  name: Nightime Lights
+  name: Sleep
   entities:
-    # TODO: Switch to group of common_area_lights?
-    switch.z_wave_dining_table_light:
-      friendly_name: Dining Table Light
-      icon: hass:lightbulb
+    group.common_area_lights:
+      entity_id:
+      - light.dining_table_light_switch_light
+      - light.z_wave_great_room_track_light_dimmer_switch
+      - light.hall_light_switch_light
+      - light.kitchen_light_switch_light
+      - light.kitchen_sink_light_switch_light
+      - light.entryway_light_swtich_light
+      order: 0
+      friendly_name: Common Area Lights
       state: 'off'
-    light.z_wave_great_room_track_light_dimmer:
-      supported_color_modes:
-      - brightness
-      friendly_name: Great Room Track Lighting
-      supported_features: 33
-      state: 'off'
-    switch.z_wave_kitchen_main_light:
-      friendly_name: Kitchen Light
-      icon: hass:lightbulb
-      state: 'off'
+  icon: hass:sleep
 - id: '1625024157942'
   name: TV Lights
   entities:
-    light.z_wave_great_room_track_light_dimmer:
-      supported_color_modes:
-      - brightness
-      color_mode: brightness
-      brightness: 31
-      friendly_name: Great Room Track Lighting
-      supported_features: 33
-      state: 'on'
     switch.z_wave_dining_table_light:
       friendly_name: Dining Table Light
-      icon: hass:lightbulb
       state: 'off'
     switch.z_wave_kitchen_main_light:
-      friendly_name: Kitchen Light
-      icon: hass:lightbulb
+      friendly_name: Kitchen Main Light
       state: 'off'
     switch.z_wave_kitchen_sink_light:
-      friendly_name: Kitchen Light
-      icon: hass:lightbulb
+      friendly_name: Kitchen Sink Light
       state: 'off'
+    light.z_wave_great_room_track_light_dimmer_switch:
+      supported_color_modes:
+      - brightness
+      friendly_name: Great Room Track Light
+      supported_features: 32
+      state: 'off'
+    switch.z_wave_entryway_light:
+      friendly_name: Entryway Light
+      state: 'off'
+  icon: hass:television
