@@ -96,8 +96,8 @@
   alias: alert when hass cert about to expire
   description: ''
   trigger:
-  - platform: time_pattern
-    hours: /23
+  - platform: time
+    at: '22:30:00'
   condition:
   - condition: template
     value_template: '{{as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
@@ -158,11 +158,11 @@
   mode: queued
   max: 10
 - id: '1625077719822'
-  alias: Dimmable Lights Turn on Brightly during daytime
+  alias: Dimmable lights turn on brightly during daytime
   description: ''
   trigger:
   - platform: state
-    entity_id: light.z_wave_great_room_track_light_dimmer
+    entity_id: light.z_wave_great_room_track_light_dimmer_switch
     from: 'off'
     to: 'on'
   condition:
@@ -170,15 +170,15 @@
     entity_id: sun.sun
     state: above_horizon
   - condition: numeric_state
-    entity_id: light.z_wave_great_room_track_light_dimmer
+    entity_id: light.z_wave_great_room_track_light_dimmer_switch
     attribute: brightness
     below: '254'
   action:
-  - type: turn_on
-    device_id: 8d5f323769e100c3f1166338884295d5
-    entity_id: light.z_wave_great_room_track_light_dimmer
-    domain: light
-    brightness_pct: 100
+  - service: light.turn_on
+    target:
+      entity_id: light.z_wave_great_room_track_light_dimmer_switch
+    data:
+      brightness: 255
   mode: single
 - id: '1625643088055'
   alias: Vacation Light Toggler
@@ -232,4 +232,16 @@
       - switch.z_wave_kitchen_main_light
       - switch.jonahs_lamp_on_off
       - switch.mommas_lamp_on_off
+  mode: single
+- id: '1635223858648'
+  alias: Turn outdoor lights off at dawn
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunrise
+  condition: []
+  action:
+  - service: homeassistant.turn_off
+    target:
+      entity_id: group.outdoor_lights
   mode: single
