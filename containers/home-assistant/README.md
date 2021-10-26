@@ -16,18 +16,13 @@ For Z-Wave support, I use a Nortek Security & Control Zigbee & Z-Wave USB Contro
 
 A couple interesting notes setting up Z-Wave:
 
-- Originally I created a ZWave JS Server container defined at `containers/home-assitant/zwave-js-server.Dockerfile` and [published it](https://hub.docker.com/repository/docker/activescott/zwave-js-server). However, I later discovered https://github.com/zwave-js/zwavejs2mqtt and am now using that. For detail see it's configuration in `home-assitant-docker-compose.yml` in this repo.
+- I use a ZWave JS Server container from https://github.com/zwave-js/zwavejs2mqtt. For detail see it's configuration in `home-assitant-docker-compose.yml` in this repo.
+- All config data for zwavejs2mqtt is stored on a host directory mapped via a docker volume.
 - The Z-Wave USB Stick only works in USB 2.0 ports - it will _not_ work in the USB 3.0 ports. No idea why but someone mentioned that in a thread and it was a problem for me too!
 - In the docker-compose file you can see where I map the Z-Wave USB Stick device from the host QNAP (`/dev/ttyUSB0`) to `/dev/zwave` inside of the container.
 - To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`).
   - I have this set up in the QNAP host as part of some autorun script that QNAP supports. **TODO:** Document where that file is!
 
-### Publishing activescott/zwave-js-server Docker Hub
-
-The `activescott/zwave-js-server` container is on dockerhub at https://hub.docker.com/repository/docker/activescott/zwave-js-server
-A manual build to build the container from the Dockerfile source in the `main` branch in this repo can be published by clicking on "Trigger" button for the `latest` dockerhub tag at https://hub.docker.com/repository/docker/activescott/zwave-js-server/builds
-
-Update `containers/home-assitant/zwave-js-server.Dockerfile` and use a git tag on the commit with a tag that meets the regex `^zwave-js-server-([0-9.]+)` and dockerhub should detect the git tag and automatically publish an image from that commit with the tag `release-<version>`. For example the git tag `zwave-js-server-1.0.0` should result in a docker tag `release-1.0.0` and a valid image reference from docker-compose of `activescott/zwave-js-server:release-1.0.0`.
 
 ## Home Assistant Hardware / Integrations
 

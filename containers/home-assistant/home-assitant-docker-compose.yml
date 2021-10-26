@@ -1,24 +1,9 @@
 version: "3"
 services:
-  #  zwavejs:
-  #    container_name: homeassistant_zwavejs
-  #    #build:
-  #    #  context: .
-  #    #  dockerfile: zwave-js-server.Dockerfile
-  #    # using the explicit tag/version so that editing the docker-compose file in QNAP Container Station will force it to pull a new image:
-  #    image: activescott/zwave-js-server:2021.8
-  #    network_mode: host
-  #    volumes:
-  #      # ZWave cache on QNAP
-  #      - /share/CACHEDEV1_DATA/app-data/home-assistant-zwave-js/cache:/cache
-  #      # ZWave-js config on QNAP
-  #      - /share/CACHEDEV1_DATA/app-data/home-assistant-zwave-js/config:/config
-  #    devices:
-  #      # QNAP zwave (note the /dev/zwave is configured in the Dockerfile/image)
-  #      - /dev/ttyUSB0:/dev/zwave
   zwavejs2mqtt:
     # docs at https://zwave-js.github.io/zwavejs2mqtt/#/
     # repo at https://github.com/zwave-js/zwavejs2mqtt
+    # container at https://hub.docker.com/r/zwavejs/zwavejs2mqtt
     container_name: zwavejs2mqtt
     image: zwavejs/zwavejs2mqtt:5.8.0
     restart: always
