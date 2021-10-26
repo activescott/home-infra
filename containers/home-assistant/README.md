@@ -20,9 +20,35 @@ A couple interesting notes setting up Z-Wave:
 - All config data for zwavejs2mqtt is stored on a host directory mapped via a docker volume.
 - The Z-Wave USB Stick only works in USB 2.0 ports - it will _not_ work in the USB 3.0 ports. No idea why but someone mentioned that in a thread and it was a problem for me too!
 - In the docker-compose file you can see where I map the Z-Wave USB Stick device from the host QNAP (`/dev/ttyUSB0`) to `/dev/zwave` inside of the container.
-- To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`).
-  - I have this set up in the QNAP host as part of some autorun script that QNAP supports. **TODO:** Document where that file is!
 
+### Initializing Nortek USB Z-Wave/Zigbee Stick
+
+To get the USB Stick to work, use `insmod /usr/local/modules/cp210x.ko` (no output appears, but `/dev/ttyUSB0` appears when doing `ls -l /dev/tty*`). I have this set up in the QNAP host as part of an autorun.sh script that QNAP supports with the following script using tips from the [[SCRIPT] create-autorun.sh post](https://forum.qnap.com/viewtopic.php?f=45&t=130345) on QNAP NAS Community forum. The actual autorun.sh:
+
+```
+#!/usr/bin/env bash
+# https://github.com/OneCDOnly/create-autorun
+
+readonly LOGFILE=/var/log/autorun.log
+f=''
+
+echo "$(date) -- autorun.sh is processing --" >> "$LOGFILE"
+
+for f in /share/CACHEDEV1_DATA/.system/autorun/scripts/*; do
+    if [[ -x $f ]]; then
+        echo -n "$(date)" >> "$LOGFILE"
+        echo " executing $f ..." >> "$LOGFILE"
+        $f >> "$LOGFILE" 2>&1
+    fi
+done
+```
+
+The script at `/share/CACHEDEV1_DATA/.system/autorun/scripts/10-install-nortek-usb.sh` that actually does the trick is simply:
+
+```
+# Used to get ZWAVE/zigbee USB Stick loaded: https://github.com/activescott/home-infra
+insmod /usr/local/modules/cp210x.ko
+```
 
 ## Home Assistant Hardware / Integrations
 
@@ -100,8 +126,8 @@ Here is another one using full expressions but doesn't seem to work right for a 
     {% for light in expand('group.common_area_lights') %}{{ "\n  - {}".format(light.entity_id) }}{% endfor %}
 
 ### One thing I want to do is expand groups into a yaml array of entity IDs, but can't figure out how to do it:
-And it was [confirmed on the forum that this isn't supported](https://community.home-assistant.io/t/how-do-expand-groups-for-lovelace-entities-card-with-jinja/349892) 🙁
 
+And it was [confirmed on the forum that this isn't supported](https://community.home-assistant.io/t/how-do-expand-groups-for-lovelace-entities-card-with-jinja/349892) 🙁
 
 ## Groups
 
