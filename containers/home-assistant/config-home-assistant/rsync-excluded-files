@@ -8,6 +8,7 @@ copy-config-from-hass-to-git.sh
 home-assistant_v2.db
 home-assistant_v2.db-*
 home-assistant.log
+home-assistant.log.*
 image/
 zigbee.db
 .DS_Store

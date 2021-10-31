@@ -27,18 +27,17 @@ then
   FILES_TO_DIFF=$(rsync -vrn --delete --rsh "ssh -S \"$CONTROL_PATH\"" --exclude-from="rsync-excluded-files" $HASS_DIR/ $GIT_DIR | sed '1d;s/^deleting \(.*\)$/\1/;/^$/q')
   printf "Found files that need diffed: %s\n" "$FILES_TO_DIFF"
   echo ""
-  exit
 fi
 
 echo "Performing diffs..."
 
 for FNAME in $FILES_TO_DIFF; do
-  printf "\n##### %s #####\n" "$FNAME"
+  printf "\n##### %s : %s #####\n" "$FNAME" "${HASS_DIR}/${FNAME}"
   if [ -f "${GIT_DIR}/${FNAME}" ];
   then
-    diff -u --minimal "${GIT_DIR}/${FNAME}" <(ssh -S "$CONTROL_PATH" "$HASS_HOST" [ -f "${HASS_PATH}/${FNAME}" ] && cat "${HASS_PATH}/${FNAME}" || printf "")
+    diff -u --minimal <(ssh -S "$CONTROL_PATH" "$HASS_HOST" cat "${HASS_PATH}/${FNAME}" || printf "") "${GIT_DIR}/${FNAME}"
   else
-    printf "MISSING FILE: ${GIT_DIR}/${FNAME}"
+    printf "MISSING FILE IN GIT: ${GIT_DIR}/${FNAME}"
   fi
 done
 
