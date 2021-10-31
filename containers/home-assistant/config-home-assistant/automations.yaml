@@ -1,18 +1,5 @@
-- id: '1623006661370'
-  alias: Garage Door Opened/Closed
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: cover.garage_door_controller
-  condition: []
-  action:
-  - service: notify.notify
-    data:
-      message: The garage is {{states('cover.garage_door_controller')}}
-      title: Garage Door is {{states('cover.garage_door_controller')}}
-  mode: restart
 - id: '1623038094100'
-  alias: Garage open at sundown
+  alias: Notify of garage open at sundown
   description: At sundown, notify if garage is open
   trigger:
   - platform: state
@@ -22,7 +9,7 @@
   - condition: and
     conditions:
     - condition: state
-      entity_id: cover.garage_door_controller
+      entity_id: cover.garage_door
       state: open
     - condition: state
       entity_id: sun.sun
@@ -31,15 +18,14 @@
   - service: notify.notify
     data:
       title: Sun went down and garage open!
-      message: Garage is {{states('cover.garage_door_controller')}} and Sun is {{
-        states('sun.sun')}}!
+      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
   mode: single
 - id: '1623038827160'
-  alias: Garage activity at night
+  alias: Notify of garage activity at night
   description: ''
   trigger:
   - platform: state
-    entity_id: cover.garage_door_controller
+    entity_id: cover.garage_door
   condition:
   - condition: state
     entity_id: sun.sun
@@ -48,30 +34,28 @@
   - service: notify.notify
     data:
       title: Garage activity at night
-      message: Garage is {{states('cover.garage_door_controller')}} and Sun is {{
-        states('sun.sun')}}!
+      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
   mode: queued
   max: 10
 - id: '1623039707955'
-  alias: Garage activity while away
+  alias: Notify of garage activity while away
   description: ''
   trigger:
   - platform: state
-    entity_id: cover.garage_door_controller
+    entity_id: cover.garage_door
   condition:
   - condition: state
     entity_id: person.scott_willeke
     state: not_home
   action:
-  - service: notify.notify
+  - service: notify.scott
     data:
       title: Garage activity while away!
-      message: Garage is {{states('cover.garage_door_controller')}} and Scott is {{
-        states('person.scott_willeke')}}!
+      message: Garage is {{states('cover.garage_door')}} and Scott is {{ states('person.scott_willeke')}}!
   mode: queued
   max: 10
 - id: '1623301925661'
-  alias: Garage still open at night (repeated every 30min)
+  alias: Notify of garage still open at night (repeated every 30min)
   description: Repeatedly notifies when the garage door is open at night
   trigger:
   - platform: time_pattern
@@ -83,14 +67,13 @@
       entity_id: sun.sun
       state: below_horizon
     - condition: state
-      entity_id: cover.garage_door_controller
+      entity_id: cover.garage_door
       state: open
   action:
   - service: notify.notify
     data:
       title: Garage door is STILL open at night!
-      message: Garage is {{states('cover.garage_door_controller')}} and Sun is {{
-        states('sun.sun')}}!
+      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
   mode: restart
 - id: '1623308610166'
   alias: alert when hass cert about to expire

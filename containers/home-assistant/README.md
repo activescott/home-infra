@@ -56,15 +56,11 @@ insmod /usr/local/modules/cp210x.ko
 
 For Z-Wave and Zigbee support. Plugged into a QNAP on the host and device mapped into the ZWave JS Server container and the home assistant container (for zigbee).
 
-### GoControl Linear GD00Z-4 Z-Wave Smart Garage Door Controller/with tilt sensor
+### Garage Door
 
-~~Easy to hook up and works like a champ. It is picky if the power goes out. You MUST follow the instructions to "resync" it by using another control (push button or remote) to raise the garage up and than down again completely. Then it works perfect.~~ This worked at first fine, but after about two months it stopped controlling the garage. I found a fair bit of similar experiences on the web.
+I am currently using a [Zooz Z-Wave Plus 700 Series Universal Relay ZEN17 with 2 NO & NC Relays (20A, 10A)](https://www.thesmartesthouse.com/products/zooz-z-wave-plus-700-series-universal-relay-zen17-with-2-no-nc-relays-20a-10a) to control the garage and a [Ecolink Z-Wave Plus Garage Door Tilt Sensor TILTZWAVE2.5-ECO](https://www.thesmartesthouse.com/products/ecolink-z-wave-plus-garage-door-tilt-sensor-tiltzwave2-5-eco). I glue the two together into a proper "Garage Device/Integration" in Home Assistant with a so-called ["Cover Template"](https://www.home-assistant.io/integrations/cover.template/#garage-door) that is defined in `/config-home-assistant/configuration.yaml`.
 
-I have since switched to a Zooz ZEN17 Universal Relay to control the garage (see below).
-
-#### Zooz Z-Wave Plus 700 Series Universal Relay ZEN17 with 2 NO & NC Relays (20A, 10A)
-
-I use this to control the garage door now. I do not _yet_ have it hooked up for the full "garage" integration in Home Assistant so it looks more like a switch than a garage door at the moment.
+**OLD**: I originally had a **GoControl Linear GD00Z-4 Z-Wave Smart Garage Door Controller/with tilt sensor**. It was easy to hook up and worked like a champ at first. However, it was picky if the power goes out. You MUST follow the instructions to "resync" it by using another control (push button or remote) to raise the garage up and than down again completely.~~ This worked at first fine, but after about two months it stopped controlling the garage. I found a fair bit of similar experiences on the web.
 
 ### Ubiquity UniFi
 
