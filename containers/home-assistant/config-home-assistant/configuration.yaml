@@ -11,6 +11,9 @@ script: !include scripts.yaml
 scene: !include scenes.yaml
 light: !include lights.yaml
 
+homeassistant:
+  customize: !include customize.yaml
+
 # Setup certificates via the HTTP integration/component
 # https://www.home-assistant.io/integrations/http:
 http:

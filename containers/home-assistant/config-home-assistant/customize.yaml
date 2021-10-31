@@ -1,0 +1,2 @@
+binary_sensor.garage_door_sensor_device_access_control_window_door_is_open:
+  device_class: garage_door
