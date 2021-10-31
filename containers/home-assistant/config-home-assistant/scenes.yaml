@@ -28,9 +28,11 @@
     light.z_wave_great_room_track_light_dimmer_switch:
       supported_color_modes:
       - brightness
+      color_mode: brightness
+      brightness: 13
       friendly_name: Great Room Track Light
       supported_features: 32
-      state: 'off'
+      state: 'on'
     switch.z_wave_entryway_light:
       friendly_name: Entryway Light
       state: 'off'
