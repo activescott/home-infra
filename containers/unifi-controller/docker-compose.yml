@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   unifi-controller:
-    image: ghcr.io/linuxserver/unifi-controller:version-6.1.71
+    image: ghcr.io/linuxserver/unifi-controller:version-6.4.54
     container_name: unifi-controller
     environment:
       - PUID=1000
@@ -9,16 +9,16 @@ services:
       - MEM_LIMIT=1024M #optional
     volumes:
       - /share/CACHEDEV1_DATA/app-data/unifi-controller:/config
-    ports:
-      - 3478:3478/udp
-      - 10001:10001/udp
-      - 8080:8080
-      - 8443:8443
-      - 1900:1900/udp #optional
-      - 8843:8843 #optional
-      - 8880:8880 #optional
-      - 6789:6789 #optional
-      - 5514:5514/udp #optional
+    #ports:
+    #  - 3478:3478/udp
+    #  - 10001:10001/udp
+    #  - 8080:8080
+    #  - 8443:8443
+    #  - 1900:1900/udp #optional
+    #  - 8843:8843 #optional
+    #  - 8880:8880 #optional
+    #  - 6789:6789 #optional
+    #  - 5514:5514/udp #optional
     # I'm forcing it into host networking which will set up the container better to discover devices. See https://docs.docker.com/compose/compose-file/compose-file-v2/#network_mode
     network_mode: "host"
     restart: unless-stopped
