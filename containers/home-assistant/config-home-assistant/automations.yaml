@@ -228,3 +228,27 @@
     target:
       entity_id: group.outdoor_lights
   mode: single
+- id: '1635821694673'
+  alias: Outdoor lights on at sunset
+  description: ''
+  trigger:
+  - platform: sun
+    event: sunset
+  condition: []
+  action:
+  - service: homeassistant.turn_on
+    target:
+      entity_id: group.outdoor_lights
+  mode: single
+- id: '1635821887585'
+  alias: Outdoor lights off at midnight
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:00
+  condition: []
+  action:
+  - service: homeassistant.turn_off
+    target:
+      entity_id: group.outdoor_lights
+  mode: single
