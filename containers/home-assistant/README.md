@@ -117,13 +117,35 @@ Here is another template using "filters" that converts a group's list of items i
 
     {{ expand('group.common_area_lights') | map(attribute='entity_id') | list() }}
 
-Here is another one using full expressions but doesn't seem to work right for a lovelace card:
+### Expand Groups into Entities in a Lovelace Dashboard Card
 
-    {% for light in expand('group.common_area_lights') %}{{ "\n  - {}".format(light.entity_id) }}{% endfor %}
+Although [Home Assistant doesn't support expanding groups into a Lovelace Dashboard card](https://community.home-assistant.io/t/how-do-expand-groups-for-lovelace-entities-card-with-jinja/349892) (🙁), you can use the [third-party auto-entities Lovelace Plugin](https://github.com/thomasloven/lovelace-auto-entities) to do that.
 
-### One thing I want to do is expand groups into a yaml array of entity IDs, but can't figure out how to do it:
+#### Using Auto-Entities
 
-And it was [confirmed on the forum that this isn't supported](https://community.home-assistant.io/t/how-do-expand-groups-for-lovelace-entities-card-with-jinja/349892) 🙁
+In the UI you can now add a new type of card that appears as **Custom: Auto Entities** and simply chose a group as a filter. In the YAML it looks like the below for the group named `group.common_area_lights`:
+
+```yaml
+type: custom:auto-entities
+card:
+  type: entities
+  title: Common Area Lights
+  state_color: true
+filter:
+  include:
+    - group: group.common_area_lights
+  exclude: []
+sort:
+  method: friendly_name
+```
+
+#### Installing Lovelace Plugin:
+
+Copy the js file (and any other files may require) to any subdirectory in `<home assistant config>/www/` (for example I have auto-entities at [`config-home-assistant/www/plugins/auto-entities/auto-entities.js`](config-home-assistant/www/plugins/auto-entities/auto-entities.js)). Then put a path to the plugin's file(s) using the Home Assistant UI by doing the following:
+
+1. Go to "Configuration" The gear symbol near the bottom of the sidebar.
+2. Select "Lovelace Dashboard".
+3. Select the "Resources" tab (enable "Advanced Mode" under your user's profile if you don't see it) and add the resource as sipmly the path to the plugin's file(s) (e.g. for my auto-entities plugin, this is simply **URL** `/local/plugins/auto-entities/auto-entities.js` and **Resource Type** of _JavaScript Module_).
 
 ## Groups
 
