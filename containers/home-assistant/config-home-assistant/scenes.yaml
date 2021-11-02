@@ -21,7 +21,7 @@
       state: 'off'
     switch.z_wave_kitchen_main_light:
       friendly_name: Kitchen Main Light
-      state: 'off'
+      state: 'on'
     switch.z_wave_kitchen_sink_light:
       friendly_name: Kitchen Sink Light
       state: 'off'
@@ -35,5 +35,8 @@
       state: 'on'
     switch.z_wave_entryway_light:
       friendly_name: Entryway Light
+      state: 'off'
+    switch.z_wave_hall_light_switch:
+      friendly_name: Hallway Light Switch
       state: 'off'
   icon: hass:television
