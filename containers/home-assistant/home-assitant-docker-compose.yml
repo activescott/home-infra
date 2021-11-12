@@ -30,7 +30,7 @@ services:
     container_name: homeassistant
     # NOTE: using the explicit tag/version so that editing the docker-compose file in QNAP Container Station will force it to pull a new image:
     # Dockerhub: https://hub.docker.com/r/homeassistant/home-assistant
-    image: homeassistant/home-assistant:2021.10.6
+    image: homeassistant/home-assistant:2021.11.3
     network_mode: host
     depends_on:
       - zwavejs2mqtt
