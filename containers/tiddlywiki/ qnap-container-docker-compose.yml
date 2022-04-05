@@ -4,7 +4,7 @@ services:
   tiddlywiki:
     image: activescott/tiddlywiki
     volumes:
-      - /share/CACHEDEV1_DATA/scott-tiddlywiki/wikidata:/mnt/wikidata
+      - /share/CACHEDEV1_DATA/app-data/tiddlywiki/wikidata:/mnt/wikidata
     environment:
       TW_USERNAME: TheUserName
       TW_PASSWORD: ThePassword
