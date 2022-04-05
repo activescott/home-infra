@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  tiddlywiki:
+    image: activescott/tiddlywiki
+    volumes:
+      - /share/CACHEDEV1_DATA/scott-tiddlywiki/wikidata:/mnt/wikidata
+    environment:
+      TW_USERNAME: TheUserName
+      TW_PASSWORD: ThePassword
+    ports:
+      - "443:8000"
