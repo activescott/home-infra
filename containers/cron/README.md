@@ -14,9 +14,13 @@ Essentially alpine includes the following directories, where you can put a shell
     /etc/periodic/monthly
     /etc/periodic/weekly
 
+### Docker on the Host
+
+The cron docker container launches jobs as docker containers _on the host's_ docker daemon by mounting the host's Docker Daemon's `/var/run/docker.sock` as a volume ([this article explained](https://devopscube.com/run-docker-in-docker/) and [this article](https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/#the-socket-solution) this best for me). This prevents the need for the cron container from having to install certbot or whatever other dependencies may be needed for other jobs.
+
 ## Certificates with Lets Encrypt & certbot
 
-For certificates, I let cron container periodically kick off a job in a separate docker container containing certbot. I launch the second docker container _on the host's_ docker daemon by mounting the host's Docker Daemon's `/var/run/docker.sock` as a volume ([this article explained](https://devopscube.com/run-docker-in-docker/) this best for me). This prevents the need for the cron container from having to install certbot or whatever other dependencies may be needed for other jobs. The exact file for launching certbot is in `./cron_tasks_folder/daily/renew-certificates.sh`.
+For certificates, I let cron container periodically kick off a job in a separate docker container containing certbot. The exact file for launching certbot is in `./cron_tasks_folder/daily/renew-certificates.sh`.
 
 ### Certificates Folder Structure: Sharing Certificates between Containers
 
