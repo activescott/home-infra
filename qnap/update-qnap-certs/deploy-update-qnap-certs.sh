@@ -58,6 +58,7 @@ exec_remote mkdir -pv "$DEST_DIR"
 RSYNC_OPTIONS="-v --archive"
 rsync $RSYNC_OPTIONS --rsh "ssh -S \"$CONTROL_PATH\"" "$THISDIR/$SCRIPT_NAME" "$SSH_HOST:$DEST_DIR/$SCRIPT_NAME"
 
+# make it executable on the destination host:
 ssh -S "$CONTROL_PATH" "$SSH_HOST" "/bin/sh" << END_DOC
 chmod +x "$DEST_DIR/$SCRIPT_NAME"
 ls -l "$DEST_DIR/$SCRIPT_NAME"
