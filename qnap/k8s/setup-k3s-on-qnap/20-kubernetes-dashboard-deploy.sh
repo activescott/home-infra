@@ -33,4 +33,6 @@ echo; echo "Creating dashboard admin-user..."
 
 kubectl apply -f dashboard-service-account.yaml
 
+# TODO: THIS NEEDS TO WAIT until the pods come up
+
 ./22-kubernetes-dashboard-print-secret.sh

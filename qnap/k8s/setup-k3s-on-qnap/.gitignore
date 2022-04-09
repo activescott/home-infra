@@ -1,2 +1,3 @@
 .env
-k3s-docker-compose-resolved-at-*.yml
+k3s-docker-compose-resolved-at-*.yaml
+.env-backup-*

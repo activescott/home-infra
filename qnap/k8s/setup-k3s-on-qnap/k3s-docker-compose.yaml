@@ -26,7 +26,7 @@ services:
     volumes:
     - k3s-server:/var/lib/rancher/k3s
     # This is just so that we get the kubeconfig file out
-    - .:/output
+    #- .:/output
     ports:
     - 6443:6443  # Kubernetes API Server
     # TODO: I'm using these in docker/container station for now, move to K8S:
