@@ -1,13 +1,17 @@
 # A template for running r3s via docker-compose. See https://rancher.com/docs/k3s/latest/en/advanced/#running-k3d-k3s-in-docker-and-docker-compose and get it from the docker-compose.yml is in the root of the K3s repo.
+# NOTE: I removed K3S_VERSION since I'm using my modified container to make shared-volumes work with the smb/cifs CSI driver.
 
-# to run define K3S_TOKEN, K3S_VERSION is optional, eg:
+# to run define K3S_TOKEN, eg:
 #   K3S_TOKEN=${RANDOM}${RANDOM}${RANDOM} docker-compose up
+
+
 
 version: '3'
 services:
 
   server:
-    image: "rancher/k3s:${K3S_VERSION:-latest}"
+    #image: "rancher/k3s:${K3S_VERSION:-latest}"
+    image: "activescott/k3s:v1"
     command: server
     tmpfs:
     - /run
@@ -36,7 +40,8 @@ services:
 
 
   agent:
-    image: "rancher/k3s:${K3S_VERSION:-latest}"
+    #image: "rancher/k3s:${K3S_VERSION:-latest}"
+    image: "activescott/k3s:v1"
     tmpfs:
     - /run
     - /var/run

@@ -1,3 +1,5 @@
 .env
 k3s-docker-compose-resolved-at-*.yaml
 .env-backup-*
+k3s-kubectl-config.yaml
+k3s-kubectl-config.yaml.backup*
