@@ -18,6 +18,8 @@ END_DOC
 
 }
 
+source .env
+
 kubectl delete -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
 
 # delete dashboard admin-user:

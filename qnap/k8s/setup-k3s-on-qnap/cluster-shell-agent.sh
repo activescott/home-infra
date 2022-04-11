@@ -11,11 +11,7 @@ die () {
 help () {
   echo 
   cat << END_DOC
-USAGE: $THISSCRIPT [OPTIONS] COMPOSE_FILE
-
-Creates the K3S_TOKEN value and version and generates the final docker-compose 
-output on the screen with the environment variables substituted. 
-See https://docs.docker.com/compose/environment-variables/ for more info.
+USAGE: $THISSCRIPT [OPTIONS] [COMPOSE_FILE]
 
 END_DOC
 
@@ -26,6 +22,4 @@ TSTAMP=$(date +"%Y%m%d%H%M%s")
 COMPOSE_FILE=$1
 [ -z "$COMPOSE_FILE" ] && die "COMPOSE_FILE must be specified as the composefilename to use!"
 
-docker compose -f $COMPOSE_FILE down
-
-docker compose -f $COMPOSE_FILE rm
+docker compose -f $COMPOSE_FILE exec agent /bin/sh

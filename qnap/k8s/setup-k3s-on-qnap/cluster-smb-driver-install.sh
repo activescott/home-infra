@@ -33,7 +33,6 @@ DRIVER_VERSION=v1.5.0
 
 K3S_CONFIG_FILE=./k3s-kubectl-config.yaml
 
-
 echo "adding repo..."
 helm --kubeconfig $K3S_CONFIG_FILE repo add csi-driver-smb https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts
 

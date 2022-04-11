@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: shell-demo
+spec:
+  containers:
+  - name: shell-demo-container
+    #image: nginx
+    image: k8s.gcr.io/busybox
+    # Just spin & wait forever
+    #command: [ "/bin/sh", "-c", "--" ]
+    #args: [ "while true; do sleep 30; done;" ]
+    command:
+      - sleep
+      - "3600"
+    imagePullPolicy: IfNotPresent
+  # NOTE: The below DNS configuration is necessary to be able to get beyond the cluster's DNS:
+  hostNetwork: true
+  dnsPolicy: ClusterFirst
+  dnsConfig:
+    nameservers:
+      - 10.1.111.1
+    searches:
+      - activenet

@@ -33,11 +33,6 @@ if [ -f $THISDIR/.env ]; then
   echo "backed up existing .env file to $ENV_BACKUP"
 fi
 
-echo "K3S_TOKEN=$K3S_TOKEN" > .env
-echo "K3S_VERSION=$K3S_VERSION" >> .env
-
-echo "generated .env file."
-
 RESOLVED_COMPOSE_FILE=k3s-docker-compose-resolved-at-$TSTAMP.yaml
 
 docker-compose -f k3s-docker-compose.yaml config > $THISDIR/$RESOLVED_COMPOSE_FILE

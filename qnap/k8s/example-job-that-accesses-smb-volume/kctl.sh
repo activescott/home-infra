@@ -1,0 +1,1 @@
+../setup-k3s-on-qnap/kctl.sh

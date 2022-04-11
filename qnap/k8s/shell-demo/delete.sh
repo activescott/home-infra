@@ -8,4 +8,15 @@ die () {
     exit 1
 }
 
-kubectl --kubeconfig=$THISDIR/k3s-kubectl-config.yaml $@
+help () {
+  echo 
+  cat << END_DOC
+USAGE: $THISSCRIPT [OPTIONS] COMMAND
+
+END_DOC
+
+}
+
+source .env
+
+kubectl delete pod shell-demo

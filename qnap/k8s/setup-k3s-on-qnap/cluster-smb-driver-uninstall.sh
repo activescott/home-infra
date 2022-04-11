@@ -11,8 +11,7 @@ die () {
 help () {
   echo 
   cat << END_DOC
-USAGE: $THISSCRIPT [OPTIONS]
-
+USAGE: $THISSCRIPT [OPTIONS] [COMPOSE_FILE]
 
 END_DOC
 
@@ -31,8 +30,4 @@ source .env
 # install the SMB CSI Driver for Kubernetes via helm: https://github.com/kubernetes-csi/csi-driver-smb
 DRIVER_VERSION=v1.5.0
 
-K3S_CONFIG_FILE=./k3s-kubectl-config.yaml
-
-
-
-helm --kubeconfig $K3S_CONFIG_FILE uninstall csi-driver-smb --namespace kube-system
+helm uninstall csi-driver-smb --namespace kube-system

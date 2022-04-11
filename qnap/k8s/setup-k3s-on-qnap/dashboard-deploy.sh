@@ -15,8 +15,9 @@ USAGE: $THISSCRIPT [OPTIONS]
 
 Installs the kubernetes dashboard https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/
 END_DOC
-
 }
+
+source .env
 
 # This line is the standard way to deploy the dashboard:https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/#accessing-the-dashboard-ui
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.5.0/aio/deploy/recommended.yaml
@@ -33,6 +34,13 @@ echo; echo "Creating dashboard admin-user..."
 
 kubectl apply -f dashboard-service-account.yaml
 
-# TODO: THIS NEEDS TO WAIT until the pods come up
 
-./22-kubernetes-dashboard-print-secret.sh
+echo; echo "Waiting for dashboard pods to come up..."
+SECS=5
+while [ $SECS -gt 0 ]; do
+  printf "waiting $SECS seconds\n"
+  sleep 1
+  SECS=`expr $SECS - 1`
+done
+
+"$THISDIR/dashboard-show-token.sh"
