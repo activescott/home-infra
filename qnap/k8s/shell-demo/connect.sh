@@ -19,15 +19,4 @@ END_DOC
 
 source .env
 
-kubectl apply -f "$THISDIR/shell-demo.yaml"
-
-SECS=3
-while [ $SECS -gt 0 ]; do
-  printf "waiting $SECS seconds\n"
-  sleep 1
-  SECS=`expr $SECS - 1`
-done
-
-kubectl get pod shell-demo
-
-"$THISDIR/connect.sh"
+kubectl exec --stdin --tty shell-demo -- /bin/sh

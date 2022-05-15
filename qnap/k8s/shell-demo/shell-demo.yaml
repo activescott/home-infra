@@ -5,7 +5,6 @@ metadata:
 spec:
   containers:
   - name: shell-demo-container
-    #image: nginx
     image: k8s.gcr.io/busybox
     # Just spin & wait forever
     #command: [ "/bin/sh", "-c", "--" ]
@@ -14,11 +13,10 @@ spec:
       - sleep
       - "3600"
     imagePullPolicy: IfNotPresent
-  # NOTE: The below DNS configuration is necessary to be able to get beyond the cluster's DNS:
-  hostNetwork: true
-  dnsPolicy: ClusterFirst
-  dnsConfig:
-    nameservers:
-      - 10.1.111.1
-    searches:
-      - activenet
+  # NOTE: The below configuration `dnsConfig` is necessary to be able to get beyond the cluster's DNS to a local DNS server (k3s defaults to the node's forwarder or 8.8.8.8):
+  # See https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
+  #dnsConfig:
+  #  nameservers:
+  #    - 10.1.111.1
+  #  searches:
+  #    - activenet

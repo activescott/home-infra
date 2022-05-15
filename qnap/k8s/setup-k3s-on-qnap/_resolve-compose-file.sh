@@ -11,7 +11,7 @@ die () {
 help () {
   echo 
   cat << END_DOC
-USAGE: $THISSCRIPT [OPTIONS]
+USAGE: $THISSCRIPT [COMPOSE_FILE]
 
 END_DOC
 

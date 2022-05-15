@@ -11,6 +11,11 @@ Here lies scripts and noters for my QNAP.
 
 ## Scripts & Tricks
 
-### Using Auto-updating Let's Encrypt Certs with QNAP
+### Auto-Update Let's Encrypt Certs with QNAP
 
-The [update-qnap-certs.sh](update-qnap-certs.sh) script does the qnap-specific stuff for updating certificates. The certificates themselves are updated using a cron job as described in my [cron container](/containers/cron/README.md)
+The [update-qnap-certs.sh](update-qnap-certs/update-qnap-certs.sh) script does the qnap-specific stuff for updating certificates. The certificates themselves are updated using a cron job as described in my [cron container](/containers/cron/README.md). This script packs them into a special file that QNAP requires and restarts the needed QNAP processes. More details are in the comments within the script itself.
+The [deploy-update-qnap-certs.sh](update-qnap-certs/deploy-update-qnap-certs.sh) script deploys it from the dev machine with this repo to the QNAP host via SSH/rsync.
+
+### Backing up QNAP NAS to Local Disk & Cloud
+
+See [k8s-backuper/readme.md](k8s-backuper/readme.md)

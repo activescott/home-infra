@@ -46,13 +46,12 @@ ssh -S $CONTROL_PATH -o ControlMaster=no $SSH_HOST -O 'check'
 
 
 
-
 # Copy the docker-compose file there:
 echo; echo "Copying compose file to remote host..."
 rsync -v --rsh "ssh -S \"$CONTROL_PATH\"" "$COMPOSE_FILE" "$SSH_HOST:~/"
 
 #copy the expected script to remote:
-rsync -v --rsh "ssh -S \"$CONTROL_PATH\"" "$COMPOSE_FILE" "$SSH_HOST:~/"
+rsync -v --rsh "ssh -S \"$CONTROL_PATH\"" "cluster-local-create.sh" "$SSH_HOST:~/"
 
-
-
+### TODO
+### execute the script that we copied there on the remote host...
