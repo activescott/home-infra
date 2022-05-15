@@ -19,7 +19,7 @@ END_DOC
 
 source "$THISDIR/.env"
 
-read -p "Make sure you have already run the credentials-create script! Press [ENTER] to continue..."
+read -p "Make sure you have already run the credentials-create script! Press [ENTER] to continue or [CTRL+C] to exit..."
 
 
 echo; echo "Creating the PersistentVolume resource"
@@ -62,7 +62,7 @@ EOF
 echo; echo "Creating PersistentVolumeClaim..."
 
 echo "First deleting any existing claim..."
-kubectl delete PersistentVolumeClaim pvc-$VOLUME_NAME
+kubectl delete PersistentVolumeClaim "pvc-$VOLUME_NAME"
 
 echo "Creating the claim..."
 

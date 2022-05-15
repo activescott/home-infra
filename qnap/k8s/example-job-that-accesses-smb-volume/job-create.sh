@@ -29,11 +29,11 @@ metadata:
 spec:
   activeDeadlineSeconds: 60
   # clean up the job after completion:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: 60
   backoffLimit: 3
-  restartPolicy: Never
   template:
     spec:
+      restartPolicy: Never
       containers:
         - name: example-container
           image: k8s.gcr.io/busybox
@@ -49,6 +49,21 @@ spec:
         - name: my-volume
           persistentVolumeClaim:
             claimName: pvc-vol-app-data
-    
+      ## NOTE: The below DNS configuration is necessary to be able to get beyond the cluster's DNS:
+      #hostNetwork: true
+      #dnsPolicy: ClusterFirst
+      #dnsConfig:
+      #  nameservers:
+      #    - 10.1.111.1
+      #  searches:
+      #    - activenet
 EOF
 
+SECS=3
+while [ $SECS -gt 0 ]; do
+  printf "waiting $SECS seconds\n"
+  sleep 1
+  SECS=`expr $SECS - 1`
+done
+
+./job-show-logs.sh
