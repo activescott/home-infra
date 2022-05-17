@@ -30,9 +30,9 @@ while true; do
     case $yn in
         [Yy]* )
         echo "Removing cluster volumes..."
-        docker volume rm $COMPOSE_PROJECT_k3s-kubelet-agent
-        docker volume rm $COMPOSE_PROJECT_k3s-kubelet-server
-        docker volume rm $COMPOSE_PROJECT_k3s-server
+        docker volume rm ${COMPOSE_PROJECT}_k3s-kubelet-agent
+        docker volume rm ${COMPOSE_PROJECT}_k3s-kubelet-server
+        docker volume rm ${COMPOSE_PROJECT}_k3s-server
         break;;
         [Nn]* )
         echo "Skipping removing cluster volumes..."

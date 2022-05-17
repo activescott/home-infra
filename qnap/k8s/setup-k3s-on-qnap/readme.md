@@ -30,20 +30,21 @@ cd ../example-job-that-accesses-smb-volume/
 
 #### DNS Resolution of Local LAN Doesn't Work
 
-CoreDNS is the cluster DNS. Pods query it for service discovery (other pods/services in K8s) and other DNS resolution. It is using the K8S Node's `resolve.conf` file to forward unknown (external DNS) requests to. When running a node in Docker it uses something like `127.0.0.11` which works for finding other docker hosts, but not external hosts using the local LAN's DNS. This issue is explained at https://github.com/k3s-io/k3s/issues/1863#issuecomment-643154410
+CoreDNS is the cluster DNS. Pods query it for service discovery (other pods/services in K8s) and other DNS resolution. It is using the K8S Node's `resolve.conf` file to forward unknown (external DNS) requests to. When running a node in Docker resolve.conf is funky in those nodes and you can't resolve upstream DNS queries. This is explained more at https://k3d.io/v5.1.0/usage/k3s/#coredns-in-k3d
 
-The way I chose to solve it is by patching the cluster-wide CoreDNS configuration as noted at https://devops.stackexchange.com/a/6521/30875. This is codified in `cluster-dns-config-for-local-forward.sh`
+The way I fixed this is take advantage of [an undocumented feature in K3S that allows custom CoreDNS config](https://github.com/k3s-io/k3s/pull/4397/files#diff-1c144ada012fb4c7c809e2fbddfac3fa2acbae57d85ebbce654c94944f667252R76). Specifically the K3S [CoreDNS pod defines a ConfigMap Volume](https://github.com/k3s-io/k3s/blob/bac8cf45cbc910754935c86f11a0de4a94834f12/manifests/coredns.yaml#L186) that is mounted [at `/etc/coredns/custom`](https://github.com/k3s-io/k3s/blob/bac8cf45cbc910754935c86f11a0de4a94834f12/manifests/coredns.yaml#L135). The K3S CoreDNS configuration [loads custom CoreDNS configuration files from `/etc/coredns/custom/*.server`](https://github.com/k3s-io/k3s/blob/bac8cf45cbc910754935c86f11a0de4a94834f12/manifests/coredns.yaml#L76). Since [_Mounted ConfigMaps are updated automatically_](https://kubernetes.io/docs/concepts/configuration/configmap/#mounted-configmaps-are-updated-automatically) it pushes that config into the CoreDNS pod/container and appear as a file like `/etc/coredns/custom/coredns_custom_forward.server`.
 
-A better way to fix this is informed by the note that _Any file found in /var/lib/rancher/k3s/server/manifests_ in [the K3S FAQ](https://rancher.com/docs/k3s/latest/en/advanced/#auto-deploying-manifests). Basically an extra CoreDNS config like `coredns-patch.yaml` into `/var/lib/rancher/k3s/server/manifests/` and it will be applied upon each restart automatically by k3s.
-
-One way to potentially fix this is to tell k3s to use a different `resolve.conf` using the `K3S_RESOLVE_CONF` configuration parameter. This will survive reboots and updates of K3S as described at https://github.com/k3s-io/k3s/issues/1863#issuecomment-643154410
+To see how this all works see the [`cluster-dns-config-for-local-forward.sh` file in this repo](cluster-dns-config-for-local-forward.sh).
 
 ##### References:
 
-- https://github.com/k3s-io/k3s/issues/1863
+- https://github.com/k3s-io/k3s/issues/1863 - similar challenges configuring coredns with a couple of different solutions in the thread.
+- https://github.com/k3s-io/k3s/issues/4087 - Resolution using K3S `--resolv-conf`
 - https://stackoverflow.com/questions/62664701/resolving-external-domains-from-within-pods-does-not-work
 - https://stackoverflow.com/a/71245831/51061
-- https://github.com/k3s-io/k3s/issues/4087 Using K3S --resolv-conf
+- https://stackoverflow.com/questions/65727962/customizing-coredns-on-k3s-to-point-a-domain-directly-to-the-cluster-loadbalance - desires to customize coredns.
+- https://stackoverflow.com/questions/65727962/customizing-coredns-on-k3s-to-point-a-domain-directly-to-the-cluster-loadbalance
+- https://k3d.io/v5.1.0/usage/k3s/#coredns-in-k3d
 
 ### Run K3s Container:
 
