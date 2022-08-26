@@ -5,7 +5,7 @@ services:
     # repo at https://github.com/zwave-js/zwavejs2mqtt
     # container at https://hub.docker.com/r/zwavejs/zwavejs2mqtt
     container_name: zwavejs2mqtt
-    image: zwavejs/zwavejs2mqtt:5.8.0
+    image: zwavejs/zwavejs2mqtt:6.15.2
     restart: always
     tty: true
     stop_signal: SIGINT
@@ -30,7 +30,7 @@ services:
     container_name: homeassistant
     # NOTE: using the explicit tag/version so that editing the docker-compose file in QNAP Container Station will force it to pull a new image:
     # Dockerhub: https://hub.docker.com/r/homeassistant/home-assistant
-    image: homeassistant/home-assistant:2021.11.3
+    image: homeassistant/home-assistant:2022.8
     network_mode: host
     depends_on:
       - zwavejs2mqtt
