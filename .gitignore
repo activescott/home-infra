@@ -4,3 +4,6 @@
 
 .secrets
 qnap/k8s/setup-k3s-on-qnap/cluster-dns-configmap-*.yaml
+
+
+node_modules/

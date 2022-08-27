@@ -1,0 +1,47 @@
+# Based on https://github.com/plexinc/pms-docker/blob/master/docker-compose-bridge.yml.template
+version: "2"
+services:
+  postfix:
+    container_name: postfix
+    # image details: https://github.com/bokysan/docker-postfix
+    image: boky/postfix
+    restart: unless-stopped
+    ports:
+      # Please note that the image uses the submission (587) port by default. Port 25 is not exposed on purpose, as it's regularly blocked by ISPs, already occupied by other services, and in general should only be used for server-to-server communication.
+      - 587:587/tcp
+    environment:
+      - TZ=US/Pacific
+      - ALLOWED_SENDER_DOMAINS=activescott.com
+      # Be careful when using DKIM_AUTOGENERATE option. If you don't bind /etc/opendkim/keys to a persistent volume, you will get new keys every single time. You will need to take the generated public part of the key (the one in the .txt file) and copy it over to your DNS server manually.
+      #- DKIM_AUTOGENERATE=1
+      #- INBOUND_DEBUGGING=1
+      # the first 4 are the default value (for docker/localhost). I added the latter
+      - POSTFIX_mynetworks=127.0.0.0/8,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,10.1.111.0/16
+      ##### RELAY #####
+      - RELAYHOST=email-smtp.us-west-2.amazonaws.com:587
+      # SES:
+      - RELAYHOST_USERNAME=AKIASNXAWWIL5UFZ2BBO
+      # see volume below, make sure this file exists!
+      - RELAYHOST_PASSWORD_FILE=/etc/mail-relay/secrets/relayhost_password
+      ##### /RELAY #####
+      ##### OpenDKIM #####
+      # Any OpenDKIM configuration option can be overriden using OPENDKIM_<name> environment variables
+      # LogWhy
+      #- OPENDKIM_LogWhy=1
+      #- OPENDKIM_SyslogSuccess=1
+      # SignHeaders:
+      # Specifically SES re-writes Message-Id!
+      # http://opendkim.org/opendkim.conf.5.html
+      # https://www.rfc-editor.org/rfc/rfc6376#section-5.4.1
+      - OPENDKIM_SignHeaders=From,To,CC,Subject
+      # For some reason you *MUST* set OversignHeaders too or OpenDKIM includes the unneeded headers in the h= value of the signature. See https://serverfault.com/a/488579/28798
+      - OPENDKIM_OversignHeaders=From,To,CC,Subject
+      # OmitHeaders:
+      # for example, "*,+foobar" will use the entire default list plus the name "foobar"
+      - OPENDKIM_OmitHeaders=*,+Message-Id,+Date,+MIME-Version,+Content-Type,+Reply-To
+      # Diagnostics: Requests the inclusion of "z=" tags in signatures, which encode the original header field set for use by verifiers when diagnosing verification failures. Not recommended for normal operation.
+      #- OPENDKIM_Diagnostics=1
+    hostname: mail-relay.activescott.com
+    volumes:
+      - /share/CACHEDEV1_DATA/app-data/mail-relay/opendkim/keys:/etc/opendkim/keys
+      - /share/CACHEDEV1_DATA/app-data/mail-relay/secrets:/etc/mail-relay/secrets

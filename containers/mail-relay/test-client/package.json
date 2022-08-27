@@ -1,0 +1,10 @@
+{
+  "type": "module",
+  "main": "index.mjs",
+  "scripts": {
+    "start": "node index.mjs"
+  },
+  "dependencies": {
+    "nodemailer": "^6.7.8"
+  }
+}
