@@ -12,3 +12,7 @@ Note from the docker details on linuxserver:
 > For Unifi to adopt other devices, e.g. an Access Point, it is required to change the inform ip address. Because Unifi runs inside Docker by default it uses an ip address not accessable by other devices. To change this go to Settings > Controller > Controller Settings and set the Controller Hostname/IP to an ip address accessable by other devices.
 
 I found it easiest to just set `network_mode: "host"` on the service in docker-compose and it found everything just fine.
+
+## Release Notes / Version Information
+- https://community.ui.com/releases?q=%22UniFi+Network+Application%22
+- https://www.reddit.com/r/unifi_versions/

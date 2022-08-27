@@ -1,7 +1,7 @@
 version: "2.1"
 services:
   unifi-controller:
-    image: ghcr.io/linuxserver/unifi-controller:version-6.4.54
+    image: ghcr.io/linuxserver/unifi-controller:version-7.2.92
     container_name: unifi-controller
     environment:
       - PUID=1000
