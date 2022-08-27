@@ -4,18 +4,15 @@
 # to run define K3S_TOKEN, eg:
 #   K3S_TOKEN=${RANDOM}${RANDOM}${RANDOM} docker-compose up
 
-
-
-version: '3'
+version: "3"
 services:
-
   server:
     #image: "rancher/k3s:${K3S_VERSION:-latest}"
     image: "activescott/k3s:v1"
     command: server
     tmpfs:
-    - /run
-    - /var/run
+      - /run
+      - /var/run
     ulimits:
       nproc: 65535
       nofile:
@@ -24,27 +21,26 @@ services:
     privileged: true
     restart: always
     environment:
-    - K3S_TOKEN=${K3S_TOKEN:?err}
-    - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
-    - K3S_KUBECONFIG_MODE=666
+      - K3S_TOKEN=${K3S_TOKEN:?err}
+      - K3S_KUBECONFIG_OUTPUT=/output/kubeconfig.yaml
+      - K3S_KUBECONFIG_MODE=666
     volumes:
-    - k3s-server:/var/lib/rancher/k3s
+      - k3s-server:/var/lib/rancher/k3s
     # This is just so that we get the kubeconfig file out
     #- .:/output
     ports:
-    - 6443:6443  # Kubernetes API Server
-    # TODO: I'm using these in docker/container station for now, move to K8S:
-    #- 80:80      # Ingress controller port 80
-    #- 443:443    # Ingress controller port 443
-    - "61000-62000:61000-62000"
-
+      - 6443:6443 # Kubernetes API Server
+      # TODO: I'm using these in docker/container station for now, move to K8S:
+      #- 80:80      # Ingress controller port 80
+      #- 443:443    # Ingress controller port 443
+      - "61000-62000:61000-62000"
 
   agent:
     #image: "rancher/k3s:${K3S_VERSION:-latest}"
     image: "activescott/k3s:v1"
     tmpfs:
-    - /run
-    - /var/run
+      - /run
+      - /var/run
     ulimits:
       nproc: 65535
       nofile:
@@ -53,8 +49,8 @@ services:
     privileged: true
     restart: always
     environment:
-    - K3S_URL=https://server:6443
-    - K3S_TOKEN=${K3S_TOKEN:?err}
+      - K3S_URL=https://server:6443
+      - K3S_TOKEN=${K3S_TOKEN:?err}
 
 volumes:
   k3s-server: {}

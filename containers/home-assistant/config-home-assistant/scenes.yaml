@@ -1,42 +1,42 @@
-- id: '1625024022694'
+- id: "1625024022694"
   name: Sleep
   entities:
     group.common_area_lights:
       entity_id:
-      - light.dining_table_light_switch_light
-      - light.z_wave_great_room_track_light_dimmer_switch
-      - light.hall_light_switch_light
-      - light.kitchen_light_switch_light
-      - light.kitchen_sink_light_switch_light
-      - light.entryway_light_swtich_light
+        - light.dining_table_light_switch_light
+        - light.z_wave_great_room_track_light_dimmer_switch
+        - light.hall_light_switch_light
+        - light.kitchen_light_switch_light
+        - light.kitchen_sink_light_switch_light
+        - light.entryway_light_swtich_light
       order: 0
       friendly_name: Common Area Lights
-      state: 'off'
+      state: "off"
   icon: hass:sleep
-- id: '1625024157942'
+- id: "1625024157942"
   name: TV Lights
   entities:
     switch.z_wave_dining_table_light:
       friendly_name: Dining Table Light
-      state: 'off'
+      state: "off"
     switch.z_wave_kitchen_main_light:
       friendly_name: Kitchen Main Light
-      state: 'on'
+      state: "on"
     switch.z_wave_kitchen_sink_light:
       friendly_name: Kitchen Sink Light
-      state: 'off'
+      state: "off"
     light.z_wave_great_room_track_light_dimmer_switch:
       supported_color_modes:
-      - brightness
+        - brightness
       color_mode: brightness
       brightness: 13
       friendly_name: Great Room Track Light
       supported_features: 32
-      state: 'on'
+      state: "on"
     switch.z_wave_entryway_light:
       friendly_name: Entryway Light
-      state: 'off'
+      state: "off"
     switch.z_wave_hall_light_switch:
       friendly_name: Hallway Light Switch
-      state: 'off'
+      state: "off"
   icon: hass:television

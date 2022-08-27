@@ -4,15 +4,15 @@ metadata:
   name: shell-demo
 spec:
   containers:
-  - name: shell-demo-container
-    image: k8s.gcr.io/busybox
-    # Just spin & wait forever
-    #command: [ "/bin/sh", "-c", "--" ]
-    #args: [ "while true; do sleep 30; done;" ]
-    command:
-      - sleep
-      - "3600"
-    imagePullPolicy: IfNotPresent
+    - name: shell-demo-container
+      image: k8s.gcr.io/busybox
+      # Just spin & wait forever
+      #command: [ "/bin/sh", "-c", "--" ]
+      #args: [ "while true; do sleep 30; done;" ]
+      command:
+        - sleep
+        - "3600"
+      imagePullPolicy: IfNotPresent
   # NOTE: The below configuration `dnsConfig` is necessary to be able to get beyond the cluster's DNS to a local DNS server (k3s defaults to the node's forwarder or 8.8.8.8):
   # See https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-s-dns-policy
   #dnsConfig:

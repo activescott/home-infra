@@ -1,254 +1,258 @@
-- id: '1623038094100'
+- id: "1623038094100"
   alias: Notify of garage open at sundown
   description: At sundown, notify if garage is open
   trigger:
-  - platform: state
-    entity_id: sun.sun
-    to: below_horizon
+    - platform: state
+      entity_id: sun.sun
+      to: below_horizon
   condition:
-  - condition: and
-    conditions:
-    - condition: state
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: cover.garage_door
+          state: open
+        - condition: state
+          entity_id: sun.sun
+          state: below_horizon
+  action:
+    - service: notify.notify
+      data:
+        title: Sun went down and garage open!
+        message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
+  mode: single
+- id: "1623038827160"
+  alias: Notify of garage activity at night
+  description: ""
+  trigger:
+    - platform: state
       entity_id: cover.garage_door
-      state: open
+  condition:
     - condition: state
       entity_id: sun.sun
       state: below_horizon
   action:
-  - service: notify.notify
-    data:
-      title: Sun went down and garage open!
-      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
-  mode: single
-- id: '1623038827160'
-  alias: Notify of garage activity at night
-  description: ''
-  trigger:
-  - platform: state
-    entity_id: cover.garage_door
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: below_horizon
-  action:
-  - service: notify.notify
-    data:
-      title: Garage activity at night
-      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
+    - service: notify.notify
+      data:
+        title: Garage activity at night
+        message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
   mode: queued
   max: 10
-- id: '1623039707955'
+- id: "1623039707955"
   alias: Notify of garage activity while away
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id: cover.garage_door
+    - platform: state
+      entity_id: cover.garage_door
   condition:
-  - condition: state
-    entity_id: person.scott_willeke
-    state: not_home
+    - condition: state
+      entity_id: person.scott_willeke
+      state: not_home
   action:
-  - service: notify.scott
-    data:
-      title: Garage activity while away!
-      message: Garage is {{states('cover.garage_door')}} and Scott is {{ states('person.scott_willeke')}}!
+    - service: notify.scott
+      data:
+        title: Garage activity while away!
+        message: Garage is {{states('cover.garage_door')}} and Scott is {{ states('person.scott_willeke')}}!
   mode: queued
   max: 10
-- id: '1623301925661'
+- id: "1623301925661"
   alias: Notify of garage still open at night (repeated every 30min)
   description: Repeatedly notifies when the garage door is open at night
   trigger:
-  - platform: time_pattern
-    hours: /1
+    - platform: time_pattern
+      hours: /1
   condition:
-  - condition: and
-    conditions:
-    - condition: state
-      entity_id: sun.sun
-      state: below_horizon
-    - condition: state
-      entity_id: cover.garage_door
-      state: open
+    - condition: and
+      conditions:
+        - condition: state
+          entity_id: sun.sun
+          state: below_horizon
+        - condition: state
+          entity_id: cover.garage_door
+          state: open
   action:
-  - service: notify.notify
-    data:
-      title: Garage door is STILL open at night!
-      message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
+    - service: notify.notify
+      data:
+        title: Garage door is STILL open at night!
+        message: Garage is {{states('cover.garage_door')}} and Sun is {{ states('sun.sun')}}!
   mode: restart
-- id: '1623308610166'
+- id: "1623308610166"
   alias: alert when hass cert about to expire
-  description: ''
+  description: ""
   trigger:
-  - platform: time
-    at: '22:30:00'
+    - platform: time
+      at: "22:30:00"
   condition:
-  - condition: template
-    value_template: '{{as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
-      - as_timestamp(now()) < 15 * 24 * 60 * 60}}'
+    - condition: template
+      value_template:
+        "{{as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
+        - as_timestamp(now()) < 15 * 24 * 60 * 60}}"
   action:
-  - service: notify.scott
-    data:
-      title: Home Assistant's cert expring
-      message: Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
-        - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Restarting Home
-        Assistant (hoping cron updated the cert already 🤞)...
-  - service: homeassistant.restart
+    - service: notify.scott
+      data:
+        title: Home Assistant's cert expring
+        message:
+          Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
+          - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Restarting Home
+          Assistant (hoping cron updated the cert already 🤞)...
+    - service: homeassistant.restart
   mode: restart
-- id: '1624428508974'
+- id: "1624428508974"
   alias: Server Room High Temp (repeated)
   description: Repeatedly notifies when server room temp is high
   trigger:
-  - platform: time_pattern
-    hours: /1
+    - platform: time_pattern
+      hours: /1
   condition:
-  - condition: numeric_state
-    entity_id: sensor.lumi_lumi_weather_4c47b206_temperature
-    above: '90'
+    - condition: numeric_state
+      entity_id: sensor.lumi_lumi_weather_4c47b206_temperature
+      above: "90"
   action:
-  - service: notify.scott
-    data:
-      title: Server Room Temp is High!
-      message: Server room temp is {{ states('sensor.lumi_lumi_weather_4c47b206_temperature')
-        }}.
+    - service: notify.scott
+      data:
+        title: Server Room Temp is High!
+        message:
+          Server room temp is {{ states('sensor.lumi_lumi_weather_4c47b206_temperature')
+          }}.
   mode: restart
-- id: '1624937604783'
+- id: "1624937604783"
   alias: Perimeter activity while away
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id:
-    - binary_sensor.front_door_deck
-    - binary_sensor.kitchen_door
-    - binary_sensor.office_sliding_door
-    - binary_sensor.living_room_window
-    - binary_sensor.dining_window
-    - binary_sensor.master_bedroom_window
-    - binary_sensor.east_bedroom_window_jonah_s
-    - binary_sensor.west_bedroom_window_micah_s
-    - binary_sensor.laundry_window
-    - cover.garage_door_controller
+    - platform: state
+      entity_id:
+        - binary_sensor.front_door_deck
+        - binary_sensor.kitchen_door
+        - binary_sensor.office_sliding_door
+        - binary_sensor.living_room_window
+        - binary_sensor.dining_window
+        - binary_sensor.master_bedroom_window
+        - binary_sensor.east_bedroom_window_jonah_s
+        - binary_sensor.west_bedroom_window_micah_s
+        - binary_sensor.laundry_window
+        - cover.garage_door_controller
   condition:
-  - condition: state
-    entity_id: group.family_presence
-    state: not_home
+    - condition: state
+      entity_id: group.family_presence
+      state: not_home
   action:
-  - service: notify.notify
-    data:
-      title: Perimeter activity while away!
-      message: The {{ trigger.to_state.name }} changed to {{ trigger.to_state.state  |
-        regex_replace(find="off", replace="Closed")  | regex_replace(find="on", replace="Open")  }}.
-        While family is {{ states("group.family_presence") }}.
+    - service: notify.notify
+      data:
+        title: Perimeter activity while away!
+        message:
+          The {{ trigger.to_state.name }} changed to {{ trigger.to_state.state  |
+          regex_replace(find="off", replace="Closed")  | regex_replace(find="on", replace="Open")  }}.
+          While family is {{ states("group.family_presence") }}.
   mode: queued
   max: 10
-- id: '1625077719822'
+- id: "1625077719822"
   alias: Dimmable lights turn on brightly during daytime
-  description: ''
+  description: ""
   trigger:
-  - platform: state
-    entity_id: light.z_wave_great_room_track_light_dimmer_switch
-    from: 'off'
-    to: 'on'
-  condition:
-  - condition: state
-    entity_id: sun.sun
-    state: above_horizon
-  - condition: numeric_state
-    entity_id: light.z_wave_great_room_track_light_dimmer_switch
-    attribute: brightness
-    below: '254'
-  action:
-  - service: light.turn_on
-    target:
+    - platform: state
       entity_id: light.z_wave_great_room_track_light_dimmer_switch
-    data:
-      brightness: 255
+      from: "off"
+      to: "on"
+  condition:
+    - condition: state
+      entity_id: sun.sun
+      state: above_horizon
+    - condition: numeric_state
+      entity_id: light.z_wave_great_room_track_light_dimmer_switch
+      attribute: brightness
+      below: "254"
+  action:
+    - service: light.turn_on
+      target:
+        entity_id: light.z_wave_great_room_track_light_dimmer_switch
+      data:
+        brightness: 255
   mode: single
-- id: '1625643088055'
+- id: "1625643088055"
   alias: Vacation Light Toggler
   description: Toggles lights at night when people are on vacation (away)
   trigger:
-  - platform: time_pattern
-    minutes: /59
+    - platform: time_pattern
+      minutes: /59
   condition:
-  - condition: state
-    entity_id: group.family_presence
-    state: not_home
-  - condition: time
-    after: '18:00:00'
-    before: '23:58:00'
+    - condition: state
+      entity_id: group.family_presence
+      state: not_home
+    - condition: time
+      after: "18:00:00"
+      before: "23:58:00"
   action:
-  - delay:
-      minutes: '{{ range(1, 30) | random }}'
-  - service: script.random_toggle_light
-    data:
-      toggle_entity: light.z_wave_great_room_track_light_dimmer
-  - service: script.random_toggle_switch
-    data:
-      toggle_entity: switch.z_wave_dining_table_light
-  - service: script.random_toggle_switch
-    data:
-      toggle_entity: switch.jonahs_lamp_on_off
-  - service: script.random_toggle_switch
-    data:
-      toggle_entity: switch.mommas_lamp_on_off
+    - delay:
+        minutes: "{{ range(1, 30) | random }}"
+    - service: script.random_toggle_light
+      data:
+        toggle_entity: light.z_wave_great_room_track_light_dimmer
+    - service: script.random_toggle_switch
+      data:
+        toggle_entity: switch.z_wave_dining_table_light
+    - service: script.random_toggle_switch
+      data:
+        toggle_entity: switch.jonahs_lamp_on_off
+    - service: script.random_toggle_switch
+      data:
+        toggle_entity: switch.mommas_lamp_on_off
   mode: single
-- id: '1625885299386'
+- id: "1625885299386"
   alias: Vacation Lights Off
   description: turns lights off when people are on vacation (away)
   trigger:
-  - platform: time_pattern
-    hours: '23'
-    minutes: '59'
+    - platform: time_pattern
+      hours: "23"
+      minutes: "59"
   condition:
-  - condition: state
-    entity_id: group.family_presence
-    state: not_home
+    - condition: state
+      entity_id: group.family_presence
+      state: not_home
   action:
-  - delay: '{{ range(1, 30) | random }}'
-  - service: light.turn_off
-    target:
-      entity_id: light.z_wave_great_room_track_light_dimmer
-  - service: switch.turn_off
-    target:
-      entity_id:
-      - switch.z_wave_dining_table_light
-      - switch.z_wave_kitchen_main_light
-      - switch.jonahs_lamp_on_off
-      - switch.mommas_lamp_on_off
+    - delay: "{{ range(1, 30) | random }}"
+    - service: light.turn_off
+      target:
+        entity_id: light.z_wave_great_room_track_light_dimmer
+    - service: switch.turn_off
+      target:
+        entity_id:
+          - switch.z_wave_dining_table_light
+          - switch.z_wave_kitchen_main_light
+          - switch.jonahs_lamp_on_off
+          - switch.mommas_lamp_on_off
   mode: single
-- id: '1635223858648'
+- id: "1635223858648"
   alias: Turn outdoor lights off at dawn
-  description: ''
+  description: ""
   trigger:
-  - platform: sun
-    event: sunrise
+    - platform: sun
+      event: sunrise
   condition: []
   action:
-  - service: homeassistant.turn_off
-    target:
-      entity_id: group.outdoor_lights
+    - service: homeassistant.turn_off
+      target:
+        entity_id: group.outdoor_lights
   mode: single
-- id: '1635821694673'
+- id: "1635821694673"
   alias: Outdoor lights on at sunset
-  description: ''
+  description: ""
   trigger:
-  - platform: sun
-    event: sunset
+    - platform: sun
+      event: sunset
   condition: []
   action:
-  - service: homeassistant.turn_on
-    target:
-      entity_id: group.outdoor_lights
+    - service: homeassistant.turn_on
+      target:
+        entity_id: group.outdoor_lights
   mode: single
-- id: '1635821887585'
+- id: "1635821887585"
   alias: Outdoor lights off at midnight
-  description: ''
+  description: ""
   trigger:
-  - platform: time
-    at: 00:00:00
+    - platform: time
+      at: 00:00:00
   condition: []
   action:
-  - service: homeassistant.turn_off
-    target:
-      entity_id: group.outdoor_lights
+    - service: homeassistant.turn_off
+      target:
+        entity_id: group.outdoor_lights
   mode: single

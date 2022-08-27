@@ -29,4 +29,4 @@ Due to the fact that the k3s node is a vm itself, local-storage storageclass doe
 - Setup a "test-ls-job" that can mount each NFS-exposed volume and do a ls that shows all the files/dirs in the root of the share.
 
 SEE https://github.com/kubernetes-csi/csi-driver-smb
-This looks like the ticket: Install it via helm and then do https://github.com/kubernetes-csi/csi-driver-smb/blob/master/deploy/example/e2e_usage.md 
+This looks like the ticket: Install it via helm and then do https://github.com/kubernetes-csi/csi-driver-smb/blob/master/deploy/example/e2e_usage.md

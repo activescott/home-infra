@@ -14,5 +14,6 @@ Note from the docker details on linuxserver:
 I found it easiest to just set `network_mode: "host"` on the service in docker-compose and it found everything just fine.
 
 ## Release Notes / Version Information
+
 - https://community.ui.com/releases?q=%22UniFi+Network+Application%22
 - https://www.reddit.com/r/unifi_versions/

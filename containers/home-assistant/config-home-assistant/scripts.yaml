@@ -1,4 +1,3 @@
-
 # randomly decide to toggle a switch:
 # NOTE: random_toggle_light and random_toggle_switch are duplicates other than one uses `light.turn_on/off` and one uses `switch.turn_on/off` to support the different types of lights/switches :facepalm:
 # Call it like this:
@@ -22,16 +21,16 @@ random_toggle_switch:
           domain: switch
   sequence:
     - choose:
-      # IF true, turn it on:
-      - conditions: "{{ [true, false] | random }}"
-        sequence:
-          - event: random_toggle_switch_log
-            event_data:
-              name: random_toggle_switch_log
-              customData: "Turning ON '{{ toggle_entity }}'..."
-          - service: switch.turn_on
-            target:
-              entity_id: "{{ toggle_entity }}"
+        # IF true, turn it on:
+        - conditions: "{{ [true, false] | random }}"
+          sequence:
+            - event: random_toggle_switch_log
+              event_data:
+                name: random_toggle_switch_log
+                customData: "Turning ON '{{ toggle_entity }}'..."
+            - service: switch.turn_on
+              target:
+                entity_id: "{{ toggle_entity }}"
       # ELSE, turn it off:
       default:
         - event: random_toggle_switch_log
@@ -65,16 +64,16 @@ random_toggle_light:
           domain: light
   sequence:
     - choose:
-      # IF true, turn it on:
-      - conditions: "{{ [true, false] | random }}"
-        sequence:
-          - event: random_toggle_light_log
-            event_data:
-              name: random_toggle_light_log
-              customData: "Turning ON '{{ toggle_entity }}'..."
-          - service: light.turn_on
-            target:
-              entity_id: "{{ toggle_entity }}"
+        # IF true, turn it on:
+        - conditions: "{{ [true, false] | random }}"
+          sequence:
+            - event: random_toggle_light_log
+              event_data:
+                name: random_toggle_light_log
+                customData: "Turning ON '{{ toggle_entity }}'..."
+            - service: light.turn_on
+              target:
+                entity_id: "{{ toggle_entity }}"
       # ELSE, turn it off:
       default:
         - event: random_toggle_light_log

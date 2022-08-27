@@ -1,5 +1,5 @@
 # Based on https://github.com/plexinc/pms-docker/blob/master/docker-compose-bridge.yml.template
-version: '2'
+version: "2"
 services:
   plex:
     container_name: plex
@@ -19,7 +19,7 @@ services:
     environment:
       - TZ=US/Pacific
       ###########################################################################
-      # TODO: Get a new PLEX_CLAIM code when setting up new instance/config dir 
+      # TODO: Get a new PLEX_CLAIM code when setting up new instance/config dir
       #       at https://www.plex.tv/claim/
       - PLEX_CLAIM=<claimToken>
       ###########################################################################

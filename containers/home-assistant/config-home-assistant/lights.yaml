@@ -1,7 +1,7 @@
 # In order to add the zooz switches to a "light group", we have to expose the switches as lights
 # Unclear why the Zooz ZEN76 is a `switch` but the ZEN77 (dimmer) is a `light`, but 🤷‍♂️
 # See https://www.home-assistant.io/integrations/light.switch/
-# Once these are defined as a `light`, it will derive a `light.*` entity id for it based on the name of the light here. 
+# Once these are defined as a `light`, it will derive a `light.*` entity id for it based on the name of the light here.
 # For example, `name: Kitchen Sink Light Switch Light` will generate entity id `light.kitchen_sink_light_switch_light`
 
 - platform: switch
