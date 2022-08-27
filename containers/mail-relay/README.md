@@ -4,16 +4,15 @@ The goal here is to setup a way for other containers and infra to send notificat
 
 ## Todo
 
-- Postfix Container
-- Set it up so any machine on trusted subnet can send mail:
-  - [`"mynetworks_style = subnet"`](https://www.postfix.org/postconf.5.html#mynetworks_style) /might/ be enough
-- Somehow can see logs?
-  - Future: syslog
 - Setup to use certs
-- Creating SPF and DKIM: https://www.linuxbabe.com/mail-server/setting-up-dkim-and-spf
-- Create DMARC: https://www.linuxbabe.com/mail-server/create-dmarc-record
+  - Setup TLS like the example at: https://containrrr.dev/watchtower/notifications/
+- [+] Postfix Container
+- [+] Set it up so any machine on trusted subnet can send mail:
+- [+] Somehow can see logs?
+  - [ ] Future: syslog
+- [+] Creating SPF and DKIM: https://www.linuxbabe.com/mail-server/setting-up-dkim-and-spf
+- [+] Create DMARC: https://www.linuxbabe.com/mail-server/create-dmarc-record
 - [+] Make sure SPF, DKIM, DMARC all work on a dynamic IP
-  - use a:<hostname>
 
 ## References
 
