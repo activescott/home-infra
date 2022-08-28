@@ -20,3 +20,4 @@ A generic setup for running cron jobs at home (e.g. for automated certificate re
 - [ ] docker hub won't support auto-build soon. So need to push containers from this repo in github actions
 - [+] Need to automate running `insmod /usr/local/modules/cp210x.ko` to get zwave container to start automatically. See ZWave notes in [containers/home-assistant/README.md](containers/home-assistant/README.md)
 - [ ] Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?
+- cron container can send email via mailrely using a certbot deploy hook and alpine sendmail. `sendmail` is on alpine by default and looks for SMTP server in the `$SMTPHOST`. cron container needs to be on the `mailrelay_mail` network like the watchtower container
