@@ -1,5 +1,6 @@
 # Based on https://github.com/plexinc/pms-docker/blob/master/docker-compose-bridge.yml.template
 version: "2"
+name: mailrelay
 services:
   postfix:
     container_name: postfix
@@ -41,7 +42,14 @@ services:
       - OPENDKIM_OmitHeaders=*,+Message-Id,+Date,+MIME-Version,+Content-Type,+Reply-To
       # Diagnostics: Requests the inclusion of "z=" tags in signatures, which encode the original header field set for use by verifiers when diagnosing verification failures. Not recommended for normal operation.
       #- OPENDKIM_Diagnostics=1
-    hostname: mail-relay.activescott.com
+    hostname: mail.activescott.com
     volumes:
       - /share/CACHEDEV1_DATA/app-data/mail-relay/opendkim/keys:/etc/opendkim/keys
       - /share/CACHEDEV1_DATA/app-data/mail-relay/secrets:/etc/mail-relay/secrets
+    networks:
+      mail:
+        aliases:
+          - mail.activescott.com
+
+networks:
+  mail:

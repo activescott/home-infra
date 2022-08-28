@@ -1,0 +1,43 @@
+version: "3.7"
+
+name: watchtower
+
+services:
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    environment:
+      TZ: US/Pacific
+      ##### <<production #####
+      # Run at noon on fridays: "0 12 * * * 5"
+      WATCHTOWER_SCHEDULE: "0 12 * * * 5"
+      WATCHTOWER_ROLLING_RESTART: "true"
+      ##### production>> #####
+
+      ##### <<debugging #####
+      #WATCHTOWER_DEBUG: "true"
+      #WATCHTOWER_TRACE: "true"
+      #WATCHTOWER_MONITOR_ONLY: "true"
+      #WATCHTOWER_NOTIFICATIONS_LEVEL: debug
+      #WATCHTOWER_POLL_INTERVAL: 30
+      ##### debugging>> #####
+
+      ##### <<notifications #####
+      WATCHTOWER_NOTIFICATIONS: email
+      WATCHTOWER_NOTIFICATION_EMAIL_FROM: watchtower@activescott.com
+      WATCHTOWER_NOTIFICATION_EMAIL_TO: admin@activescott.com
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER: mail.activescott.com
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT: 587
+      # TODO: Get rid of this!
+      WATCHTOWER_NOTIFICATION_EMAIL_SERVER_TLS_SKIP_VERIFY: "true"
+      ##### notifications>> #####
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - mailrelay_mail
+
+networks:
+  # mailrelay_mail is the mail network created on the mailrelay project so that this container can reach the mailrelay server
+  mailrelay_mail:
+    external: true
