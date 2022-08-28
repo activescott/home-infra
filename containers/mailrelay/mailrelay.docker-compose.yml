@@ -10,6 +10,8 @@ services:
     ports:
       # Please note that the image uses the submission (587) port by default. Port 25 is not exposed on purpose, as it's regularly blocked by ISPs, already occupied by other services, and in general should only be used for server-to-server communication.
       - 587:587/tcp
+      # 465 is to force TLS. TLS can be upgraded on port 587 with STARTTLS though.
+      - 465:465/tcp
     environment:
       - TZ=US/Pacific
       - ALLOWED_SENDER_DOMAINS=activescott.com
@@ -42,10 +44,22 @@ services:
       - OPENDKIM_OmitHeaders=*,+Message-Id,+Date,+MIME-Version,+Content-Type,+Reply-To
       # Diagnostics: Requests the inclusion of "z=" tags in signatures, which encode the original header field set for use by verifiers when diagnosing verification failures. Not recommended for normal operation.
       #- OPENDKIM_Diagnostics=1
+
+      ##### <<TLS
+      # NOTE: Any Postfix configuration option can be overriden using POSTFIX_<name> environment variables
+      # So we use those to configure TLS per http://www.postfix.org/TLS_README.html#server_tls
+      #inbound, use TLS if possible
+      - POSTFIX_smtpd_tls_security_level=may
+      #We want to have logging, for troubleshooting.
+      - POSTFIX_smtpd_tls_loglevel=1
+      - POSTFIX_smtpd_tls_chain_files=/etc/letsencrypt/live/activescott.com/privkey.pem,/etc/letsencrypt/live/activescott.com/fullchain.pem
+      ##### TLS>>
     hostname: mail.activescott.com
     volumes:
-      - /share/CACHEDEV1_DATA/app-data/mail-relay/opendkim/keys:/etc/opendkim/keys
-      - /share/CACHEDEV1_DATA/app-data/mail-relay/secrets:/etc/mail-relay/secrets
+      - /share/CACHEDEV1_DATA/app-data/mail-relay/opendkim/keys:/etc/opendkim/keys:ro
+      - /share/CACHEDEV1_DATA/app-data/mail-relay/secrets:/etc/mail-relay/secrets:ro
+      # Certificates on QNAP:
+      - /share/CACHEDEV1_DATA/app-data/letsencrypt:/etc/letsencrypt:ro
     networks:
       mail:
         aliases:

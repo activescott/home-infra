@@ -4,7 +4,7 @@ The goal here is to setup a way for other containers and infra to send notificat
 
 ## Todo
 
-- Setup to use certs
+- [ ] Setup to use certs
   - Setup TLS like the example at: https://containrrr.dev/watchtower/notifications/
 - [+] Postfix Container
 - [+] Set it up so any machine on trusted subnet can send mail:
@@ -26,10 +26,15 @@ The goal here is to setup a way for other containers and infra to send notificat
 - Postfix container: https://github.com/webdevops/Dockerfile
   - Container docs: https://dockerfile.readthedocs.io/en/latest/content/DockerImages/dockerfiles/postfix.html
 - SPF: http://www.open-spf.org/SPF_Record_Syntax/
-
-### Setup
-
 - See Configuring Postfix at https://www.redhat.com/sysadmin/install-configure-postfix
+
+### TLS:
+
+Remember that clients might start insecure on 587, but upgrade to TLS via STARTTLS SMTP command.
+
+- http://www.postfix.org/TLS_README.html#server_tls
+- http://www.postfix.org/postconf.5.html#smtp_tls_chain_files
+- https://linuxlasse.net/linux/howtos/Postfix_with_TLS (older config settings, but still useful)
 
 ### Testing
 
