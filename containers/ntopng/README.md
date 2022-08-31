@@ -3,6 +3,7 @@
 This is my ntopng container. I use it to monitor network activity at home and get alerts about suspicious activity.
 
 ## Losing Configuration Settings Issue (Persistence)
+
 I had a problem where initially config changes I was making weren't being saved and even the admin password I set wouldn't be saved. Specific configuration I noticed I was losing:
 
 1. The admin user's default password!
@@ -11,14 +12,16 @@ I had a problem where initially config changes I was making weren't being saved 
 
 I am mounting the `/var/lib/ntopng/` volume to a persistant store and saw it changing stuff there, but it still wasn't saving things. After reflecting on this and realizing they are using redis, I checked [their redis config](https://github.com/ntop/docker-ntop/blob/master/Dockerfile.ntopng) and they don't explicitly configure redis to save. The [redis defaults](https://redis.io/docs/manual/config/) are pretty infrequent saves:
 
-> # Unless specified otherwise, by default Redis will save the DB:
-> #   * After 3600 seconds (an hour) if at least 1 key changed
-> #   * After 300 seconds (5 minutes) if at least 100 keys changed
-> #   * After 60 seconds if at least 10000 keys changed
+> Unless specified otherwise, by default Redis will save the DB:
+>
+> - After 3600 seconds (an hour) if at least 1 key changed
+> - After 300 seconds (5 minutes) if at least 100 keys changed
+> - After 60 seconds if at least 10000 keys changed
 
 Seemed reasonable that they aren't triggering a save for an hour.
 
 So I forced a save of redis like this:
+
 ```
 # check the last redis save time (note redis-cli is in the container)
 $ docker exec -it ntopng redis-cli LASTSAVE
@@ -52,6 +55,7 @@ Then I could restart the container (by changing docker-compose definition) and s
 ### Some tools that helped me diagnose:
 
 #### Querying Redis
+
 ntopng stores most things in redis. So knowing how to query redis is helpful to understand things...
 
 I also found I could some of important redis keys using [the README.users doc](https://github.com/ntop/ntopng/blob/dev/doc/README.users) on their github repo. So now I can do `docker exec -it ntopng redis-cli GET ntopng.user.admin.password` to make sure that the admin password is set (it is `(nil)` on a fresh instance).
@@ -60,9 +64,10 @@ Interestingly this leads to other interesting redis queries like `docker exec -i
 
 A pref I seemed to lose periodically was `ntopng.prefs.ifid_%u.serialize_local_broadcast_hosts_as_macs`
 
-So 
+So
+
 ```
-docker exec -it ntopng redis-cli GET ntopng.prefs.ifid_%u.serialize_local_broadcast_hosts_as_macs 
+docker exec -it ntopng redis-cli GET ntopng.prefs.ifid_%u.serialize_local_broadcast_hosts_as_macs
 ```
 
 The [Device Applications policies](https://www.ntop.org/guides/ntopng/advanced_features/device_protocols.html?highlight=applications) /do/ appear to be in redis. It is saved at https://github.com/ntop/ntopng/blob/49bdd32ce08d57971debb74ec9206fc4bbae2edd/scripts/lua/modules/presets_utils.lua#L228 by the UI at https://github.com/ntop/ntopng/blob/49bdd32ce08d57971debb74ec9206fc4bbae2edd/scripts/lua/inc/edit_presets.lua#L74 Can find their keys with `docker exec -it ntopng redis-cli KEYS ntopng.prefs.device_policies*`
@@ -70,25 +75,28 @@ The [Device Applications policies](https://www.ntop.org/guides/ntopng/advanced_f
 Another preference I was losing was **DHCP interface ranges** (https://bitbox.activescott.com:3101/lua/if_stats.lua?page=dhcp). Their key is `ntopng.prefs.ifid_%u.dhcp_ranges` where %u is an interface id (0 for one interface):
 
 To query that key you can do:
+
 ```
 docker exec -it ntopng redis-cli GET ntopng.prefs.ifid_0.dhcp_ranges
 ```
 
 ## References
+
 - Overview: https://www.ntop.org/products/traffic-analysis/ntop/
 - Source: https://github.com/ntop/ntopng/
-    - https://github.com/ntop/docker-ntop
-        - `NTOP_CONFIG` environment variable: https://github.com/ntop/docker-ntop#ntop_config-environment-variable
+  - https://github.com/ntop/docker-ntop
+    - `NTOP_CONFIG` environment variable: https://github.com/ntop/docker-ntop#ntop_config-environment-variable
 - Image: https://hub.docker.com/r/ntop/ntopng/ (note use of stable over latest tag)
 - Docs: https://www.ntop.org/guides/ntopng/
 - couple gems here: https://www.ntop.org/ntop/best-practices-for-using-ntop-tools-on-containers/
 - example from someone else doing their own dockerfile/compose setup: https://shownotes.opensourceisawesome.com/ntopng-network-analysis-dashboard/
 
 ### Configuring Custom Applications
+
 TLDR; create `/var/lib/ntopng/protos.txt` and fill it out like [this example](https://raw.githubusercontent.com/ntop/nDPI/dev/example/protos.txt). Then add add the following option to the startup of the app:
 
 ```
 --ndpi-protocols=/var/lib/ntopng/protos.txt
-``` 
+```
 
 https://www.ntop.org/guides/ntopng/web_gui/categories.html#custom-applications
