@@ -1,0 +1,15 @@
+version: "3"
+name: ntopng
+services:
+  ntopng:
+    container_name: ntopng
+    # image details: https://hub.docker.com/r/ntop/ntopng
+    image: ntop/ntopng:stable
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      TZ: "US/Pacific"
+      NTOP_CONFIG: "--community --interface eth0 --http-port 3100 --https-port 3101 --ndpi-protocols=/var/lib/ntopng/protos.txt"
+    volumes:
+      - /share/CACHEDEV1_DATA/app-data/ntopng/var-lib-ntopng:/var/lib/ntopng:rw
+      - /share/CACHEDEV1_DATA/app-data/ntopng/var-lib-redis:/var/lib/redis:rw
