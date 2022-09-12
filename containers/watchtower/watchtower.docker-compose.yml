@@ -38,6 +38,7 @@ services:
       - mailrelay_mail
 
 networks:
-  # mailrelay_mail is the mail network created on the mailrelay project so that this container can reach the mailrelay server
+  # mailrelay_mail is the mail network created on the mailrelay container.
+  # we add it here so that this container can reach the mailrelay server.
   mailrelay_mail:
     external: true
