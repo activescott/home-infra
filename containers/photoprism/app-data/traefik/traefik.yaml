@@ -1,0 +1,29 @@
+# https://docs.photoprism.app/getting-started/proxies/traefik/
+# https://doc.traefik.io/traefik/user-guides/docker-compose/basic-example/
+
+log:
+  # https://doc.traefik.io/traefik/observability/logs/
+  # more detailed logging:
+  # level: DEBUG
+
+entryPoints:
+  # Traefik will listen to incoming request on the entrypoints and ports specified here:
+  web:
+    address: ":80"
+    http:
+      redirections:
+        entryPoint:
+          to: websecure
+  websecure:
+    address: ":443"
+
+providers:
+  # Enabling docker provider (https://doc.traefik.io/traefik/providers/docker/):
+  docker:
+    # Do not expose containers unless explicitly told so (https://doc.traefik.io/traefik/providers/docker/#exposedbydefault)
+    exposedByDefault: false
+
+  # apparently certs MUST be part of a "dynamic" configuration, i.e. a "provider", one of which supports files
+  # ...see https://stackoverflow.com/a/62495964/51061
+  file:
+    filename: /etc/traefik/certs.yaml

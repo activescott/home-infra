@@ -9,4 +9,4 @@ services:
       TW_USERNAME: TheUserName
       TW_PASSWORD: ThePassword
     ports:
-      - "443:8000"
+      - "8000:8000"

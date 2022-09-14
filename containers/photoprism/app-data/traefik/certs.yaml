@@ -1,0 +1,13 @@
+tls:
+  # https://doc.traefik.io/traefik/https/tls/#user-defined
+  certificates:
+    - certFile: /etc/letsencrypt/live/activescott.com/fullchain.pem
+      keyFile: /etc/letsencrypt/live/activescott.com/privkey.pem
+      stores:
+        - default
+
+  stores:
+    default:
+      defaultCertificate:
+        certFile: /etc/letsencrypt/live/activescott.com/fullchain.pem
+        keyFile: /etc/letsencrypt/live/activescott.com/privkey.pem
