@@ -6,6 +6,9 @@ log:
   # more detailed logging:
   # level: DEBUG
 
+# log access to stdout (https://doc.traefik.io/traefik/observability/access-logs/):
+accessLog: {}
+
 entryPoints:
   # Traefik will listen to incoming request on the entrypoints and ports specified here:
   web:
