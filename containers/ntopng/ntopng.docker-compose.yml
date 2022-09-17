@@ -4,7 +4,7 @@ services:
   ntopng:
     container_name: ntopng
     # image details: https://hub.docker.com/r/ntop/ntopng
-    image: ntop/ntopng:stable
+    image: ntop/ntopng:latest
     restart: unless-stopped
     network_mode: host
     environment:
