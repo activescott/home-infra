@@ -2,6 +2,68 @@
 
 This is my ntopng container. I use it to monitor network activity at home and get alerts about suspicious activity.
 
+## Redis Errors due to Ownership After ntopng Container Update
+
+It appears that after this container is updated by watchtower redis fails to work again due to some persistance issues. I'm not sure what causes it but erros look like this:
+
+```
+30/Sep/2022 18:28:16 [Redis.cpp:507] ERROR: MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk. Commands that may modify the data set are disabled, because this instance is configured to report errors during writes if RDB snapshotting fails (stop-writes-on-bgsave-error option). Please check the Redis logs for details about the RDB error.
+```
+
+Most recently I noticed it was resolved _temporarily_ by stopping the container and restarting it :/ A few minutes later ntopng failed again with the same error in `docker logs`.
+
+Redis logs show:
+```
+$ docker exec -it ntopng tail -f /var/log/redis/redis-server.log
+...
+15:M 30 Sep 2022 19:15:30.089 * 10 changes in 300 seconds. Saving...
+15:M 30 Sep 2022 19:15:30.089 * Background saving started by pid 131
+131:C 30 Sep 2022 19:15:30.089 # Failed opening the RDB file dump.rdb (in server root dir /var/lib/redis) for saving: Permission denied
+15:M 30 Sep 2022 19:15:30.189 # Background saving error
+
+```
+
+I also checked the redis uid in that container with `docker exec -it ntopng /usr/bin/id redis` and it was as follows `uid=102(redis) gid=103(redis) groups=103(redis)`.
+
+Yet the permissions of files in /var/lib/redis are:
+```
+$ ll /var/lib/redis
+total 60
+drwxr-xr-x 2 messagebus messagebus  4096 Sep 17 06:38 ./
+drwxr-xr-x 1 root       root        4096 Sep 30 11:06 ../
+-rw-rw-r-- 1 messagebus messagebus 46427 Sep 17 06:38 dump.rdb
+```
+
+Changing the ownership back to redis fixed it in redis logs:
+```
+$ chown -R redis:redis /var/lib/redis
+
+$ ll /var/lib/redis
+total 76
+drwxr-xr-x 2 redis redis  4096 Sep 30 19:15 ./
+drwxr-xr-x 1 root  root   4096 Sep 30 11:06 ../
+-rw-rw-r-- 1 redis redis 46427 Sep 17 06:38 dump.rdb
+-rw-rw---- 1 redis redis 15371 Sep 30 19:15 temp-133.rdb
+
+
+$ docker exec -it ntopng tail -f /var/log/redis/redis-server.log
+...
+15:M 30 Sep 2022 19:15:36.000 * 10 changes in 300 seconds. Saving...
+15:M 30 Sep 2022 19:15:36.001 * Background saving started by pid 133
+133:C 30 Sep 2022 19:15:36.121 * DB saved on disk
+133:C 30 Sep 2022 19:15:36.122 * RDB: 0 MB of memory used by copy-on-write
+15:M 30 Sep 2022 19:15:36.202 * Background saving terminated with success
+
+```
+
+but the same erorr in docker logs... trying a restart with:
+```
+docker restart  ntopng ; docker logs -f ntopng
+```
+
+
+🤷‍♂️
+
 ## Losing Configuration Settings Issue (Persistence)
 
 I had a problem where initially config changes I was making weren't being saved and even the admin password I set wouldn't be saved. Specific configuration I noticed I was losing:
@@ -44,7 +106,7 @@ Then I noticed an error coming out of ntopng via `docker logs -f ntopng` about r
 
 Got redis logs at `docker exec -it ntopng tail -f /var/log/redis/redis-server.log`
 
-Redis failed to write the dump upon mounting due to permissions (redis switches to running as the redis user not the root user that docker was using). I did the following to fix that (within the container, so after a `docker exec -it /bin/sh`:
+Redis failed to write the dump upon mounting due to permissions (redis switches to running as the redis user not the root user that docker was using). I did the following to fix that (within the container, so after a `docker exec -it ntopng /bin/sh`:
 
 ```
 chown -R redis:redis /var/lib/redis

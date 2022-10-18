@@ -9,6 +9,7 @@ services:
     network_mode: host
     environment:
       TZ: "US/Pacific"
+      # reference on command line options: https://www.ntop.org/guides/ntopng/cli_options/cli_options.html
       NTOP_CONFIG: "--community --interface eth0 --http-port 3100 --https-port 3101 --ndpi-protocols=/var/lib/ntopng/protos.txt"
     volumes:
       - /share/CACHEDEV1_DATA/app-data/ntopng/var-lib-ntopng:/var/lib/ntopng:rw
