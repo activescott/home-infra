@@ -1,2 +1,29 @@
+# see https://www.home-assistant.io/docs/configuration/customizing-devices
+
+########## Make Garage Door Sensor Appear as Garage ########## 
 binary_sensor.garage_door_sensor_device_access_control_window_door_is_open:
   device_class: garage_door
+  friendly_name: 'Garage Door Sensor'
+
+########## Door/Window Binary Sensors Appear as Door/Window ########## 
+# Goal: Get door/window sensors to appear in dashboards as "open" or "closed" instead of "on" and "off"
+# By default the door/window sensors are "binary_sensor" platform which have an "on" or "off" state.
+# By making them a "cover" platform entity they will have a "open" and "closed" state by default.
+binary_sensor.front_door_deck:
+  device_class: door
+binary_sensor.kitchen_door:
+  device_class: door
+binary_sensor.office_sliding_door:
+  device_class: door
+binary_sensor.living_room_window:
+  device_class: window
+binary_sensor.dining_window:
+  device_class: window
+binary_sensor.master_bedroom_window:
+  device_class: window
+binary_sensor.east_bedroom_window_jonah_s:
+  device_class: window
+binary_sensor.west_bedroom_window_micah_s:
+  device_class: window
+binary_sensor.laundry_window:
+  device_class: window

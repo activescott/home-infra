@@ -29,7 +29,7 @@ perimeter_sensors:
     - binary_sensor.east_bedroom_window_jonah_s
     - binary_sensor.west_bedroom_window_micah_s
     - binary_sensor.laundry_window
-    - cover.garage_door_controller
+    - binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
 
 motion_sensors:
   name: Motion Sensors

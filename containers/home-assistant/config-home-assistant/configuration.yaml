@@ -10,6 +10,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 light: !include lights.yaml
+cover garage: !include cover-garage.yaml
 
 homeassistant:
   customize: !include customize.yaml
@@ -27,43 +28,3 @@ notify:
     platform: group
     services:
       - service: mobile_app_fatboy
-
-# Garage Door Integration
-# Uses template platform to invoke services for each of the open, close, stop, position and tilt commands of a cover.
-# See https://www.home-assistant.io/integrations/cover.template/#garage-door
-cover:
-  - platform: template
-    covers:
-      garage_door:
-        device_class: garage
-        friendly_name: "Garage Door"
-        position_template: >-
-          {% if states('binary_sensor.garage_door_sensor_device_access_control_window_door_is_open') == "off" %}
-            0
-          {% else %}
-            100
-          {% endif %}
-        open_cover:
-          - condition: state
-            entity_id: binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
-            state: "off"
-          - service: switch.toggle
-            target:
-              entity_id: switch.zwave_garage_relay
-        close_cover:
-          - condition: state
-            entity_id: binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
-            state: "on"
-          - service: switch.toggle
-            target:
-              entity_id: switch.zwave_garage_relay
-        stop_cover:
-          service: switch.toggle
-          target:
-            entity_id: switch.zwave_garage_relay
-        icon_template: >-
-          {% if states('binary_sensor.garage_door_sensor_device_access_control_window_door_is_open') == "off" %}
-            mdi:garage
-          {% else %}
-            mdi:garage-open
-          {% endif %}
