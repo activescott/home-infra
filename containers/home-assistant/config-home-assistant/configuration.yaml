@@ -9,7 +9,6 @@ group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
-light: !include lights.yaml
 cover garage: !include cover-garage.yaml
 
 homeassistant:
@@ -18,6 +17,7 @@ homeassistant:
   packages:
     # packages: https://www.home-assistant.io/docs/configuration/packages/
     security_package: !include packages/security.yaml
+    lights_package: !include packages/lights.yaml
 
 # Setup certificates via the HTTP integration/component
 # https://www.home-assistant.io/integrations/http:

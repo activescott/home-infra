@@ -3,7 +3,7 @@ THISDIR=$(cd $(dirname "$0"); pwd) #this script's directory
 BASENAME=$(basename -s .sh "$0") #this script's name
 
 GIT_DIR=$THISDIR
-HASS_DIR=admin@bitbox:/share/CACHEDEV1_DATA/app-data/home-assistant
+HASS_DIR=scott@bitbox:/share/CACHEDEV1_DATA/app-data/home-assistant
 
 # break down the remote path into host & path:
 HASS_HOST=${HASS_DIR%:*}

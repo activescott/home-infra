@@ -115,7 +115,7 @@ An example for sensors:
 
 Here is another template using "filters" that converts a group's list of items into a list of entity_id strings. I'm not sure what to do with this yet, it doesn't work in a lovelace card:
 
-    {{ expand('group.common_area_lights') | map(attribute='entity_id') | list() }}
+    {{ expand('light.common_area_lights') | map(attribute='entity_id') | list() }}
 
 ### Expand Groups into Entities in a Lovelace Dashboard Card
 
@@ -123,7 +123,7 @@ Although [Home Assistant doesn't support expanding groups into a Lovelace Dashbo
 
 #### Using Auto-Entities
 
-In the UI you can now add a new type of card that appears as **Custom: Auto Entities** and simply chose a group as a filter. In the YAML it looks like the below for the group named `group.common_area_lights`:
+In the UI you can now add a new type of card that appears as **Custom: Auto Entities** and simply chose a group as a filter. In the YAML it looks like the below for the group named `light.common_area_lights`:
 
 ```yaml
 type: custom:auto-entities
@@ -133,7 +133,7 @@ card:
   state_color: true
 filter:
   include:
-    - group: group.common_area_lights
+    - group: light.common_area_lights
   exclude: []
 sort:
   method: friendly_name

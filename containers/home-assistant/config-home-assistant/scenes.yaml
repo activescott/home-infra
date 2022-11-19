@@ -1,7 +1,10 @@
 - id: '1625024022694'
   name: Sleep
   entities:
-    group.common_area_lights:
+    light.common_area_lights:
+      supported_color_modes:
+      - brightness
+      - onoff
       entity_id:
       - light.dining_table_light_switch_light
       - light.z_wave_great_room_track_light_dimmer_switch
@@ -9,10 +12,14 @@
       - light.kitchen_light_switch_light
       - light.kitchen_sink_light_switch_light
       - light.entryway_light_swtich_light
-      order: 0
+      icon: mdi:lightbulb-group
       friendly_name: Common Area Lights
+      supported_features: 32
       state: 'off'
   icon: hass:sleep
+  metadata:
+    light.common_area_lights:
+      entity_only: true
 - id: '1625024157942'
   name: TV Lights
   entities:

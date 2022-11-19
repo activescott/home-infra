@@ -2,21 +2,6 @@
 # See also https://www.home-assistant.io/docs/configuration/templating/#working-with-groups
 
 # NOTE: These are "old style" groups: https://www.home-assistant.io/integrations/group/#old-style-groups
-common_area_lights:
-  name: Common Area Lights
-  entities:
-    - light.dining_table_light_switch_light
-    - light.z_wave_great_room_track_light_dimmer_switch
-    - light.hall_light_switch_light
-    - light.kitchen_light_switch_light
-    - light.kitchen_sink_light_switch_light
-    - light.entryway_light_swtich_light
-
-outdoor_lights:
-  name: Outdoor Lights
-  entities:
-    - light.front_outdoor_light_east
-    - light.deck_outdoor_light_west
 
 # Use to detect if family is "home".
 # when any member of the group is home then the group is home:
