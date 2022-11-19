@@ -11,6 +11,8 @@ home-assistant.log
 home-assistant.log.*
 image/
 zigbee.db
+zigbee.db-shm
+zigbee.db-wal
 .DS_Store
 .HA_VERSION
 .cloud/

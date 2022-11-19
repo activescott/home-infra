@@ -13,6 +13,7 @@ It appears that after this container is updated by watchtower redis fails to wor
 Most recently I noticed it was resolved _temporarily_ by stopping the container and restarting it :/ A few minutes later ntopng failed again with the same error in `docker logs`.
 
 Redis logs show:
+
 ```
 $ docker exec -it ntopng tail -f /var/log/redis/redis-server.log
 ...
@@ -26,6 +27,7 @@ $ docker exec -it ntopng tail -f /var/log/redis/redis-server.log
 I also checked the redis uid in that container with `docker exec -it ntopng /usr/bin/id redis` and it was as follows `uid=102(redis) gid=103(redis) groups=103(redis)`.
 
 Yet the permissions of files in /var/lib/redis are:
+
 ```
 $ ll /var/lib/redis
 total 60
@@ -35,6 +37,7 @@ drwxr-xr-x 1 root       root        4096 Sep 30 11:06 ../
 ```
 
 Changing the ownership back to redis fixed it in redis logs:
+
 ```
 $ chown -R redis:redis /var/lib/redis
 
@@ -57,10 +60,10 @@ $ docker exec -it ntopng tail -f /var/log/redis/redis-server.log
 ```
 
 but the same erorr in docker logs... trying a restart with:
+
 ```
 docker restart  ntopng ; docker logs -f ntopng
 ```
-
 
 🤷‍♂️
 
