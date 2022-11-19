@@ -1,7 +1,7 @@
 # Groups allow the user to combine multiple entities into one. - https://www.home-assistant.io/integrations/group/
 # See also https://www.home-assistant.io/docs/configuration/templating/#working-with-groups
 
-# NOTE: These are "old style" groups: https://www.home-assistant.io/integrations/group/#old-style-groups
+# NOTE: These are "old style" groups: https://www.home-assistant.io/integrations/group/#old-style-groups (but as of 2022-11-18 Person wasn't supported in new-style groups)
 
 # Use to detect if family is "home".
 # when any member of the group is home then the group is home:
