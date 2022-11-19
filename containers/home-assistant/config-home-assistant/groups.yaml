@@ -1,6 +1,7 @@
 # Groups allow the user to combine multiple entities into one. - https://www.home-assistant.io/integrations/group/
 # See also https://www.home-assistant.io/docs/configuration/templating/#working-with-groups
 
+# NOTE: These are "old style" groups: https://www.home-assistant.io/integrations/group/#old-style-groups
 common_area_lights:
   name: Common Area Lights
   entities:
@@ -16,27 +17,6 @@ outdoor_lights:
   entities:
     - light.front_outdoor_light_east
     - light.deck_outdoor_light_west
-
-perimeter_sensors:
-  name: Perimeter Sensors
-  entities:
-    - binary_sensor.front_door_deck
-    - binary_sensor.kitchen_door
-    - binary_sensor.office_sliding_door
-    - binary_sensor.living_room_window
-    - binary_sensor.dining_window
-    - binary_sensor.master_bedroom_window
-    - binary_sensor.east_bedroom_window_jonah_s
-    - binary_sensor.west_bedroom_window_micah_s
-    - binary_sensor.laundry_window
-    - binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
-
-motion_sensors:
-  name: Motion Sensors
-  entities:
-    - binary_sensor.front_motion
-    - binary_sensor.master_bedroom_motion
-    - binary_sensor.office_motion
 
 # Use to detect if family is "home".
 # when any member of the group is home then the group is home:
