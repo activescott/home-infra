@@ -17,3 +17,5 @@ zigbee.db-wal
 .HA_VERSION
 .cloud/
 .storage/
+deps/
+tts/
