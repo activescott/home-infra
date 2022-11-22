@@ -46,4 +46,18 @@
     switch.z_wave_hall_light_switch:
       friendly_name: Hallway Light Switch
       state: 'off'
-  icon: hass:television
+  icon: mdi:television-shimmer
+  metadata: {}
+- id: '1668915560421'
+  name: Great Room Bright
+  entities:
+    light.z_wave_great_room_track_light_dimmer_switch:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 255
+      friendly_name: Great Room Track Light
+      supported_features: 32
+      state: 'on'
+  icon: mdi:alarm-light
+  metadata: {}
