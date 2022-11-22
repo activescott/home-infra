@@ -89,9 +89,9 @@
   - service: notify.scott
     data:
       title: Home Assistant's cert expring
-      message: Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
+      message: "Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
         - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Restarting Home
-        Assistant (hoping cron updated the cert already 🤞)...
+        Assistant (hoping cron updated the cert already \U0001F91E)..."
   - service: homeassistant.restart
   mode: restart
 - id: '1624428508974'
@@ -251,4 +251,27 @@
   - service: homeassistant.turn_off
     target:
       entity_id: light.outdoor_lights
+  mode: single
+- id: '1669078522498'
+  alias: Momma's Lamp is Reenabled when Turned Off
+  description: To turn off Moma's lamp we turn the switch off. To make sure she can
+    turn it back on manually, we just flip the switch back on a moment later (but
+    the lamp doesn't auto-turn back on when power is removed).
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.mommas_lamp_on_off
+    from: 'on'
+    to: 'off'
+  condition: []
+  action:
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 3
+      milliseconds: 0
+  - service: switch.turn_on
+    data: {}
+    target:
+      entity_id: switch.mommas_lamp_on_off
   mode: single
