@@ -28,6 +28,14 @@ light:
   - platform: switch
     name: Front Outdoor Light East
     entity_id: switch.z_wave_front_outdoor_light_east
+  # this one isn't a zooz but same deal: z-wave presents it as a switch and I want to treat it like a light too:
+  - platform: switch
+    name: "Momma's Desk Lamp Light"
+    entity_id: switch.mommas_desk_lamp_on_off
+    - platform: switch
+    name: "Micah's Desk Lamp Light"
+    entity_id: switch.micahs_desk_lamp_on_off
+
   ##################################
   ##### Now expose some groups #####
   - platform: group
@@ -47,3 +55,10 @@ light:
     entities:
       - light.front_outdoor_light_east
       - light.deck_outdoor_light_west
+
+  - platform: group
+    name: Bedroom Lights
+    unique_id: bedroom_lights_group
+    entities:
+      - switch.mommas_desk_lamp_on_off
+      - switch.micahs_desk_lamp_on_off

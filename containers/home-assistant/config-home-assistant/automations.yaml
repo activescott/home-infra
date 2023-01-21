@@ -187,10 +187,10 @@
       toggle_entity: switch.z_wave_dining_table_light
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.jonahs_lamp_on_off
+      toggle_entity: switch.micahs_desk_lamp_on_off
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.mommas_lamp_on_off
+      toggle_entity: switch.mommas_desk_lamp_on_off
   mode: single
 - id: '1625885299386'
   alias: Vacation Lights Off
@@ -213,8 +213,8 @@
       entity_id:
       - switch.z_wave_dining_table_light
       - switch.z_wave_kitchen_main_light
-      - switch.jonahs_lamp_on_off
-      - switch.mommas_lamp_on_off
+      - switch.micahs_desk_lamp_on_off
+      - switch.mommas_desk_lamp_on_off
   mode: single
 - id: '1635223858648'
   alias: Turn outdoor lights off at dawn
@@ -260,7 +260,7 @@
   trigger:
   - platform: state
     entity_id:
-    - switch.mommas_lamp_on_off
+    - switch.mommas_desk_lamp_on_off
     from: 'on'
     to: 'off'
   condition: []
@@ -273,5 +273,5 @@
   - service: switch.turn_on
     data: {}
     target:
-      entity_id: switch.mommas_lamp_on_off
+      entity_id: switch.mommas_desk_lamp_on_off
   mode: single
