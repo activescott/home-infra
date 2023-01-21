@@ -32,7 +32,7 @@ light:
   - platform: switch
     name: "Momma's Desk Lamp Light"
     entity_id: switch.mommas_desk_lamp_on_off
-    - platform: switch
+  - platform: switch
     name: "Micah's Desk Lamp Light"
     entity_id: switch.micahs_desk_lamp_on_off
 
@@ -60,5 +60,5 @@ light:
     name: Bedroom Lights
     unique_id: bedroom_lights_group
     entities:
-      - switch.mommas_desk_lamp_on_off
-      - switch.micahs_desk_lamp_on_off
+      - light.momma_s_desk_lamp_light
+      - light.micah_s_desk_lamp_light
