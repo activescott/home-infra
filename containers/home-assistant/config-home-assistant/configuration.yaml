@@ -10,6 +10,7 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 cover garage: !include cover-garage.yaml
+lovelace: !include ui-lovelace-config.yaml
 
 homeassistant:
   customize: !include customize.yaml

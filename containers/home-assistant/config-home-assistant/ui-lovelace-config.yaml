@@ -1,0 +1,16 @@
+# see https://www.home-assistant.io/dashboards/dashboards/
+mode: yaml
+# Include external resources only add when mode is yaml, otherwise manage in the resources in the dashboard configuration panel.
+resources:
+  # we use auto-entities from https://github.com/thomasloven/lovelace-auto-entities
+  - url: /local/plugins/auto-entities/auto-entities.js
+    type: module
+# Add more dashboards
+dashboards:
+  lovelace-security: # Needs to contain a hyphen (-)
+    mode: yaml
+    filename: ui-lovelace-security.yaml
+    title: Security
+    icon: mdi:tools
+    show_in_sidebar: true
+    require_admin: true
