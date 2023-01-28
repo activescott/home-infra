@@ -7,7 +7,6 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - MEM_LIMIT=1024M #optional
     volumes:
       - /share/CACHEDEV1_DATA/app-data/unifi-controller:/config
     # UniFi Network - Required Ports Reference: https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference
