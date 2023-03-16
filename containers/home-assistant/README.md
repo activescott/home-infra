@@ -68,7 +68,7 @@ Mostly for presence protection. I have POE cameras on it and it freaked me out t
 
 ### Certificate Expiry
 
-For anyone a operating production SaaS application at scale (such as [Smartsheet 😉](https://www.smartsheet.com/)), you must empathize with my paranoia about expiring certificates. So I love having my various personal home infrastructure certificates' "expires in" front and center on my Home Assistant dashboard and alerting set up as it gets close to expiring 🤓
+For anyone a operating production SaaS application at scale, you must empathize with my paranoia about expiring certificates. So I love having my various personal home infrastructure certificates' "expires in" front and center on my Home Assistant dashboard and alerting set up as it gets close to expiring 🤓
 
 ### HomeKit/HASS Bridge
 
@@ -82,22 +82,24 @@ I turned this on but I'm not entirely clear what it does or what to use it for �
 
 #### Honeywell Vista 20P Integration
 
-I have a Honeywell "Vista 20P" connected to a variety of security sensors at parameter and inside the home and garage. Specifically the chip on the board says `WA20P-9.12`.
-There is an [AlarmDecoder Home Assistant Integration](https://www.home-assistant.io/integrations/alarmdecoder/) which looks very nice! It requires an [AlarmDecoder hardware/bridge](https://www.alarmdecoder.com/wiki/index.php/Getting_Started) and the "Network Appliance" board that works via a Raspberry Pi seems to basically route the alarm panel's features to local ethernet which HA can talk to over ethernet. Ordered, not yet integrated into Home Assistant.
-
-#### GE Z-Wave Dimmer Switch for Fans
-
-Rated for fans and I have a POC set up to a fan to ensure it worked, but not yet paired with Home Asssistant and fully installed for the fan in my server room (fan just stays at full speed and seems mostly necessary this time of year anyway).
+I have a Honeywell "Vista 20P" connected to a variety of security sensors at parameter and inside the home and garage. Specifically the chip on the board says `WA20P-9.12`. I coonnect that to a [AlarmDecoder hardware/bridge](https://www.alarmdecoder.com/wiki/index.php/Getting_Started) on a Raspberry Pi (sitting inside the alaram box). This allows browser and API-based control of the Alarm Panel. The  [AlarmDecoder Home Assistant Integration](https://www.home-assistant.io/integrations/alarmdecoder/) is then a plugin for Home Assistant that fully controls alarm and all the sensors in Home Assistant. This gives fullly supported motion sensors and premeter sensors for the entire house to Home Assistant and those csensors are cheaper than Z-Wave or Zigbee on eBay. Works perfect for a couple years now. The Honeywell is a bit wonky to program (a series of number sequenceis, but its not hard, just tedius one-time setup).
 
 #### Zooz 700 Series Z-Wave Plus S2 On / Off Wall Switch ZEN76
 
-Planned for internal lighting.
+I have several for internal lighting. Work great for a couple years.
 
 #### Zooz 700 Series Z-Wave Plus S2 Dimmer Switch ZEN77
 
-Planned for internal lighting.
+I have one for internal lighting. Work great for a couple years.
 
-## Templates Notes
+#### GE Z-Wave Dimmer Switch for Fans
+
+The GE is rated for fans and I have had it in Home Asssistant and automated in my server room. I no longer use that setup, but it worked perfectly fine.
+
+
+## Notes on Using Home Assistant
+
+### Templates Notes
 
 [Jinja Templates](https://jinja.palletsprojects.com/en/latest/templates/) are hard to read and filters are weak. Here's a couple notes:
 
@@ -147,6 +149,6 @@ Copy the js file (and any other files may require) to any subdirectory in `<home
 2. Select "Lovelace Dashboard".
 3. Select the "Resources" tab (enable "Advanced Mode" under your user's profile if you don't see it) and add the resource as sipmly the path to the plugin's file(s) (e.g. for my auto-entities plugin, this is simply **URL** `/local/plugins/auto-entities/auto-entities.js` and **Resource Type** of _JavaScript Module_).
 
-## Groups
+### Groups
 
 Groups work good for conditions and checking a single state, but are hard to work with to understand what happened in a trigger. For example, `group.perimeter_sensors` is a great way to check if every perimeter sensor is closed/off. However, when using it as a trigger, you cant tell in the automation's event trigger data _which_ sensor triggered it (only that the group state changed).
