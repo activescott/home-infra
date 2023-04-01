@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./example/redis-leader-service.yaml
+  - ./example/redis-follower-service.yaml
+  - ./example/redis-follower-deployment.yaml
+  - ./example/redis-leader-deployment.yaml
+  - ./example/frontend-deployment.yaml
+  - ./example/frontend-service.yaml
+
+buildMetadata: [managedByLabel]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize

@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./../../base/
+
+# put each overlay in their own namespace:
+namespace: guestbook-dev
+
+patches:
+  # NOTE: We leave the base one in place without a loadbalancer so it still requires proxy.
+
+  # update replicas for dev environment to 1 (instead of default of 3):
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: frontend
+      spec:
+        replicas: 1

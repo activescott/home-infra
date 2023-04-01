@@ -1,0 +1,4 @@
+resources:
+  - ./guestbook-namespace.yaml
+  - ./overlays/dev
+  - ./overlays/prod
