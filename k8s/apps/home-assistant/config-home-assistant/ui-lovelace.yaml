@@ -22,7 +22,7 @@ views:
       - type: entities
         entities:
           - entity: scene.tv_lights
-          - entity: scene.nightime_lights
+          - entity: scene.sleep
           - entity: scene.great_room_bright
       - type: custom:auto-entities
         card:
@@ -79,18 +79,12 @@ views:
       - hours_to_show: 72
         graph: line
         type: sensor
-        entity: sensor.lumi_lumi_weather_4c47b206_temperature
+        entity: sensor.lumi_lumi_weather_temperature
         detail: 1
         name: Office Temp
       - type: weather-forecast
-        entity: weather.home8027
+        entity: weather.forecast_home
         show_forecast: false
-      - type: entities
-        entities:
-          - entity: sensor.cert_expiry_timestamp_hass_activescott_com_8123
-            name: hass cert expires
-          - entity: sensor.cert_expiry_timestamp_scott_willeke_com
-            name: scott.willeke.com cert expires
       - type: entities
         entities:
           - entity: sensor.alarm_panel_display
