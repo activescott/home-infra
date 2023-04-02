@@ -8,8 +8,9 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    # the port that this service should serve on
-    - port: 8123
+    # port for web interface
+    - name: web-ui
+      port: 8123
   selector:
     app: home-assistant
-    role: zwavejs
+    role: home-assistant

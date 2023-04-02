@@ -6,4 +6,4 @@ RESOURCE_ROOT="$WORKSPACE_ROOT"
 
 set -x
 
-kubectl exec -it home-assitant -- /bin/sh
+kubectl -n=home-assistant exec -it statefulset/home-assistant -- /bin/sh
