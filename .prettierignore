@@ -1,3 +1,3 @@
 # ignore the whole directory since home-assistant reformats them anyway and it does it in way prettier doesn't support
-containers/home-assistant/config-home-assistant/
-containers/home-assistant/config-home-assistant/www/plugins/auto-entities/
+k8s/apps/home-assistant/config-home-assistant
+k8s/apps/home-assistant/config-home-assistant/www/plugins/auto-entities/

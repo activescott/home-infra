@@ -19,3 +19,4 @@ zigbee.db-wal
 .storage/
 deps/
 tts/
+backups/

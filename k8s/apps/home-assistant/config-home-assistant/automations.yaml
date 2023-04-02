@@ -275,3 +275,11 @@
     target:
       entity_id: switch.mommas_desk_lamp_on_off
   mode: single
+- id: "4142937618986"
+  alias: "Backup Home Assistant every night at 3 AM"
+  trigger:
+    platform: time
+    at: "03:00:00"
+  action:
+    alias: "Create backup now"
+    service: backup.create
