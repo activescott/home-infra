@@ -1,0 +1,12 @@
+resources:
+  - ./home-assistant-namespace.yaml
+  - ./base/zwavejs-statefulset.yaml
+  - ./base/zwavejs-service.yaml
+  - ./base/home-assistant-statefulset.yaml
+  - ./base/home-assistant-service.yaml
+
+buildMetadata: [managedByLabel]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize
