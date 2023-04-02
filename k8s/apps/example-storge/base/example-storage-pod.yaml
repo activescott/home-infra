@@ -5,18 +5,23 @@ metadata:
   namespace: default
 spec:
   containers:
-  - name: hello
-    image: alpine:3.17
-    command: ['sh', '-c', 'while true; do date +%s >> "/data/$HOSTNAME-timestamp.txt"; sleep 15; done']
+    - name: hello
+      image: alpine:3.17
+      command:
+        [
+          "sh",
+          "-c",
+          'while true; do date +%s >> "/data/$HOSTNAME-timestamp.txt"; sleep 15; done',
+        ]
 
-    # container-level volume mounts:
-    volumeMounts:
-    - mountPath: /data
-      name: test-volume
+      # container-level volume mounts:
+      volumeMounts:
+        - mountPath: /data
+          name: test-volume
 
   # pod-level volumes:
   volumes:
-  - name: test-volume
-    hostPath:
-      # directory location on host
-      path: /mnt/thedatapool/app-data/z-for-testing
+    - name: test-volume
+      hostPath:
+        # directory location on host
+        path: /mnt/thedatapool/app-data/z-for-testing

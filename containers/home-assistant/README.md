@@ -82,7 +82,7 @@ I turned this on but I'm not entirely clear what it does or what to use it for ð
 
 #### Honeywell Vista 20P Integration
 
-I have a Honeywell "Vista 20P" connected to a variety of security sensors at parameter and inside the home and garage. Specifically the chip on the board says `WA20P-9.12`. I coonnect that to a [AlarmDecoder hardware/bridge](https://www.alarmdecoder.com/wiki/index.php/Getting_Started) on a Raspberry Pi (sitting inside the alaram box). This allows browser and API-based control of the Alarm Panel. The  [AlarmDecoder Home Assistant Integration](https://www.home-assistant.io/integrations/alarmdecoder/) is then a plugin for Home Assistant that fully controls alarm and all the sensors in Home Assistant. This gives fullly supported motion sensors and premeter sensors for the entire house to Home Assistant and those csensors are cheaper than Z-Wave or Zigbee on eBay. Works perfect for a couple years now. The Honeywell is a bit wonky to program (a series of number sequenceis, but its not hard, just tedius one-time setup).
+I have a Honeywell "Vista 20P" connected to a variety of security sensors at parameter and inside the home and garage. Specifically the chip on the board says `WA20P-9.12`. I coonnect that to a [AlarmDecoder hardware/bridge](https://www.alarmdecoder.com/wiki/index.php/Getting_Started) on a Raspberry Pi (sitting inside the alaram box). This allows browser and API-based control of the Alarm Panel. The [AlarmDecoder Home Assistant Integration](https://www.home-assistant.io/integrations/alarmdecoder/) is then a plugin for Home Assistant that fully controls alarm and all the sensors in Home Assistant. This gives fullly supported motion sensors and premeter sensors for the entire house to Home Assistant and those csensors are cheaper than Z-Wave or Zigbee on eBay. Works perfect for a couple years now. The Honeywell is a bit wonky to program (a series of number sequenceis, but its not hard, just tedius one-time setup).
 
 #### Zooz 700 Series Z-Wave Plus S2 On / Off Wall Switch ZEN76
 
@@ -95,7 +95,6 @@ I have one for internal lighting. Work great for a couple years.
 #### GE Z-Wave Dimmer Switch for Fans
 
 The GE is rated for fans and I have had it in Home Asssistant and automated in my server room. I no longer use that setup, but it worked perfectly fine.
-
 
 ## Notes on Using Home Assistant
 

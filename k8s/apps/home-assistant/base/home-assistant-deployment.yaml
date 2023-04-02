@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: home-assistant
+  namespace: home-assistant
+  labels:
+    app: home-assistant
+    role: home-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+      role: home-assistant
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+        role: home-assistant
+    spec:
+      containers:
+        - name: home-assistant
+          image: homeassistant/home-assistant:2022.8
+          # container-level volume mounts:
+          volumeMounts:
+            - mountPath: /dev/ttyUSB1
+              name: zigbee-device
+            - mountPath: /config
+              name: config
+            - mountPath: /etc/letsencrypt
+              name: certificates
+              readOnly: true
+
+      # pod-level volumes:
+      volumes:
+        - name: zigbee-device
+          hostPath:
+            path: /dev/ttyUSB1
+        - name: config
+          hostPath:
+            path: /mnt/thedatapool/app-data/home-assistant
+        - name: certificates
+          hostPath:
+            path: /mnt/thedatapool/app-data/letsencrypt

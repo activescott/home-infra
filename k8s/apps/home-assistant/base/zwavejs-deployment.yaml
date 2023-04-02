@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zwavejs
+  namespace: home-assistant
+  labels:
+    app: home-assistant
+    role: zwavejs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: home-assistant
+      role: zwavejs
+  template:
+    metadata:
+      labels:
+        app: home-assistant
+        role: zwavejs
+    spec:
+      containers:
+        # docs at https://zwave-js.github.io/zwavejs2mqtt/#/
+        # repo at https://github.com/zwave-js/zwavejs2mqtt
+        # container at https://hub.docker.com/r/zwavejs/zwavejs2mqtt
+        # TODO: Transition to https://hub.docker.com/r/zwavejs/zwave-js-ui per https://community.home-assistant.io/t/psa-zwavejs2mqtt-has-been-renamed-to-z-wave-js-ui/463605
+        - name: zwavejs
+          image: zwavejs/zwavejs2mqtt:6.15.2
+          securityContext:
+            privileged: true
+          env:
+            # env docs at https://zwave-js.github.io/zwavejs2mqtt/#/guide/env-vars?id=environment-variables
+            - name: SESSION_SECRET
+              value: "ASWsessionSECRET"
+            # log times and dates to match your timezone instead of UTC
+            - name: TZ
+              value: "US/Pacific"
+
+          volumeMounts:
+            - mountPath: /dev/zwave
+              name: zwave-device
+            - mountPath: /usr/src/app/store
+              name: zwavejs-data
+
+          ports:
+            # port for web interface
+            - name: web-ui
+              containerPort: 8091
+            # port for Z-Wave JS websocket server
+            - name: websocket
+              containerPort: 3000
+
+      # pod-level volumes:
+      volumes:
+        - name: zwave-device
+          hostPath:
+            path: "/dev/serial/by-id/usb-Silicon_Labs_HubZ_Smart_Home_Controller_C1301B96-if00-port0"
+            #type: BlockDevice
+        # zwavejs2mqtt data store
+        - name: zwavejs-data
+          hostPath:
+            path: /mnt/thedatapool/app-data/home-assistant-zwavejs2mqtt/store
