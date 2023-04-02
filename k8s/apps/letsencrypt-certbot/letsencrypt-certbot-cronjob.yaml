@@ -1,0 +1,46 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: letsencrypt-certbot
+spec:
+  # daily at 11PM
+  schedule: "0 23 * * *"
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 120
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: certbot
+              image: certbot/dns-cloudflare:v2.4.0
+              imagePullPolicy: IfNotPresent
+              # Certbot command-line options: https://certbot.eff.org/docs/using.html#certbot-command-line-options
+              command: ["certbot"]
+              args:
+                - certonly
+                - -d
+                - "*.activescott.com"
+                - --dns-cloudflare
+                - --dns-cloudflare-credentials
+                - /etc/letsencrypt/cloudflare-secret.ini
+                - --non-interactive
+                - --agree-tos
+                - --email
+                - scott+certbot@willeke.com
+
+              # container-level volume mounts:
+              volumeMounts:
+                - mountPath: /etc/letsencrypt
+                  name: letsencrypt
+                - mountPath: /var/log/letsencrypt
+                  name: letsencrypt-logs
+
+          # pod-level volumes:
+          volumes:
+            - name: letsencrypt
+              hostPath:
+                path: /mnt/thedatapool/app-data/letsencrypt
+            - name: letsencrypt-logs
+              hostPath:
+                path: /mnt/thedatapool/app-data/letsencrypt-logs
