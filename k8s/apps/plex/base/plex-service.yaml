@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex
+  namespace: plex
+  labels:
+    app: plex
+spec:
+  type: LoadBalancer
+  ports:
+    # 32400:32400/tcp
+    - name: tcp32400
+      port: 32400
+      protocol: TCP
+    # 3005:3005/tcp
+    - name: tcp3005
+      port: 3005
+      protocol: TCP
+    # 8324:8324/tcp
+    - name: tcp8324
+      port: 8324
+      protocol: TCP
+    # 32469:32469/tcp
+    - name: tcp32469
+      port: 32469
+      protocol: TCP
+    # 1900:1900/udp
+    - name: udp1900
+      port: 1900
+      protocol: UDP
+    # 32410:32410/udp
+    - name: udp32410
+      port: 32410
+      protocol: UDP
+    # 32412:32412/udp
+    - name: udp32412
+      port: 32412
+      protocol: UDP
+    # 32413:32413/udp
+    - name: udp32413
+      port: 32413
+      protocol: UDP
+    # 32414:32414/udp
+    - name: udp32414
+      port: 32414
+      protocol: UDP
+  selector:
+    app: plex

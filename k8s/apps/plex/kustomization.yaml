@@ -1,0 +1,10 @@
+resources:
+  - ./plex-namespace.yaml
+  - ./base/plex-statefulset.yaml
+  - ./base/plex-service.yaml
+
+buildMetadata: [managedByLabel]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize

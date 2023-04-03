@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: plex
+  namespace: plex
+  labels:
+    app: plex
+spec:
+  serviceName: plex
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      containers:
+        # more plex container info at https://github.com/plexinc/pms-docker
+        - name: plex
+          image: plexinc/pms-docker:1.31.1.6782-77dfff442
+          securityContext:
+            # needed for /dev/dri device access
+            privileged: true
+
+          ports:
+            # 32400:32400/tcp
+            - containerPort: 8123
+              protocol: TCP
+            # 3005:3005/tcp
+            - containerPort: 3005
+              protocol: TCP
+            # 8324:8324/tcp
+            - containerPort: 8324
+              protocol: TCP
+            # 32469:32469/tcp
+            - containerPort: 32469
+              protocol: TCP
+            # 1900:1900/udp
+            - containerPort: 1900
+              protocol: UDP
+            # 32410:32410/udp
+            - containerPort: 32410
+              protocol: UDP
+            # 32412:32412/udp
+            - containerPort: 32412
+              protocol: UDP
+            # 32413:32413/udp
+            - containerPort: 32413
+              protocol: UDP
+            # 32414:32414/udp
+            - containerPort: 32414
+              protocol: UDP
+
+          env:
+            # env docs at https://zwave-js.github.io/zwavejs2mqtt/#/guide/env-vars?id=environment-variables
+            - name: TZ
+              value: "US/Pacific"
+            - name: ADVERTISE_IP
+              value: http://10.1.111.10:32400/
+            ###########################################################################
+            # TODO: Get a new PLEX_CLAIM code when setting up new instance/config dir
+            #       at https://www.plex.tv/claim/
+            - name: PLEX_CLAIM
+              # NOTE: these values expire every ~4 minutes and are only needed on first creation of container
+              value: "claim-Xygbekczsp_q8QCtFY_g"
+
+          # container-level volume mounts:
+          volumeMounts:
+            # Intel Quick Sync hardware acceleration for plex:
+            # - https://github.com/plexinc/pms-docker#intel-quick-sync-hardware-transcoding-support
+            # I5-13600K has ot: https://www.intel.com/content/www/us/en/products/sku/230493/intel-core-i513600k-processor-24m-cache-up-to-5-10-ghz/specifications.html
+            - mountPath: /dev/dri
+              name: intel-quick-sync
+            - mountPath: /config
+              name: plex-config
+            - mountPath: /transcode
+              name: transcode
+            - mountPath: /data/Audiobooks
+              name: audiobooks
+            - mountPath: /data/Music
+              name: music
+            - mountPath: /data/Movies
+              name: movies
+            - mountPath: /data/TV-Shows
+              name: tv-shows
+
+      # pod-level volumes:
+      volumes:
+        - name: intel-quick-sync
+          hostPath:
+            path: /dev/dri
+        - name: plex-config
+          hostPath:
+            path: /mnt/thedatapool/app-data/plex/config
+        - name: transcode
+          emptyDir:
+            sizeLimit: 100Gi
+        - name: audiobooks
+          hostPath:
+            path: /mnt/thedatapool/audio/Audiobooks
+        - name: music
+          hostPath:
+            path: /mnt/thedatapool/audio/Music
+        - name: movies
+          hostPath:
+            path: /mnt/thedatapool/video/Movies
+        - name: tv-shows
+          hostPath:
+            path: /mnt/thedatapool/video/TV-Shows
