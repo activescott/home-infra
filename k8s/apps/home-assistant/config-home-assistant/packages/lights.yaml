@@ -9,25 +9,25 @@
 light:
   - platform: switch
     name: Dining Table Light Switch Light
-    entity_id: switch.z_wave_dining_table_light
+    entity_id: switch.dining_table_light
   - platform: switch
     name: Hall Light Switch Light
-    entity_id: switch.z_wave_hall_light_switch
+    entity_id: switch.hallway_light_switch_device
   - platform: switch
     name: Kitchen Light Switch Light
-    entity_id: switch.z_wave_kitchen_main_light
+    entity_id: switch.kitchen_light
   - platform: switch
     name: Kitchen Sink Light Switch Light
-    entity_id: switch.z_wave_kitchen_sink_light
+    entity_id: switch.kitchen_sink_light_device
   - platform: switch
     name: Entryway Light Switch Light
-    entity_id: switch.z_wave_entryway_light
+    entity_id: switch.entryway_light
   - platform: switch
     name: Deck Outdoor Light West
-    entity_id: switch.z_wave_deck_outdoor_light_west
+    entity_id: switch.deck_outdoor_light_west
   - platform: switch
     name: Front Outdoor Light East
-    entity_id: switch.z_wave_front_outdoor_light_east
+    entity_id: switch.front_outdoor_light_east
   # this one isn't a zooz but same deal: z-wave presents it as a switch and I want to treat it like a light too:
   - platform: switch
     name: "Momma's Desk Lamp Light"
@@ -43,7 +43,7 @@ light:
     unique_id: common_area_lights_group
     entities:
       - light.dining_table_light_switch_light
-      - light.z_wave_great_room_track_light_dimmer_switch
+      - light.great_room_track_lighting
       - light.hall_light_switch_light
       - light.kitchen_light_switch_light
       - light.kitchen_sink_light_switch_light

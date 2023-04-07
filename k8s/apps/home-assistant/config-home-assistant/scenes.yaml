@@ -7,7 +7,7 @@
       - onoff
       entity_id:
       - light.dining_table_light_switch_light
-      - light.z_wave_great_room_track_light_dimmer_switch
+      - light.great_room_track_lighting
       - light.hall_light_switch_light
       - light.kitchen_light_switch_light
       - light.kitchen_sink_light_switch_light
@@ -23,16 +23,16 @@
 - id: '1625024157942'
   name: TV Lights
   entities:
-    switch.z_wave_dining_table_light:
+    switch.dining_table_light:
       friendly_name: Dining Table Light
       state: 'off'
-    switch.z_wave_kitchen_main_light:
+    switch.kitchen_light:
       friendly_name: Kitchen Main Light
       state: 'off'
-    switch.z_wave_kitchen_sink_light:
+    switch.kitchen_sink_light_device:
       friendly_name: Kitchen Sink Light
       state: 'off'
-    light.z_wave_great_room_track_light_dimmer_switch:
+    light.great_room_track_lighting:
       supported_color_modes:
       - brightness
       color_mode: brightness
@@ -40,10 +40,10 @@
       friendly_name: Great Room Track Light
       supported_features: 32
       state: 'on'
-    switch.z_wave_entryway_light:
+    switch.entryway_light:
       friendly_name: Entryway Light
       state: 'off'
-    switch.z_wave_hall_light_switch:
+    switch.hallway_light_switch_device:
       friendly_name: Hallway Light Switch
       state: 'off'
   icon: mdi:television-shimmer
@@ -51,7 +51,7 @@
 - id: '1668915560421'
   name: Great Room Bright
   entities:
-    light.z_wave_great_room_track_light_dimmer_switch:
+    light.great_room_track_lighting:
       supported_color_modes:
       - brightness
       color_mode: brightness

@@ -145,7 +145,7 @@
   description: ''
   trigger:
   - platform: state
-    entity_id: light.z_wave_great_room_track_light_dimmer_switch
+    entity_id: light.great_room_track_lighting
     from: 'off'
     to: 'on'
   condition:
@@ -153,13 +153,13 @@
     entity_id: sun.sun
     state: above_horizon
   - condition: numeric_state
-    entity_id: light.z_wave_great_room_track_light_dimmer_switch
+    entity_id: light.great_room_track_lighting
     attribute: brightness
     below: '254'
   action:
   - service: light.turn_on
     target:
-      entity_id: light.z_wave_great_room_track_light_dimmer_switch
+      entity_id: light.great_room_track_lighting
     data:
       brightness: 255
   mode: single
@@ -181,10 +181,10 @@
       minutes: '{{ range(1, 30) | random }}'
   - service: script.random_toggle_light
     data:
-      toggle_entity: light.z_wave_great_room_track_light_dimmer
+      toggle_entity: light.great_room_track_light
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.z_wave_dining_table_light
+      toggle_entity: switch.dining_table_light
   - service: script.random_toggle_switch
     data:
       toggle_entity: switch.micahs_desk_lamp_on_off
@@ -207,12 +207,12 @@
   - delay: '{{ range(1, 30) | random }}'
   - service: light.turn_off
     target:
-      entity_id: light.z_wave_great_room_track_light_dimmer
+      entity_id: light.great_room_track_light
   - service: switch.turn_off
     target:
       entity_id:
-      - switch.z_wave_dining_table_light
-      - switch.z_wave_kitchen_main_light
+      - switch.dining_table_light
+      - switch.kitchen_light
       - switch.micahs_desk_lamp_on_off
       - switch.mommas_desk_lamp_on_off
   mode: single
