@@ -7,31 +7,31 @@
       device_class: garage
       friendly_name: "Garage Door"
       position_template: >-
-        {% if states('binary_sensor.garage_door_sensor_device_access_control_window_door_is_open') == "off" %}
+        {% if states('binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open') == "off" %}
           0
         {% else %}
           100
         {% endif %}
       open_cover:
         - condition: state
-          entity_id: binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
+          entity_id: binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open
           state: "off"
         - service: switch.toggle
           target:
-            entity_id: switch.zwave_garage_relay
+            entity_id: switch.garage_relay
       close_cover:
         - condition: state
-          entity_id: binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
+          entity_id: binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open
           state: "on"
         - service: switch.toggle
           target:
-            entity_id: switch.zwave_garage_relay
+            entity_id: switch.garage_relay
       stop_cover:
         service: switch.toggle
         target:
-          entity_id: switch.zwave_garage_relay
+          entity_id: switch.garage_relay
       icon_template: >-
-        {% if states('binary_sensor.garage_door_sensor_device_access_control_window_door_is_open') == "off" %}
+        {% if states('binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open') == "off" %}
           mdi:garage
         {% else %}
           mdi:garage-open

@@ -18,7 +18,7 @@ binary_sensor:
       - binary_sensor.east_bedroom_window_jonah_s
       - binary_sensor.west_bedroom_window_micah_s
       - binary_sensor.laundry_window
-      - binary_sensor.garage_door_sensor_device_access_control_window_door_is_open
+      - binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open
 
   - platform: group
     name: Motion Sensors

@@ -1,7 +1,7 @@
 # see https://www.home-assistant.io/docs/configuration/customizing-devices
 
 ########## Make Garage Door Sensor Appear as Garage ########## 
-binary_sensor.garage_door_sensor_device_access_control_window_door_is_open:
+binary_sensor.ecolink_garage_tilt_sensor_access_control_window_door_is_open:
   device_class: garage_door
   friendly_name: 'Garage Door Sensor'
 
