@@ -117,7 +117,7 @@
   trigger:
   - platform: state
     entity_id:
-    - binary_sensor.front_door_deck
+    - binary_sensor.front_door
     - binary_sensor.kitchen_door
     - binary_sensor.office_sliding_door
     - binary_sensor.living_room_window
