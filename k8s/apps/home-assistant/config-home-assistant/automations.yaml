@@ -187,10 +187,10 @@
       toggle_entity: switch.dining_table_light
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.micahs_desk_lamp_on_off
+      toggle_entity: switch.innr_sp_224_switch_2
   - service: script.random_toggle_switch
     data:
-      toggle_entity: switch.mommas_desk_lamp_on_off
+      toggle_entity: switch.innr_sp_224_switch
   mode: single
 - id: '1625885299386'
   alias: Vacation Lights Off
@@ -213,8 +213,8 @@
       entity_id:
       - switch.dining_table_light
       - switch.kitchen_light
-      - switch.micahs_desk_lamp_on_off
-      - switch.mommas_desk_lamp_on_off
+      - switch.innr_sp_224_switch_2
+      - switch.innr_sp_224_switch
   mode: single
 - id: '1635223858648'
   alias: Turn outdoor lights off at dawn
@@ -260,7 +260,7 @@
   trigger:
   - platform: state
     entity_id:
-    - switch.mommas_desk_lamp_on_off
+    - switch.innr_sp_224_switch
     from: 'on'
     to: 'off'
   condition: []
@@ -273,7 +273,7 @@
   - service: switch.turn_on
     data: {}
     target:
-      entity_id: switch.mommas_desk_lamp_on_off
+      entity_id: switch.innr_sp_224_switch
   mode: single
 - id: "4142937618986"
   alias: "Backup Home Assistant every night at 3 AM"

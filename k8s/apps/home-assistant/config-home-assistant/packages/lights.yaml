@@ -31,10 +31,10 @@ light:
   # this one isn't a zooz but same deal: z-wave presents it as a switch and I want to treat it like a light too:
   - platform: switch
     name: "Momma's Desk Lamp Light"
-    entity_id: switch.mommas_desk_lamp_on_off
+    entity_id: switch.innr_sp_224_switch
   - platform: switch
     name: "Micah's Desk Lamp Light"
-    entity_id: switch.micahs_desk_lamp_on_off
+    entity_id: switch.innr_sp_224_switch_2
 
   ##################################
   ##### Now expose some groups #####
