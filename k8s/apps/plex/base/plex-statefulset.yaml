@@ -64,7 +64,14 @@ spec:
             #       at https://www.plex.tv/claim/
             - name: PLEX_CLAIM
               # NOTE: these values expire every ~4 minutes and are only needed on first creation of container
-              value: "claim-Xygbekczsp_q8QCtFY_g"
+              value: ""
+            # Make plex run as a user recognized on the host so that the file permissions work.
+            # see https://hub.docker.com/r/plexinc/pms-docker
+            # and https://support.plex.tv/articles/200288596-linux-permissions-guide/
+            - name: PLEX_UID
+              value: "3003"
+            - name: PLEX_GID
+              value: "3003"
 
           # container-level volume mounts:
           volumeMounts:
