@@ -14,17 +14,17 @@ chown -R plex:plex /mnt/thedatapool/video
 # fix directories:
 find /mnt/thedatapool/audio \
   -type d \
-  -exec chmod 755 {} ;;
+  -exec chmod 755 {} \;
 
 find /mnt/thedatapool/video \
   -type d \
-  -exec chmod 755 {} ;;
+  -exec chmod 755 {} \;
 
 # fix files:
 find /mnt/thedatapool/audio \
   -type f \
-  -exec chmod 644 {} ;;
+  -exec chmod 644 {} \;
 
 find /mnt/thedatapool/video \
   -type f \
-  -exec chmod 644 {} ;;
+  -exec chmod 644 {} \;
