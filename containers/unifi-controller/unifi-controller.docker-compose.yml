@@ -10,6 +10,7 @@ services:
     volumes:
       - /share/CACHEDEV1_DATA/app-data/unifi-controller:/config
     # UniFi Network - Required Ports Reference: https://help.ui.com/hc/en-us/articles/218506997-UniFi-Network-Required-Ports-Reference
+    # https://docs.linuxserver.io/images/docker-unifi-controller
     #ports:
     #  - 3478:3478/udp
     #  - 10001:10001/udp

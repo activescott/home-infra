@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: photoprism-service
+  labels:
+    app: photoprism
+spec:
+  # Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster
+  # We expose it externally via an Ingress so that we can match requested domain/url to map here.
+  type: ClusterIP
+  ports:
+    - name: web-ui
+      port: 80
+      targetPort: 2342
+  selector:
+    app: photoprism
+    role: photoprism

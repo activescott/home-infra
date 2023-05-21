@@ -1,0 +1,71 @@
+resources:
+  - ./namespace.yaml
+
+# Kustomize helmCharts: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_
+helmCharts:
+- name: traefik
+  repo: https://traefik.github.io/charts
+  version: v23.0.1
+  namespace: traefik
+  # Traefik helm chart at https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
+  valuesInline:
+    rbac:
+      enabled: true
+      #namespaced: false # false = allow traefik to be used across namespaces
+    ports:
+      websecure:
+        tls:
+          enabled: true
+    providers:
+      kubernetesIngress:
+        publishedService:
+          enabled: true 
+    ## TLS ##
+    
+    # mounting default cert vols like this in k8s just seemed ignored.
+    #  Add volume to the pod; make available to containers:
+    #deployment:
+    #  additionalVolumes:
+    #    - name: cert-activescott-com
+    #      hostPath:
+    #        path: /mnt/thedatapool/app-data/letsencrypt
+    #        type: Directory
+    # now add the volumeMount to the traefik container
+    #additionalVolumeMounts:
+    #  - name: cert-activescott-com
+    #    mountPath: /etc/letsencrypt
+    #    readOnly: true
+    
+    ## Set TLS at the entrypoint
+    ## https://doc.traefik.io/traefik/routing/entrypoints/#tls
+    tls:
+      enabled: true    
+      # setting certificates from files doesn't work. Docs said somewhere it's not permitted in k8s.
+      #certificates:
+      #  - certFile: /etc/letsencrypt/live/activescott.com/fullchain.pem
+      #    keyFile: /etc/letsencrypt/live/activescott.com/privkey.pem
+      
+      # apparently required to prevent error "No store is defined to add the certificate"?
+      stores:
+        default: {}
+
+    ## Disable IngressRoute CRD for the traefik dashboard:
+    ingressRoute:
+      dashboard:
+        enabled: false
+    ## LOGS ##
+    logs:
+      general:
+        # By default, the level is set to ERROR.
+        # -- Alternative logging levels are DEBUG, PANIC, FATAL, ERROR, WARN, and INFO.
+        level: DEBUG
+      access:
+        # -- To enable access logs
+        enabled: false
+namespace: traefik
+
+buildMetadata: [managedByLabel]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize

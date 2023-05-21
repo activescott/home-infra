@@ -1,0 +1,24 @@
+# NOTE: We use ingress here rather than a simple service so we can route traffic
+#   based on hostname and not only IP. Ingress also has the advantage of being
+#   able to serve TLS.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: photoprism-ingress
+spec:
+  tls:
+  - hosts:
+      - photos.activescott.com
+    secretName: cert-activescott-com
+  rules:
+  - host: photos.activescott.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: photoprism-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-ui

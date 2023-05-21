@@ -1,3 +1,5 @@
 # ignore the whole directory since home-assistant reformats them anyway and it does it in way prettier doesn't support
 k8s/apps/home-assistant/config-home-assistant
 k8s/apps/home-assistant/config-home-assistant/www/plugins/auto-entities/
+# because prettier seems to indent arrays two far for kubernetes?
+k8s/apps/*

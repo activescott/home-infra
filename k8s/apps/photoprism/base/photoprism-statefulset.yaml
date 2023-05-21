@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: photoprism-app
+  labels:
+    app: photoprism
+    role: photoprism
+spec:
+  serviceName: photoprism
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photoprism
+      role: photoprism
+  template:
+    metadata:
+      labels:
+        app: photoprism
+        role: photoprism
+    spec:
+      containers:
+      # documentation : https://docs.photoprism.app/getting-started/docker-compose/
+      - name: photoprism
+        image: photoprism/photoprism:latest
+        env:
+        - name: PHOTOPRISM_ADMIN_PASSWORD
+          value: "insecure" # INITIAL PASSWORD FOR "admin" USER, MINIMUM 8 CHARACTERS
+        - name: PHOTOPRISM_AUTH_MODE
+          value: "password" # authentication mode (public, password)
+        - name: PHOTOPRISM_SITE_URL
+          value: "https://photos.activescott.com/" # public server URL incl http:// or https:// and /path, :port is optional
+        - name: PHOTOPRISM_ORIGINALS_LIMIT
+          value: "5000" # file size limit for originals in MB (increase for high-res video)
+        - name: PHOTOPRISM_HTTP_COMPRESSION
+          value: "gzip" # improves transfer speed and bandwidth utilization (none or gzip)
+        - name: PHOTOPRISM_LOG_LEVEL
+          value: "info" # log level: trace, debug, info, warning, error, fatal, or panic
+        - name: PHOTOPRISM_READONLY
+          value: "false" # do not modify originaals directory (reduced functionality)
+        - name: PHOTOPRISM_EXPERIMENTAL
+          value: "false" # enables experimental features
+        - name: PHOTOPRISM_DISABLE_CHOWN
+          value: "false" # disables updating storage permissions via chmod and chown on startup
+        - name: PHOTOPRISM_DISABLE_WEBDAV
+          value: "false" # disables built-in WebDAV server
+        - name: PHOTOPRISM_DISABLE_SETTINGS
+          value: "false" # disables settings UI and API
+        - name: PHOTOPRISM_DISABLE_TENSORFLOW
+          value: "false" # disables all features depending on TensorFlow
+        - name: PHOTOPRISM_DISABLE_FACES
+          value: "false" # disables face detection and recognition (requires TensorFlow)
+        - name: PHOTOPRISM_DISABLE_CLASSIFICATION
+          value: "false" # disables image classification (requires TensorFlow)
+        - name: PHOTOPRISM_DISABLE_RAW
+          value: "false" # disables indexing and conversion of RAW files
+        - name: PHOTOPRISM_RAW_PRESETS
+          value: "false" # enables applying user presets when converting RAW files (reduces performance)
+        - name: PHOTOPRISM_JPEG_QUALITY
+          value: "85" # a higher value increases the quality and file size of JPEG images and thumbnails (25-100)
+        - name: PHOTOPRISM_DETECT_NSFW
+          value: "false" # automatically flags photos as private that MAY be offensive (requires TensorFlow)
+        - name: PHOTOPRISM_UPLOAD_NSFW
+          value: "true" # allows uploads that MAY be offensive (no effect without TensorFlow)
+        - name: PHOTOPRISM_DATABASE_DRIVER
+          value: "mysql" # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
+        - name: PHOTOPRISM_DATABASE_SERVER
+          value: "mariadb:3306" # MariaDB or MySQL database server (hostname:port)
+        - name: PHOTOPRISM_DATABASE_NAME
+          value: "photoprism" # MariaDB or MySQL database schema name
+        - name: PHOTOPRISM_DATABASE_USER
+          value: "photoprism" # MariaDB or MySQL database user name
+        - name: PHOTOPRISM_DATABASE_PASSWORD
+          value: "insecure" # MariaDB or MySQL database user password
+        - name: PHOTOPRISM_SITE_CAPTION
+          value: "AI-Powered Photos App"
+        - name: PHOTOPRISM_SITE_DESCRIPTION
+          value: "" # meta site description
+        - name: PHOTOPRISM_SITE_AUTHOR
+          value: "" # meta site author
+        ## Run/install on first startup (options: update gpu tensorflow davfs clitools clean):
+        # PHOTOPRISM_INIT: "gpu tensorflow"
+        ## Hardware Video Transcoding (for sponsors only due to high maintenance and support costs):
+        - name: PHOTOPRISM_FFMPEG_ENCODER
+          value: "intel" # FFmpeg encoder ("software", "intel", "nvidia", "apple", "raspberry")
+        # PHOTOPRISM_FFMPEG_BITRATE: "32"              # FFmpeg encoding bitrate limit in Mbit/s (default: 50)
+        ## Run as a non-root user after initialization (supported: 0, 33, 50-99, 500-600, and 900-1200):
+        #- name: PHOTOPRISM_UID
+        #  value: "3004"
+        #- name: PHOTOPRISM_GID
+        #  value: "3004"
+        # PHOTOPRISM_UMASK: 0000
+        - name: PHOTOPRISM_SPONSOR
+          value: "true"
+        ## Start as non-root user before initialization (supported: 0, 33, 50-99, 500-600, and 900-1200):
+          # user: "1000:1000"
+
+        # working dir set in the docker-compose file
+        workingDir: "/photoprism"
+
+        volumeMounts:
+          # Share hardware devices with FFmpeg and TensorFlow (optional):
+          #  Intel Quick Sync hardware acceleration is in the photoprism docker-compose file:
+          # I5-13600K has it: https://www.intel.com/content/www/us/en/products/sku/230493/intel-core-i513600k-processor-24m-cache-up-to-5-10-ghz/specifications.html
+          - mountPath: /dev/dri
+            name: intel-quick-sync
+
+          # Original media files (DO NOT REMOVE)
+          - mountPath: /photoprism/originals
+            name: originals
+          # *Optional* base folder from which files can be imported to originals
+          # note this doesn't matter much other than it allows me to dump file into it on the server
+          - mountPath: /photoprism/import
+            name: import
+
+        ports:
+          - name: web-ui
+            containerPort: 2342
+
+      securityContext:
+        #runAsUser: 3004
+        #runAsGroup: 3004
+        fsGroup: 1000
+        # seccomp and AppArmor are explicitly unconfined in
+        # docker-compose and recommended to disable in photoprism docs:
+        # https://docs.photoprism.app/getting-started/docker-compose/
+        seccompProfile:
+          type: "Unconfined"
+
+      # pod-level volumes:
+      volumes:
+        - name: intel-quick-sync
+          hostPath:
+            path: /dev/dri
+        - name: import
+          hostPath:
+            path: /mnt/thedatapool/photos/import
+        - name: originals
+          hostPath:
+            path: /mnt/thedatapool/photos/organized-originals

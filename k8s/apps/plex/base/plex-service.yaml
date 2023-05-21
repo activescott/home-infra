@@ -8,6 +8,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
+    # NOTE: can use http://<node-ip>:32400/web/ to access the bundled web app
     # 32400:32400/tcp
     - name: tcp32400
       port: 32400

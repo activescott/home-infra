@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  labels:
+    app: photoprism
+    role: mariadb
+spec:
+  serviceName: mariadb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: photoprism
+      role: mariadb
+  template:
+    metadata:
+      labels:
+        app: photoprism
+        role: mariadb
+    spec:
+      containers:
+        # documentation : https://docs.photoprism.app/getting-started/docker-compose/
+        - name: mariadb
+          image: mariadb:10.8
+          command:
+            - mysqld
+            - --innodb-buffer-pool-size=512M
+            - --transaction-isolation=READ-COMMITTED
+            - --character-set-server=utf8mb4
+            - --collation-server=utf8mb4_unicode_ci
+            - --max-connections=512
+            - --innodb-rollback-on-timeout=OFF
+            - --innodb-lock-wait-timeout=120
+
+          ports:
+            - containerPort: 3306
+              name: mariadb-port
+
+          env:
+            - name: MARIADB_AUTO_UPGRADE
+              value: "1"
+            - name: MARIADB_INITDB_SKIP_TZINFO
+              value: "1"
+            - name: MARIADB_DATABASE
+              value: "photoprism"
+            - name: MARIADB_USER
+              value: "photoprism"
+            - name: MARIADB_PASSWORD
+              value: "insecure"
+            - name: MARIADB_ROOT_PASSWORD
+              value: "insecure"
+
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: var-lib-mysql
+
+          securityContext:
+            # make it non-root (this user created on linux host and has permissions to files):
+            runAsUser: 3004
+            runAsGroup: 3004
+
+      # pod-level volumes:
+      volumes:
+        - name: var-lib-mysql
+          hostPath:
+            path: /mnt/thedatapool/app-data/photoprism/var-lib-mysql

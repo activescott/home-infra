@@ -1,0 +1,13 @@
+resources:
+  - ./namespace.yaml
+  - ./base/secret-editor-sa-role-and-binding.yaml
+  - ./base/letsencrypt-secret-loader-cronjob.yaml
+
+# we want some of the resources to be created in a different namespace!
+#namespace: letsencrypt-secret-loader
+
+buildMetadata: [managedByLabel]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize
