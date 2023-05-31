@@ -1,0 +1,7 @@
+resources:
+- ./photoprism-statefulset.yaml
+- ./mariadb-service.yaml
+- ./photoprism-service.yaml
+- ./photoprism-ingress.yaml
+- ./mariadb-statefulset.yaml
+- ../../letsencrypt-secret-loader

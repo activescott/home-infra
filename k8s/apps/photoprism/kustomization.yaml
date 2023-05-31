@@ -1,15 +1,7 @@
 resources:
-  - ./namespace.yaml
-  - ./base/mariadb-statefulset.yaml
-  - ./base/mariadb-service.yaml
+  - ./overlays/scott
 
-  - ./base/photoprism-statefulset.yaml
-  - ./base/photoprism-service.yaml
-  - ./base/photoprism-ingress.yaml
-
-namespace: photoprism
-
-buildMetadata: [managedByLabel]
+buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
 
 labels:
   - pairs:

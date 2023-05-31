@@ -63,4 +63,4 @@ spec:
       volumes:
         - name: var-lib-mysql
           hostPath:
-            path: /mnt/thedatapool/app-data/photoprism/var-lib-mysql
+            path: /PATCH_WITH_KUSTOMIZE # e.g /mnt/thedatapool/app-data/photoprism-example/mariadb/var-lib-mysql

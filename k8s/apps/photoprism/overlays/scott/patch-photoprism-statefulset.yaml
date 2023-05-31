@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: photoprism-app
+spec:
+  template:
+    spec:
+      containers:
+      # documentation : https://docs.photoprism.app/getting-started/docker-compose/
+      - name: photoprism
+        env:
+        - name: PHOTOPRISM_SITE_URL
+          value: "https://photos.activescott.com/" # public server URL incl http:// or https:// and /path, :port is optional
+        - name: PHOTOPRISM_DATABASE_SERVER
+          value: mariadb-scott:3306
+
+        - name: PHOTOPRISM_SITE_CAPTION
+          value: "Scott's Photos"
+        - name: PHOTOPRISM_SITE_TITLE
+          value: "Photos from Scott"
+        - name: PHOTOPRISM_SITE_DESCRIPTION
+          value: "Various photographs from Scott" # meta site description
+        - name: PHOTOPRISM_SITE_AUTHOR
+          value: "Scott Willeke" # meta site author
+
+      # pod-level volumes:
+      volumes:
+        - name: import
+          hostPath:
+            path: /mnt/thedatapool/photos/scott/import
+        - name: originals
+          hostPath:
+            path: /mnt/thedatapool/photos/scott/organized-originals
+        - name: storage
+          hostPath:
+            path: /mnt/thedatapool/app-data/photoprism-scott/app/storage

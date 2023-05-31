@@ -58,7 +58,7 @@ spec:
             - name: TZ
               value: "US/Pacific"
             - name: ADVERTISE_IP
-              value: http://10.1.111.10:32400/
+              value: http://10.1.111.20:32400/
             ###########################################################################
             # TODO: Get a new PLEX_CLAIM code when setting up new instance/config dir
             #       at https://www.plex.tv/claim/

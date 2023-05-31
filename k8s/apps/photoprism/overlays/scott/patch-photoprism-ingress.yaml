@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: photoprism-ingress
+spec:
+  tls:
+  - hosts:
+      - photos.activescott.com
+    secretName: cert-activescott-com
+  rules:
+  - host: photos.activescott.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: photoprism-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-ui

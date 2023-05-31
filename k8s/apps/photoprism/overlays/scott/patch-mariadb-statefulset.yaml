@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+spec:
+  template:
+    spec:
+      # pod-level volumes:
+      volumes:
+        - name: var-lib-mysql
+          hostPath:
+            path: /mnt/thedatapool/app-data/photoprism-scott/mariadb/var-lib-mysql

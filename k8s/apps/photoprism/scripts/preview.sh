@@ -6,4 +6,5 @@ RESOURCE_ROOT="$WORKSPACE_ROOT"
 
 set -x
 
-kubectl kustomize "$RESOURCE_ROOT" | kubectl apply -f -
+kubectl kustomize "$RESOURCE_ROOT"
+

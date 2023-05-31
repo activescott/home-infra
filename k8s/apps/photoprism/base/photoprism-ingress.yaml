@@ -7,11 +7,12 @@ metadata:
   name: photoprism-ingress
 spec:
   tls:
+  # TODO: The patches in kustomize are ugly here (the patch is basically the whole Ingress). This could probably be made cleaner using a configMap + configMapGenerator or something to grab these values from a simple property file or labels or something
   - hosts:
-      - photos.activescott.com
-    secretName: cert-activescott-com
+      - PATCH_WITH_KUSTOMIZE # e.g. photos.example.com
+    secretName: PATCH_WITH_KUSTOMIZE #e.g. cert-example-com
   rules:
-  - host: photos.activescott.com
+  - host: PATCH_WITH_KUSTOMIZE # e.g. photos.example.com
     http:
       paths:
       - path: /

@@ -15,6 +15,16 @@ The CronJob is scheduled to run once per day, and updates the Kubernetes Secret 
 
 ## Usage
 
-To use this as the cert we can use it in a service as follows:
+To use this as the cert we can use it in a service via a kustomize patch as follows:
 
-TODO: show ingress and rolebinding needed! See photoprism
+```
+resources:
+- ...
+- ../../letsencrypt-secret-loader
+
+namespace: my-apps-namespace
+
+```
+The key point here is to create the CronJob and it's associated ServiceAccount, role, and RoleBinding within your app's namespace. Then it will create the secret within your app's namespace and it will be accessible to your Ingress. 
+
+See photoprism!
