@@ -29,6 +29,10 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 
 # TODO:
 
+- [ ] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize
 - [ ] Flux!
+- [ ] switch remaining `hostPath` k8s volumes to PVs with `local` provisioner instead [1](https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local) [2](https://kubernetes.io/docs/concepts/storage/volumes/#local)
+- [ ] add metricserver to scrap metrics via prometheus
+- [ ] add email mailrelay host - port it from docker
 - [ ] Remote syslog server routed into kibana or similar.
 - [ ] Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?

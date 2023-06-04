@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+# load activescott.com tls secret for Ingress
+- ../../letsencrypt-secret-loader
+- ./mariadb-pv.yaml
+- ./nextcloud-pv.yaml
+- ./nextcloud-ingress.yaml
+
+# https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_helmchartinflationgenerator_
+helmCharts:
+- name: nextcloud
+  repo: https://nextcloud.github.io/helm/
+  version: 3.5.13
+  releaseName: nc
+  valuesFile: ./nextcloud-chart-values.yaml

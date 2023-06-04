@@ -1,0 +1,72 @@
+# Service Discovery Paths: https://docs.nextcloud.com/server/latest/admin_manual/issues/general_troubleshooting.html#service-discovery-label
+# K8S Ingress doesn't support rewriting by default. So Use Traefik middleware
+#
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: well-known-carddav
+spec:
+  #RewriteRule ^/\.well-known/carddav /nextcloud/remote.php/dav [R=301,L]
+  replacePathRegex:
+    regex: ^/.well-known/carddav
+    replacement: /nextcloud/remote.php/dav
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: well-known-caldav
+spec:
+  #RewriteRule ^/\.well-known/caldav /nextcloud/remote.php/dav [R=301,L]
+  replacePathRegex:
+    regex: ^/.well-known/caldav
+    replacement: /nextcloud/remote.php/dav
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: well-known-webfinger
+spec:
+  # RewriteRule ^/\.well-known/webfinger /nextcloud/index.php/.well-known/webfinger [R=301,L]
+  replacePathRegex:
+    regex: ^/.well-known/webfinger
+    replacement: /nextcloud/index.php/.well-known/webfinger
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: well-known-nodeinfo
+spec:
+  # RewriteRule ^/\.well-known/nodeinfo /nextcloud/index.php/.well-known/nodeinfo [R=301,L]
+  replacePathRegex:
+    regex: ^/.well-known/nodeinfo
+    replacement: /nextcloud/index.php/.well-known/nodeinfo
+---
+# NOTE: We use ingress here rather than a simple service so we can route traffic
+#   based on hostname and not only IP. Ingress also has the advantage of being
+#   able to serve TLS.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nextcloud-ingress
+  annotations:
+    # to reference the middleware use:  <middleware-namespace>-<middleware-name>@kubernetescrd
+    #   per https://doc.traefik.io/traefik/v2.2/middlewares/overview/#provider-namespace
+    traefik.ingress.kubernetes.io/router.middlewares: well-known-carddav@kubernetescrd,well-known-caldav@kubernetescrd,well-known-webfinger@kubernetescrd,well-known-nodeinfo@kubernetescrd
+spec:
+  tls:
+  # TODO: The patches in kustomize are ugly here (the patch is basically the whole Ingress). This could probably be made cleaner using a configMap + configMapGenerator or something to grab these values from a simple property file or labels or something
+  - hosts:
+      - PATCH_WITH_KUSTOMIZE # e.g. files.example.com
+    secretName: PATCH_WITH_KUSTOMIZE #e.g. cert-example-com
+  rules:
+  - host: PATCH_WITH_KUSTOMIZE # e.g. files.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nextcloud-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-ui

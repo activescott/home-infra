@@ -3,3 +3,5 @@ k8s/apps/home-assistant/config-home-assistant
 k8s/apps/home-assistant/config-home-assistant/www/plugins/auto-entities/
 # because prettier seems to indent arrays two far for kubernetes?
 k8s/apps/*
+# because code just formats it however it wants anyway:
+.vscode/settings.json

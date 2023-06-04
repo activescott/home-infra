@@ -1,9 +1,10 @@
 # but don't ever commit any secrets used in the config:
 /containers/home-assistant/config-home-assistant/secrets.yaml
 
-
 .secrets
-qnap/k8s/setup-k3s-on-qnap/cluster-dns-configmap-*.yaml
 
+.env.secret.*
+
+qnap/k8s/setup-k3s-on-qnap/cluster-dns-configmap-*.yaml
 
 node_modules/

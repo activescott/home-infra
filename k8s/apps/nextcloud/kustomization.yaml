@@ -1,0 +1,8 @@
+resources:
+  - ./overlays/nextcloud-prod
+
+buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
+
+labels:
+  - pairs:
+      deployedBy: scott-via-kustomize

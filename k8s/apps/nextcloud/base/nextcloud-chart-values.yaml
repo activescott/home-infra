@@ -1,0 +1,86 @@
+# see:
+# - https://github.com/nextcloud/helm/blob/main/charts/nextcloud/values.yaml
+# - https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html#
+
+nextcloud:
+  host: files.activescott.com
+  ## Use an existing secret
+  existingSecret:
+    enabled: true
+    secretName: nextcloud-admin-creds
+    usernameKey: nextcloud-username
+    passwordKey: nextcloud-password
+    tokenKey: nextcloud-token
+
+## Enable persistence using Persistent Volume Claims
+## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+##
+persistence:
+  # Nextcloud Data (/var/www/html)
+  enabled: true
+  ## A manually managed Persistent Volume and Claim
+  ## Requires persistence.enabled: true
+  ## If defined, PVC must be created manually before volume will be bound
+  existingClaim: nextcloud-pv
+  size: 1Ti
+  # NOTE: Can ise an additional pvc for the data directory rather than a subpath of the default PVC. See `nextcloudData`
+
+
+## Cronjob to execute Nextcloud background tasks
+## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron
+##
+cronjob:
+  enabled: true
+
+##
+## Whether to use internal sqlite database
+## https://github.com/nextcloud/helm/tree/main/charts/nextcloud#database-configurations
+internalDatabase:
+  enabled: false
+
+##
+## External database configuration
+##
+externalDatabase:
+  enabled: true
+  ## Supported database engines: mysql or postgresql
+  type: mysql
+
+  ## Database host
+  host: mariadb-nextcloud
+
+  ## Database name
+  database: nextcloud
+
+  ## Use a existing secret
+  existingSecret:
+    enabled: true
+    secretName: db-creds-for-nextcloud
+    usernameKey: db-username
+    passwordKey: db-password
+
+##
+## MariaDB chart configuration
+## ref: https://github.com/bitnami/charts/tree/main/bitnami/mariadb
+##
+mariadb:
+  ## Whether to deploy a mariadb server from the bitnami mariab db helm chart
+  # to satisfy the applications database requirements. if you want to deploy this bitnami mariadb, set this and externalDatabase to true
+  # To use an ALREADY DEPLOYED mariadb database, set this to false and configure the externalDatabase parameters
+  enabled: true
+
+  auth:
+    database: nextcloud
+    # Using existingSecret, auth.rootPassword, auth.password, and auth.replicationPassword will be ignored
+    # secret must contain the keys mariadb-root-password, mariadb-replication-password and mariadb-password
+    existingSecret: db-creds-for-mariadb
+  
+  ## Enable persistence using Persistent Volume Claims
+  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+  primary:
+    persistence:
+      enabled: true
+      # Use an existing Persistent Volume Claim (must be created ahead of time)
+      existingClaim: mariadb-pv
+      accessMode: ReadWriteOnce
+      size: 8Gi
