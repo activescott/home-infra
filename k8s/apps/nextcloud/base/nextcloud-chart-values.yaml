@@ -13,7 +13,6 @@ nextcloud:
     tokenKey: nextcloud-token
 
 ## Enable persistence using Persistent Volume Claims
-## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
 ##
 persistence:
   # Nextcloud Data (/var/www/html)
@@ -21,7 +20,7 @@ persistence:
   ## A manually managed Persistent Volume and Claim
   ## Requires persistence.enabled: true
   ## If defined, PVC must be created manually before volume will be bound
-  existingClaim: nextcloud-pv
+  existingClaim: nextcloud-pvc
   size: 1Ti
   # NOTE: Can ise an additional pvc for the data directory rather than a subpath of the default PVC. See `nextcloudData`
 
@@ -47,7 +46,7 @@ externalDatabase:
   type: mysql
 
   ## Database host
-  host: mariadb-nextcloud
+  host: mariadb
 
   ## Database name
   database: nextcloud
@@ -64,23 +63,5 @@ externalDatabase:
 ## ref: https://github.com/bitnami/charts/tree/main/bitnami/mariadb
 ##
 mariadb:
-  ## Whether to deploy a mariadb server from the bitnami mariab db helm chart
-  # to satisfy the applications database requirements. if you want to deploy this bitnami mariadb, set this and externalDatabase to true
   # To use an ALREADY DEPLOYED mariadb database, set this to false and configure the externalDatabase parameters
-  enabled: true
-
-  auth:
-    database: nextcloud
-    # Using existingSecret, auth.rootPassword, auth.password, and auth.replicationPassword will be ignored
-    # secret must contain the keys mariadb-root-password, mariadb-replication-password and mariadb-password
-    existingSecret: db-creds-for-mariadb
-  
-  ## Enable persistence using Persistent Volume Claims
-  ## ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
-  primary:
-    persistence:
-      enabled: true
-      # Use an existing Persistent Volume Claim (must be created ahead of time)
-      existingClaim: mariadb-pv
-      accessMode: ReadWriteOnce
-      size: 8Gi
+  enabled: false

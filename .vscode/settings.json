@@ -1,3 +1,9 @@
 {
-  "cSpell.words": ["KUSTOMIZE", "nextcloud", "statefulset", "thedatapool"]
+  "cSpell.words": [
+    "KUSTOMIZE",
+    "middlewares",
+    "nextcloud",
+    "statefulset",
+    "thedatapool"
+  ]
 }

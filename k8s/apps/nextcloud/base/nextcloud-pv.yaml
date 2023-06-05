@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   # https://kubernetes.io/docs/concepts/storage/volumes/#local
   local:
-    path: /mnt/thedatapool/app-data/nextcloud/app
+    path: /mnt/thedatapool/app-data/nextcloud/app-data
   # NOTE: must set a PersistentVolume nodeAffinity when using local volumes
   nodeAffinity:
     required:
@@ -21,3 +21,17 @@ spec:
           operator: In
           values:
           - ix-truenas
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nextcloud-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  # volumeName hard binds us to the PV above: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#reserving-a-persistentvolume
+  volumeName: nextcloud-pv
+  resources:
+    requests:
+      storage: 1Ti  

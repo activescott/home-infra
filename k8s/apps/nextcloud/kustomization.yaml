@@ -1,4 +1,5 @@
 resources:
+  - ./namespace.yaml
   - ./overlays/nextcloud-prod
 
 buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
@@ -6,3 +7,4 @@ buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
 labels:
   - pairs:
       deployedBy: scott-via-kustomize
+      app: nextcloud-prod

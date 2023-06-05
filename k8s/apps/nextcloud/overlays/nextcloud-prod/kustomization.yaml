@@ -1,45 +1,50 @@
 resources:
-- ./namespace.yaml
-- ../../base
-
+  - ../../base
 
 patches:
-# patch Ingress.tls hostname:
-- target:
-    kind: Ingress
-    name: nextcloud-ingress
-  patch: |-
-    - op: replace
-      path: /spec/tls/0/hosts/0
-      value: files.activescott.com
-# patch Ingress rules
-- target:
-    kind: Ingress
-    name: nextcloud-ingress
-  patch: |-
-    - op: replace
-      path: /spec/rules/0/host
-      value: files.activescott.com
-# super lame, but we have to add the K8S namespace to the traefik middlewares here (i.e. prefix each with "nextcloud-prod-")
-- target:
-    kind: Ingress
-    name: nextcloud-ingress
-  patch: |-
-    - op: replace
-      path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
-      value: nextcloud-prod-well-known-carddav@kubernetescrd,nextcloud-prod-well-known-caldav@kubernetescrd,nextcloud-prod-well-known-webfinger@kubernetescrd,nextcloud-prod-well-known-nodeinfo@kubernetescrd
-
+  - target:
+      kind: Ingress
+      name: nextcloud-ingress
+    patch: |-
+      # super lame of traefik, but we have to add the k8s namespace to the traefik middlewares here (i.e. prefix each with "nextcloud-prod-")
+      - op: replace
+        path: /metadata/annotations/traefik.ingress.kubernetes.io~1router.middlewares
+        value: nextcloud-prod-well-known-carddav@kubernetescrd,nextcloud-prod-well-known-caldav@kubernetescrd,nextcloud-prod-well-known-webfinger@kubernetescrd,nextcloud-prod-well-known-nodeinfo@kubernetescrd
+      # patch Ingress tls hostname:
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: files.activescott.com
+      # patch Ingress tls secret for cert:
+      - op: replace
+        path: /spec/tls/0/secretName
+        value: cert-activescott-com      
+      # patch Ingress rules
+      - op: replace
+        path: /spec/rules/0/host
+        value: files.activescott.com
+  # patch mariadb mount path (strategic-merge-style patch)
+  - patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: mariadb
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: data
+                hostPath:
+                  path: /mnt/thedatapool/app-data/nextcloud/mariadb-data
 
 secretGenerator:
-- name: db-creds-for-nextcloud
-  envs:
-  - .env.secret.db-creds-for-nextcloud
-- name: db-creds-for-mariadb
-  envs:
-  - .env.secret.db-creds-for-mariadb
-- name: nextcloud-admin-creds
-  envs:
-  - .env.secret.nextcloud-admin-creds
-
+  - name: nextcloud-admin-creds
+    envs:
+    - .env.secret.nextcloud-admin-creds
+  - name: db-creds-for-nextcloud
+    envs:
+    - .env.secret.db-creds-for-nextcloud
+  - name: mariadb-creds
+    envs:
+    - .env.secret.db-creds-for-mariadb
 
 namespace: nextcloud-prod
