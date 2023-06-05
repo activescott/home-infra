@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+  labels:
+    lib: mariadb
+    role: mariadb
+spec:
+  serviceName: mariadb
+  replicas: 1
+  selector:
+    matchLabels:
+      lib: mariadb
+      role: mariadb
+  template:
+    metadata:
+      labels:
+        lib: mariadb
+        role: mariadb
+    spec:
+      containers:
+        # documentation: https://hub.docker.com/_/mariadb
+        - name: mariadb
+          image: mariadb:10.8
+          ports:
+            - containerPort: 3306
+              name: mariadb-port
+
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-creds
+                  key: mariadb-root-password
+
+            - name: MARIADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-creds
+                  key: mariadb-user
+
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-creds
+                  key: mariadb-password
+
+            - name: MARIADB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-creds
+                  key: mariadb-database
+
+          volumeMounts:
+            - mountPath: "/var/lib/mysql"
+              name: data
+
+          #securityContext:
+          #  runAsNonRoot: true
+          #  runAsUser: 1001
+
+          livenessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  mysqladmin status -uroot -p"${password_aux}"
+            failureThreshold: 3
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+
+          readinessProbe:
+            exec:
+              command:
+                - /bin/bash
+                - -ec
+                - |
+                  password_aux="${MARIADB_ROOT_PASSWORD:-}"
+                  mysqladmin status -uroot -p"${password_aux}"
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+
+      # pod-level securityContext:
+      #securityContext:
+      #  # patch fsGroup to control the owner of files in the mounted directories.
+      #  #   i.e. create a group on the host/node and specify it here to make that group the owner/accessor of the files.
+      #  fsGroup: 1001
+
+      # pod-level volumes:
+      volumes:
+        - name: data
+          hostPath:
+            path: /PATCH_WITH_KUSTOMIZE # e.g /mnt/thedatapool/app-data/example-app/mariadb-data

@@ -7,6 +7,8 @@ helmCharts:
   repo: https://traefik.github.io/charts
   version: v23.0.1
   namespace: traefik
+  # traefik includes a `Middleware` CRD that we need
+  includeCRDs: true
   # Traefik helm chart at https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
   valuesInline:
     rbac:
@@ -20,8 +22,8 @@ helmCharts:
       kubernetesIngress:
         publishedService:
           enabled: true 
+
     ## TLS ##
-    
     # mounting default cert vols like this in k8s just seemed ignored.
     #  Add volume to the pod; make available to containers:
     #deployment:
@@ -49,7 +51,7 @@ helmCharts:
       stores:
         default: {}
 
-    ## Disable IngressRoute CRD for the traefik dashboard:
+    ## Disable route to the traefik dashboard:
     ingressRoute:
       dashboard:
         enabled: false
@@ -62,6 +64,7 @@ helmCharts:
       access:
         # -- To enable access logs
         enabled: false
+
 namespace: traefik
 
 buildMetadata: [managedByLabel]

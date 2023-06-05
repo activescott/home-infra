@@ -1,0 +1,26 @@
+resources:
+  - ./namespace.yaml
+  - ../../base
+
+# this configures most of mariadb:
+secretGenerator:
+  - name: mariadb-creds
+    envs:
+      - .env.secret.mariadb-creds
+
+patches:
+  # patch the mount path:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: mariadb
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: data
+                hostPath:
+                  path: /mnt/thedatapool/app-data/example-app/mariadb-data
+
+namespace: mariadb-example-app
