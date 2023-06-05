@@ -15,9 +15,14 @@ helmCharts:
       enabled: true
       #namespaced: false # false = allow traefik to be used across namespaces
     ports:
-      websecure:
+      websecure: # i.e. port 443
         tls:
           enabled: true
+      web: # i.e. port 80
+        # Port Redirections
+        # Added in 2.2, you can make permanent redirects via entrypoints.
+        # https://docs.traefik.io/routing/entrypoints/#redirection
+        redirectTo: websecure
     providers:
       kubernetesIngress:
         publishedService:
