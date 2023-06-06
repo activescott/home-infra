@@ -37,8 +37,12 @@ nextcloud:
           'OC\Preview\MarkDown',
           'OC\Preview\OpenDocument',
           'OC\Preview\Krita',
+          
           /* Now enable HEIC: */
           'OC\Preview\HEIC',
+
+          /* Now enable Movie (this didn't work for .mov w/ HEVC/H.265 ) */
+          'OC\Preview\Movie',
         ),
       );
 
