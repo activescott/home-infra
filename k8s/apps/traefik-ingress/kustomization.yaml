@@ -18,6 +18,11 @@ helmCharts:
       websecure: # i.e. port 443
         tls:
           enabled: true
+        ## -- Trust forwarded  headers information (X-Forwarded-*).
+        forwardedHeaders:
+          trustedIPs:
+            - 10.1.111.20
+          insecure: false
       web: # i.e. port 80
         # Port Redirections
         # Added in 2.2, you can make permanent redirects via entrypoints.

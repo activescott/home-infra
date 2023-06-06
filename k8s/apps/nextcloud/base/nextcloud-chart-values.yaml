@@ -11,7 +11,38 @@ nextcloud:
     usernameKey: nextcloud-username
     passwordKey: nextcloud-password
     tokenKey: nextcloud-token
+  configs:
+    proxy.config.php: |-
+      <?php
+      $CONFIG = array (
+        'trusted_proxies' => array(
+          0 => '127.0.0.1',
+          1 => '10.1.111.20',
+        ),
+        'overwriteprotocol' => 'https',
+      );
+    # https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/config_sample_php_parameters.html?highlight=enabledpreviewproviders#previews
+    previews.config.php: |-
+      <?php
+      $CONFIG = array (
+        'enabledPreviewProviders' => array(
+          /* Default List: (see config.sample.php) */
+          'OC\Preview\PNG',
+          'OC\Preview\JPEG',
+          'OC\Preview\GIF',
+          'OC\Preview\BMP',
+          'OC\Preview\XBitmap',
+          'OC\Preview\MP3',
+          'OC\Preview\TXT',
+          'OC\Preview\MarkDown',
+          'OC\Preview\OpenDocument',
+          'OC\Preview\Krita',
+          /* Now enable HEIC: */
+          'OC\Preview\HEIC',
+        ),
+      );
 
+    
 ## Enable persistence using Persistent Volume Claims
 ##
 persistence:
