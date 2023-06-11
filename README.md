@@ -29,6 +29,20 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 
 # TODO:
 
+- [ ] Setup photos.scott.willeke.com certs and ingress:
+
+  - [ ] Install and configure cert-maanager & configure with ACME on gDomains w/ tokens:
+
+    - set up ClusterIssuer for scott.willeke.com
+    - https://support.google.com/domains/answer/7630973?authuser=0&hl=en#acme_dns
+    - https://domains.google.com/registrar/willeke.com/dns
+    - Should work with [ACMEDNS standard issuer](https://cert-manager.io/docs/configuration/acme/dns01/acme-dns/) according to https://github.com/cert-manager/cert-manager/issues/5877#issuecomment-1483260982 and https://domains.google/learn/gts-acme/ ?
+
+  - [ ] Replicate secrets with kubernetes-replicator and "pull-based replication":
+    - Install https://github.com/mittwald/kubernetes-replicator#manual
+    - Configure pull-based replication: https://github.com/mittwald/kubernetes-replicator#pull-based-replication & https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/#using-kubernetes-replicator
+
+- [ ] fix scripts/clean.sh so that it knows how to deal with each overlay having its own namespace.
 - [ ] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize
 - [ ] Flux!
 - [ ] switch remaining `hostPath` k8s volumes to PVs with `local` provisioner instead [1](https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local) [2](https://kubernetes.io/docs/concepts/storage/volumes/#local)
