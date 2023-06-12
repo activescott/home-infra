@@ -1,5 +1,3 @@
 resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
-- ./letsencrypt-staging-clusterissuer.yaml
-- ./letsencrypt-staging-certificate-photos.scott.willeke.com.yaml
-- ./test-certificateissuer.yaml
+- ./cert-manager-import
+- ./other

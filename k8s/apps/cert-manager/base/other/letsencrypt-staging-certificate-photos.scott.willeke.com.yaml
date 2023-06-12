@@ -1,11 +1,17 @@
+# Reference:
+# - https://cert-manager.io/docs/concepts/certificate/
+# - https://cert-manager.io/docs/usage/certificate/
+# - tutorial: https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: photos-scott-willeke-com
 spec:
+  # the secret is put here:
   secretName: photos-scott-willeke-com-tls
   issuerRef:
     name: letsencrypt-staging
+    kind: ClusterIssuer
   commonName: photos.scott.willeke.com
   dnsNames:
   - photos.scott.willeke.com

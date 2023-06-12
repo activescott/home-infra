@@ -10,7 +10,7 @@ spec:
     email: scott@willeke.com
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
-      name: photos-scott-willeke-com-tls
+      name: letsencrypt-staging-issuer-secret-key
     # Enable the HTTP-01 challenge provider
     solvers:
     # An empty 'selector' means that this solver matches all domains

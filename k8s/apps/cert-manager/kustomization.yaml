@@ -2,7 +2,7 @@
 # - cert-manager resources already have a namespace defined in cert-manager for namespaced resources (some like their CRDs are not namespaced) 
 # - cert-manager resources uses the app label already and not all of the resources are under app: cert-manager (e.g. some are `app: cainjector`)
 resources:
-#- ./namespace.yaml # cert-manager's chart includes this namespace. we leave it in dir since clean.sh will recognize it and clean it up.
+#- ./namespace.yaml # cert-manager's chart includes this namespace. We leave the file in dir since clean.sh will recognize it and clean it up.
 - ./overlays/prod
 
 buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
@@ -11,3 +11,8 @@ commonLabels:
   # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
   app.activescott.com/name: cert-manager
   app.activescott.com/tenant: anyone
+
+# NOTE: DO NOT put cert-manager's imported resources into the namespace. Most
+#   /are/ but if you put everything in here, it messes up their RBAC rules and
+#   errors start happening.
+# namespace: cert-manager
