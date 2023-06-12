@@ -17,19 +17,31 @@ fi
 APP_LABEL=app.activescott.com/name=$K8S_APP_NAME
 
 # Confirm with user
-echo "Are you sure you want to delete all resources with label '$APP_LABEL'? This action cannot be undone. [y/N]"
+echo "Are you sure you want to delete all resources related the app '$K8S_APP_NAME'? This action cannot be undone. [y/N]"
 read user_input
 
 DRY_RUN=--dry-run=server
 DRY_RUN=
 if [[ $user_input == "Y" ]] || [[ $user_input == "y" ]]; then
+
+    # under normal circumstances this should do it:
+    set -x
+    kubectl delete $DRY_RUN -k "$RESOURCE_ROOT"
+    set +x 
+
+    # this is more comprehensive if resource names/namespaces changed or something:
     RESOURCE_NAMES=$(kubectl api-resources -o name --verbs=delete | tr '\n' ',' | sed 's/,$//')
     echo "deleting resources with label '$APP_LABEL' ..."
+    set -x
     kubectl delete $DRY_RUN --all-namespaces --selector "$APP_LABEL" "$RESOURCE_NAMES"
+    set +x
 
+    # this cleans up the namespace if we can infer it:
     if [[ ! -z "$NAMESPACE" ]]; then
       echo "deleting namespace '$NAMESPACE'..."
+      set -x
       kubectl delete $DRY_RUN namespace $NAMESPACE
+      set +x
     fi
 else
     echo "Operation cancelled"

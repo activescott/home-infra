@@ -36,15 +36,17 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
     - Help: https://support.google.com/domains/answer/6147083?hl=en
     - TLDR: Go to https://domains.google.com/registrar/willeke.com/dns and got o advanced and expand and Dynamic DNS...
 
-  - [ ] Install and configure cert-manager & configure with ACME on gDomains:
+  - [x] Install and configure cert-manager & configure with ACME on gDomains:
 
     - DNS01 challenges Requires a non-standard issuer according to https://github.com/cert-manager/cert-manager/issues/5877#issuecomment-1483260982 . Someone created a webhook integration at https://github.com/dmahmalat/cert-manager-webhook-google-domains to make it work. More from google on ACME at https://support.google.com/domains/answer/7630973?authuser=0&hl=en#acme_dns. HTTP01 looks easier!
     - Using HTTP01 should be easier: https://cert-manager.io/docs/tutorials/acme/http-validation/ & https://cert-manager.io/docs/configuration/acme/http01/
       - Set up ClusterIssuer for photos.scott.willeke.com (ClusterIssuer since it is non-namespaced).
 
-  - [ ] Replicate secrets with kubernetes-replicator and "pull-based replication":
-    - Install https://github.com/mittwald/kubernetes-replicator#manual
-    - Configure pull-based replication: https://github.com/mittwald/kubernetes-replicator#pull-based-replication & https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/#using-kubernetes-replicator
+  - [x] ~~Replicate secrets with kubernetes-replicator and "pull-based replication" Configure pull-based replication: https://github.com/mittwald/kubernetes-replicator#pull-based-replication & https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/#using-kubernetes-replicator~~ – Just create the `Certificate` resources in whatever namespace needs it.
+
+  - [ ] Create a `Certificate` resource for `letsencrypt-production` `ClusterIssuer` in the PhotoPrism namespace for photos.scott.willeke.com (in the overlay). Make sure it works! Then document it in a cert-manager README.md.
+
+  - [ ] Create an overlay for photos.oksana.willeke.com w/ cert
 
 - [ ] fix scripts/clean.sh so that it knows how to deal with each overlay having its own namespace.
 - [ ] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize

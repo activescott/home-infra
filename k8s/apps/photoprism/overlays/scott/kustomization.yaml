@@ -1,6 +1,7 @@
 resources:
 - ./namespace.yaml
 - ../../base
+- ./photos.scott.willeke.com-certificate.yaml
 
 patches:
 - patch-mariadb-statefulset.yaml
@@ -10,5 +11,7 @@ patches:
 namespace: photoprism-scott
 
 nameSuffix: -scott
+
 commonLabels:
-  tenant: scott
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/tenant: scott
