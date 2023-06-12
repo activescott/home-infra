@@ -21,6 +21,7 @@ echo "Are you sure you want to delete all resources with label '$APP_LABEL'? Thi
 read user_input
 
 DRY_RUN=--dry-run=server
+DRY_RUN=
 if [[ $user_input == "Y" ]] || [[ $user_input == "y" ]]; then
     RESOURCE_NAMES=$(kubectl api-resources -o name --verbs=delete | tr '\n' ',' | sed 's/,$//')
     echo "deleting resources with label '$APP_LABEL' ..."

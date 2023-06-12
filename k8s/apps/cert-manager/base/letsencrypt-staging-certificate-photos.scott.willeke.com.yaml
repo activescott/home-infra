@@ -1,0 +1,11 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: photos-scott-willeke-com
+spec:
+  secretName: photos-scott-willeke-com-tls
+  issuerRef:
+    name: letsencrypt-staging
+  commonName: photos.scott.willeke.com
+  dnsNames:
+  - photos.scott.willeke.com

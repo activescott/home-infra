@@ -2,6 +2,7 @@
 # - cert-manager resources already have a namespace defined in cert-manager for namespaced resources (some like their CRDs are not namespaced) 
 # - cert-manager resources uses the app label already and not all of the resources are under app: cert-manager (e.g. some are `app: cainjector`)
 resources:
+#- ./namespace.yaml # cert-manager's chart includes this namespace. we leave it in dir since clean.sh will recognize it and clean it up.
 - ./overlays/prod
 
 buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]

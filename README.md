@@ -31,12 +31,16 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 
 - [ ] Setup photos.scott.willeke.com certs and ingress:
 
-  - [ ] Install and configure cert-maanager & configure with ACME on gDomains w/ tokens:
+  - [x] Dynamic DNS Update the DNS records using OPNSense:
 
-    - set up ClusterIssuer for scott.willeke.com
-    - https://support.google.com/domains/answer/7630973?authuser=0&hl=en#acme_dns
-    - https://domains.google.com/registrar/willeke.com/dns
-    - Should work with [ACMEDNS standard issuer](https://cert-manager.io/docs/configuration/acme/dns01/acme-dns/) according to https://github.com/cert-manager/cert-manager/issues/5877#issuecomment-1483260982 and https://domains.google/learn/gts-acme/ ?
+    - Help: https://support.google.com/domains/answer/6147083?hl=en
+    - TLDR: Go to https://domains.google.com/registrar/willeke.com/dns and got o advanced and expand and Dynamic DNS...
+
+  - [ ] Install and configure cert-manager & configure with ACME on gDomains:
+
+    - DNS01 challenges Requires a non-standard issuer according to https://github.com/cert-manager/cert-manager/issues/5877#issuecomment-1483260982 . Someone created a webhook integration at https://github.com/dmahmalat/cert-manager-webhook-google-domains to make it work. More from google on ACME at https://support.google.com/domains/answer/7630973?authuser=0&hl=en#acme_dns. HTTP01 looks easier!
+    - Using HTTP01 should be easier: https://cert-manager.io/docs/tutorials/acme/http-validation/ & https://cert-manager.io/docs/configuration/acme/http01/
+      - Set up ClusterIssuer for photos.scott.willeke.com (ClusterIssuer since it is non-namespaced).
 
   - [ ] Replicate secrets with kubernetes-replicator and "pull-based replication":
     - Install https://github.com/mittwald/kubernetes-replicator#manual
