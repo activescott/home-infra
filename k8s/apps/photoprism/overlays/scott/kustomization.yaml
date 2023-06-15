@@ -1,17 +1,16 @@
 resources:
-- ./namespace.yaml
 - ../../base
-- ./photos.scott.willeke.com-certificate.yaml
+- certificate.yaml
+# letsencrypt secret for photos.activescott.com
+# TODO: move this to cert-manager
+- ../../../letsencrypt-secret-loader
 
 patches:
-- patch-mariadb-statefulset.yaml
+- patch-mariadb-volume.yaml
 - patch-photoprism-statefulset.yaml
 - patch-photoprism-ingress.yaml
 
-namespace: photoprism-scott
-
-nameSuffix: -scott
+namePrefix: scott-
 
 commonLabels:
-  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
   app.activescott.com/tenant: scott

@@ -11,30 +11,32 @@ spec:
         env:
         # mariadb name is changed by namePrefix kustomize transformer:
         - name: PHOTOPRISM_DATABASE_SERVER
-          value: scott-mariadb:3306
+          value: oksana-mariadb:3306
 
         #######################
         # Configure PhotoPrism:
         #   public server URL incl http:// or https:// and /path, :port is optional
         - name: PHOTOPRISM_SITE_URL
-          value: "https://photos.activescott.com/" # public server URL incl http:// or https:// and /path, :port is optional
+          value: "https://photos.oksana.willeke.com/"
         - name: PHOTOPRISM_SITE_CAPTION
-          value: "Scott's Photos"
+          value: "Oksana's Photos"
         - name: PHOTOPRISM_SITE_TITLE
-          value: "Photos from Scott"
+          value: "Photos from Oksana"
+        # meta site description
         - name: PHOTOPRISM_SITE_DESCRIPTION
-          value: "Various photographs from Scott" # meta site description
+          value: "Various photographs from Oksana" 
+        # meta site author
         - name: PHOTOPRISM_SITE_AUTHOR
-          value: "Scott Willeke" # meta site author
+          value: "Oksana Willeke"
 
       # pod-level volumes:
       volumes:
         - name: import
           hostPath:
-            path: /mnt/thedatapool/photos/scott/import
+            path: /mnt/thedatapool/photos/oksana/import
         - name: originals
           hostPath:
-            path: /mnt/thedatapool/photos/scott/organized-originals
+            path: /mnt/thedatapool/photos/oksana/organized-originals
         - name: storage
           hostPath:
-            path: /mnt/thedatapool/app-data/photoprism-scott/app/storage
+            path: /mnt/thedatapool/app-data/photoprism-oksana/app/storage

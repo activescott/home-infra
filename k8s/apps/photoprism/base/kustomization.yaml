@@ -1,7 +1,17 @@
 resources:
-- ./photoprism-statefulset.yaml
-- ./mariadb-service.yaml
-- ./photoprism-service.yaml
-- ./photoprism-ingress.yaml
-- ./mariadb-statefulset.yaml
-- ../../letsencrypt-secret-loader
+# mariadb:
+- ../../../lib/mariadb/base
+# photoprism app/container:
+- photoprism-statefulset.yaml
+- photoprism-service.yaml
+- photoprism-ingress.yaml
+
+secretGenerator:
+# this secret configures much of mariadb
+- name: mariadb-creds
+  envs:
+    - .env.secret.mariadb-creds
+
+#configurations:
+# I couldn't get the nameTransformer to work :(
+#- photoprism-references-mariadb-nameReference.yaml

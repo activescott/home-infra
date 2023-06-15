@@ -1,0 +1,7 @@
+# SAD that this didn't work somehow. see https://github.com/kubernetes-sigs/kustomize/blob/master/examples/transformerconfigs/README.md#name-reference-transformer
+nameReference:
+- kind: StatefulSet
+  fieldSpecs:
+  - kind: StatefulSet
+    #path: spec.template.spec.containers.[name=photoprism].env.[name=PHOTOPRISM_DATABASE_SERVER].value
+    path: spec/template/spec/containers[name=photoprism]/env[name=PHOTOPRISM_DATABASE_SERVER]/value

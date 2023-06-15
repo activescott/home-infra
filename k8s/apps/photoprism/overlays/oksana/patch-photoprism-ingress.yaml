@@ -1,0 +1,26 @@
+# patch for photoprism ingress:
+# - adds custom domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: photoprism-ingress
+  # issue a cert with cert-manager:
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  tls:
+  - hosts:
+      - photos.oksana.willeke.com
+    secretName: photos-oksana-willeke-com-tls
+  rules:
+  - host: photos.oksana.willeke.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: photoprism-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-ui

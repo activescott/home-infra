@@ -1,0 +1,13 @@
+resources:
+- ../../base
+- certificate.yaml
+
+patches:
+- patch-mariadb-volume.yaml
+- patch-photoprism-statefulset.yaml
+- patch-photoprism-ingress.yaml
+
+namePrefix: oksana-
+
+commonLabels:
+  app.activescott.com/tenant: oksana

@@ -7,6 +7,6 @@ spec:
     spec:
       # pod-level volumes:
       volumes:
-        - name: var-lib-mysql
+        - name: data
           hostPath:
             path: /mnt/thedatapool/app-data/photoprism-scott/mariadb/var-lib-mysql

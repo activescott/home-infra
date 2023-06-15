@@ -1,8 +1,8 @@
 resources:
-  - ./overlays/scott
+- ./namespace.yaml
+- ./overlays/scott
+- ./overlays/oksana
 
 buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
 
-commonLabels:
-  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
-  app.activescott.com/name: cert-manager
+namespace: photoprism

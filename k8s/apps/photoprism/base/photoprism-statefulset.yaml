@@ -25,6 +25,10 @@ spec:
 
         # PhotoPrism configuration via environment variables: https://docs.photoprism.app/getting-started/config-options/
         env:
+        # *initial* admin password (8-72 characters)
+        - name: PHOTOPRISM_ADMIN_PASSWORD
+          value: __76tb!q99fpH
+
         # public server URL incl http:// or https:// and /path, :port is optional
         - name: PHOTOPRISM_SITE_URL
           value: "https://photos.example.com/"
@@ -38,15 +42,31 @@ spec:
         
         - name: PHOTOPRISM_DATABASE_DRIVER
           value: "mysql" # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
-        - name: PHOTOPRISM_DATABASE_SERVER
-          value: "mariadb:3306" # MariaDB or MySQL database server (hostname:port)
-        - name: PHOTOPRISM_DATABASE_NAME
-          value: "photoprism" # MariaDB or MySQL database schema name
-        - name: PHOTOPRISM_DATABASE_USER
-          value: "photoprism" # MariaDB or MySQL database user name
-        - name: PHOTOPRISM_DATABASE_PASSWORD
-          value: "insecure" # MariaDB or MySQL database user password
         
+        # ##############
+        # MariaDB Config
+        # mariadb database/host name (is changed by namePrefix kustomize transformer):
+        - name: PHOTOPRISM_DATABASE_SERVER
+          value: mariadb
+
+        - name: PHOTOPRISM_DATABASE_NAME
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-creds
+              key: mariadb-database
+        - name: PHOTOPRISM_DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-creds
+              key: mariadb-user
+        - name: PHOTOPRISM_DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mariadb-creds
+              key: mariadb-password
+        # /MariaDB Config
+        # ##############
+
         # Hardware Video Transcoding (for sponsors only due to high maintenance and support costs):
         - name: PHOTOPRISM_FFMPEG_ENCODER
           value: "intel" # FFmpeg encoder ("software" (aka "libx264"), "intel", "nvidia", "apple", "raspberry")
