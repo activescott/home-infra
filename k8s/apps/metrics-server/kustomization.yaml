@@ -1,0 +1,9 @@
+resources:
+- https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.6.3/components.yaml
+
+buildMetadata: [originAnnotations, transformerAnnotations]
+
+commonLabels:
+  # NOTE: metrics-server seems to label all of their resources with `k8s-app: metrics-server`
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: metrics-server
