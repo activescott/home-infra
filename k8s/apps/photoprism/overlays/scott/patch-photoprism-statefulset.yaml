@@ -17,11 +17,11 @@ spec:
         # Configure PhotoPrism:
         #   public server URL incl http:// or https:// and /path, :port is optional
         - name: PHOTOPRISM_SITE_URL
-          value: "https://photos.activescott.com/" # public server URL incl http:// or https:// and /path, :port is optional
+          value: "https://photos.scott.willeke.com/" # public server URL incl http:// or https:// and /path, :port is optional
         - name: PHOTOPRISM_SITE_CAPTION
           value: "Scott's Photos"
         - name: PHOTOPRISM_SITE_TITLE
-          value: "Photos from Scott"
+          value: "Scott's Photos"
         - name: PHOTOPRISM_SITE_DESCRIPTION
           value: "Various photographs from Scott" # meta site description
         - name: PHOTOPRISM_SITE_AUTHOR

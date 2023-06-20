@@ -21,7 +21,7 @@ spec:
         - name: PHOTOPRISM_SITE_CAPTION
           value: "Oksana's Photos"
         - name: PHOTOPRISM_SITE_TITLE
-          value: "Photos from Oksana"
+          value: "Oksana's Photos"
         # meta site description
         - name: PHOTOPRISM_SITE_DESCRIPTION
           value: "Various photographs from Oksana" 
