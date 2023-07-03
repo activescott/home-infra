@@ -29,7 +29,7 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 
 # TODO:
 
-- [ ] Setup photos.scott.willeke.com certs and ingress:
+- [x] Setup photos.scott.willeke.com certs and ingress:
 
   - [x] Dynamic DNS Update the DNS records using OPNSense:
 
@@ -44,12 +44,11 @@ A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-c
 
   - [x] ~~Replicate secrets with kubernetes-replicator and "pull-based replication" Configure pull-based replication: https://github.com/mittwald/kubernetes-replicator#pull-based-replication & https://cert-manager.io/docs/tutorials/syncing-secrets-across-namespaces/#using-kubernetes-replicator~~ – Just create the `Certificate` resources in whatever namespace needs it.
 
-  - [ ] Create a `Certificate` resource for `letsencrypt-production` `ClusterIssuer` in the PhotoPrism namespace for photos.scott.willeke.com (in the overlay). Make sure it works! Then document it in a cert-manager README.md.
+  - [x] Create a `Certificate` resource for `letsencrypt-production` `ClusterIssuer` in the PhotoPrism namespace for photos.scott.willeke.com (in the overlay). Make sure it works! Then document it in a cert-manager README.md.
 
-  - [ ] Create an overlay for photos.oksana.willeke.com w/ cert
+  - [x] Create an overlay for photos.oksana.willeke.com w/ cert
 
-- [ ] fix scripts/clean.sh so that it knows how to deal with each overlay having its own namespace.
-- [ ] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize
+- [x] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize
 - [ ] Flux!
 - [ ] switch remaining `hostPath` k8s volumes to PVs with `local` provisioner instead [1](https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local) [2](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 - [ ] add metricserver to scrap metrics via prometheus

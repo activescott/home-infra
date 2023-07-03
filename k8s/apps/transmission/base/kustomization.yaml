@@ -1,0 +1,12 @@
+resources:
+- ./transmission-ingress.yaml
+- ./transmission-service-torrent-ports.yaml
+- ./transmission-statefulset.yaml
+- ./certificate.yaml
+- ./transmission-service-web-ui.yaml
+
+secretGenerator:
+# this secret configures much of mariadb
+- name: transmission-creds
+  envs:
+    - .env.secret.transmission-creds
