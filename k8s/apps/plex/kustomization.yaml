@@ -3,7 +3,7 @@ resources:
   - ./base/plex-statefulset.yaml
   - ./base/plex-service.yaml
 
-buildMetadata: [managedByLabel]
+buildMetadata: [originAnnotations, transformerAnnotations]
 
 labels:
   - pairs:
