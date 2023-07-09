@@ -20,6 +20,8 @@ spec:
         # more plex container info at https://github.com/plexinc/pms-docker
         # image: https://hub.docker.com/r/plexinc/pms-docker/tags/
         - name: plex
+          # NOTE: with subsequent 2 versions *potentially* having DVR/TV transcoding issues. See https://forums.plex.tv/t/error-4294967279/845549/3?u=activescott
+          # Seen Live TV DVR freezing issues with versions: I have Plex Server version plexinc/pms-docker:1.32.4.7195-7c8f9d3b6 , plexinc/pms-docker:1.32.1.6999-91e1e2e2c , plexinc/pms-docker:1.31.1.6782-77dfff442
           image: plexinc/pms-docker:1.32.4.7195-7c8f9d3b6
           securityContext:
             # needed for /dev/dri device access
@@ -79,8 +81,9 @@ spec:
             # Intel Quick Sync hardware acceleration for plex:
             # - https://github.com/plexinc/pms-docker#intel-quick-sync-hardware-transcoding-support
             # I5-13600K has ot: https://www.intel.com/content/www/us/en/products/sku/230493/intel-core-i513600k-processor-24m-cache-up-to-5-10-ghz/specifications.html
-            - mountPath: /dev/dri
-              name: intel-quick-sync
+            #- mountPath: /dev/dri
+            #  name: intel-quick-sync
+
             - mountPath: /config
               name: plex-config
             - mountPath: /transcode
@@ -96,9 +99,10 @@ spec:
 
       # pod-level volumes:
       volumes:
-        - name: intel-quick-sync
-          hostPath:
-            path: /dev/dri
+        #- name: intel-quick-sync
+        #  hostPath:
+        #    path: /dev/dri
+
         - name: plex-config
           hostPath:
             path: /mnt/thedatapool/app-data/plex/config
