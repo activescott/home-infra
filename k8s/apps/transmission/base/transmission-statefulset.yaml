@@ -24,18 +24,18 @@ spec:
         image: lscr.io/linuxserver/transmission:4.0.3-r3-ls183
 
         env:
-        - name: USER
-          valueFrom:
-            secretKeyRef:
-              name: transmission-creds
-              key: USER
-        - name: PASS
-          valueFrom:
-            secretKeyRef:
-              name: transmission-creds      
-              key: PASS
-        - name: PEERPORT
-          value: "51413"
+          - name: USER
+            valueFrom:
+              secretKeyRef:
+                name: transmission-creds
+                key: USER
+          - name: PASS
+            valueFrom:
+              secretKeyRef:
+                name: transmission-creds
+                key: PASS
+          - name: PEERPORT
+            value: "51413"
 
         volumeMounts:
           # where transmission should store config files and logs.
