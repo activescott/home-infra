@@ -1,0 +1,47 @@
+esphome:
+  name: adu
+
+esp32:
+  board: esp32-poe
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  password: !secret ota_password
+
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 0
+  power_pin: GPIO12
+  # without `manual_ip` it uses DHCP
+
+# use a pin to listen to a door/window sensor:
+#   see https://esphome.io/components/binary_sensor/gpio
+#   and https://esphome.io/guides/configuration-types#pin-schema
+binary_sensor:
+  - platform: gpio
+    name: "Test Window"
+    pin:
+      number: 2
+      # for window device_class "On means open, Off means closed. Do not invert magnetic switch
+      #inverted: true
+      mode:
+        input: true
+        pullup: true
+
+    filters:
+      # the switch ocassionally becomes unavailable and turns off momentarily. lets try to absorb that with delays:
+      - delayed_on_off: 200ms
+    # for these Home Assistant-related variables see https://esphome.io/components/sensor/#base-sensor-configuration
+    device_class: window
