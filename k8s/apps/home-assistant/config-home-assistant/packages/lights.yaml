@@ -47,7 +47,7 @@ light:
       - light.hall_light_switch_light
       - light.kitchen_light_switch_light
       - light.kitchen_sink_light_switch_light
-      - light.entryway_light_swtich_light
+      - light.entryway_light_switch_light
   
   - platform: group
     name: Outdoor Lights
