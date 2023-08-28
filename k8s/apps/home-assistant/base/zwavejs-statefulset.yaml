@@ -20,12 +20,11 @@ spec:
         role: zwavejs
     spec:
       containers:
-        # docs at https://zwave-js.github.io/zwavejs2mqtt/#/
-        # repo at https://github.com/zwave-js/zwavejs2mqtt
-        # container at https://hub.docker.com/r/zwavejs/zwavejs2mqtt
-        # TODO: Transition to https://hub.docker.com/r/zwavejs/zwave-js-ui per https://community.home-assistant.io/t/psa-zwavejs2mqtt-has-been-renamed-to-z-wave-js-ui/463605
+        # docs at https://zwave-js.github.io/zwave-js-ui/#/
+        # repo at https://github.com/zwave-js/zwave-js-ui
         - name: zwavejs
-          image: zwavejs/zwavejs2mqtt:6.15.2
+        # container at https://hub.docker.com/r/zwavejs/zwave-js-ui/tags
+          image: zwavejs/zwave-js-ui:8.23.1
           securityContext:
             # needed for /dev/zwave device access
             privileged: true
