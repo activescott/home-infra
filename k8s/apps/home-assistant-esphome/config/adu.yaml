@@ -5,6 +5,7 @@ esp32:
   board: esp32-poe
   framework:
     type: arduino
+    # type: esp-idf # NOTE: esp-idf causes log entries like [09:35:01][W][component:205]: Components should block for at most 20-30ms.
 
 # Enable logging
 logger:
@@ -17,6 +18,7 @@ api:
 ota:
   password: !secret ota_password
 
+# https://esphome.io/components/ethernet
 ethernet:
   type: LAN8720
   mdc_pin: GPIO23
@@ -24,7 +26,14 @@ ethernet:
   clk_mode: GPIO17_OUT
   phy_addr: 0
   power_pin: GPIO12
+  
   # without `manual_ip` it uses DHCP
+  #manual_ip:
+  #  static_ip: 10.1.111.24
+  #  gateway: 10.1.111.1
+  #  subnet: 255.255.255.0
+  #  dns1: 10.1.111.1
+
 
 # use a pin to listen to a door/window sensor:
 #   see https://esphome.io/components/binary_sensor/gpio

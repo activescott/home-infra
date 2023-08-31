@@ -2,13 +2,10 @@
 
 I'm using ESPHome and an [Olimex ESP32-PoE](https://www.olimex.com/Products/IoT/ESP32/ESP32-POE/open-source-hardware) to connect to wired window/door sensors.
 
-## References
-
-- ESP32-POE board on platform.org (ESPHome is based on platform.org toolkit): https://docs.platformio.org/en/latest/boards/espressif32/esp32-poe.html#board-espressif32-esp32-poe
-
 ## Notes
 
 ### Olimex ESP32-PoE Notes
+- ESP32-POE board on platform.org (ESPHome is based on platform.org toolkit): https://docs.platformio.org/en/latest/boards/espressif32/esp32-poe.html#board-espressif32-esp32-poe
 - Use use `esp32-poe` ID for board option in ESPHome or platform.org stuff
 - To configured ethernet use the ESPHome [ethernet component](https://esphome.io/components/ethernet)
   - Info on thread at https://github.com/esphome/issues/issues/53
@@ -57,15 +54,22 @@ ethernet:
   # without `manual_ip` it uses DHCP
 
 # use a pin to listen to a door/window sensor:
-# see https://esphome.io/components/binary_sensor/gpio
-# and https://esphome.io/guides/configuration-types#pin-schema
+#   see https://esphome.io/components/binary_sensor/gpio
+#   and https://esphome.io/guides/configuration-types#pin-schema
 binary_sensor:
   - platform: gpio
     name: "Test Window"
     pin:
       number: 2
-      inverted: true
+      # for window device_class "On means open, Off means closed. Do not invert magnetic switch
+      #inverted: true
       mode:
         input: true
         pullup: true
+
+    filters:
+      # the switch ocassionally becomes unavailable and turns off momentarily. lets try to absorb that with delays:
+      - delayed_on_off: 200ms
+    # for these Home Assistant-related variables see https://esphome.io/components/sensor/#base-sensor-configuration
+    device_class: window
 ```
