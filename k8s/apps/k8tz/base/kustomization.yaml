@@ -1,0 +1,7 @@
+# https://github.com/k8tz/k8tz
+helmCharts:
+- name: k8tz
+  repo: https://k8tz.github.io/k8tz/
+  version: 0.13.1
+  valuesInline:
+    timezone: America/Los_Angeles
