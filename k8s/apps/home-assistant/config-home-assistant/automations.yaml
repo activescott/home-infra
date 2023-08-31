@@ -181,7 +181,7 @@
       minutes: '{{ range(1, 30) | random }}'
   - service: script.random_toggle_light
     data:
-      toggle_entity: light.great_room_track_light
+      toggle_entity: light.great_room_track_lighting
   - service: script.random_toggle_switch
     data:
       toggle_entity: switch.dining_table_light
@@ -207,7 +207,7 @@
   - delay: '{{ range(1, 30) | random }}'
   - service: light.turn_off
     target:
-      entity_id: light.great_room_track_light
+      entity_id: light.great_room_track_lighting
   - service: switch.turn_off
     target:
       entity_id:

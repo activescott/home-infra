@@ -58,7 +58,7 @@ random_toggle_light:
   fields:
     toggle_entity:
       description: "The entity id of the light to toggle"
-      example: "light.great_room_track_light"
+      example: "light.great_room_track_lighting"
       required: true
       selector:
         entity:
