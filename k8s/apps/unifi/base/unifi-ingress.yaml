@@ -1,0 +1,25 @@
+# NOTE: We use ingress here rather than a simple service so we can route traffic
+#   based on hostname and not only IP. Ingress also has the advantage of being
+#   able to serve TLS.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: unifi-ingress
+spec:
+# NOTE: bypassing TLS here (8443 is exposed directly via loadbalancer). The unifi controller forces connections to be over https and doesn't like k8s terminating https for it.
+#  tls:
+#  - hosts:
+#      - unifi.activescott.com 
+#    secretName: cert-unifi-activescott-com
+  rules:
+  - host: unifi.activescott.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: unifi-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-admin

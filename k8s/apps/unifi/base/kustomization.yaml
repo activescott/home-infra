@@ -1,0 +1,4 @@
+resources:
+- unifi-statefulset.yaml
+- unifi-service.yaml
+- unifi-ingress.yaml

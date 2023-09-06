@@ -19,6 +19,7 @@ ota:
   password: !secret ota_password
 
 # https://esphome.io/components/ethernet
+# See also example on POE-ISO board from https://github.com/esphome/bluetooth-proxies/blob/main/olimex-esp32-poe-iso.yaml
 ethernet:
   type: LAN8720
   mdc_pin: GPIO23

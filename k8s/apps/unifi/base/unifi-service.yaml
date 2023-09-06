@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: unifi-service
+  labels:
+    app: unifi
+spec:
+  # NOTE: unifi using LoadBalancer instead of ClusterIP since some ports exposed to devices and we don't want/need them going through an ingress
+  type: LoadBalancer
+  ports:
+    # technically web-ui doesn't need a NodePort and could be limited to ClusterIP as it has an ingress
+    - name: web-admin
+      port: 8443
+    - name: stun
+      port: 3478
+      protocol: UDP
+    - name: ap-discovery
+      port: 10001
+      protocol: UDP
+    # NOTE: Unifi devices attempt to connect to controller by default at http://unifi:8080/inform
+    - name: device-comms
+      port: 8080
+    # plex uses 1900 for DLNA Server. Trying to skip this for unifi
+    - name: l2-disco #make-controller-discoverable-on-l2-network-option
+      port: 1900
+      protocol: UDP
+    - name: guest-https #unifi-guest-portal-https-redirect-port
+      port: 8843
+    - name: guest-http #unifi-guest-portal-http-redirect-port
+      port: 8880
+    - name: throughpt-test #mobile-throughput-test
+      port: 6789
+    - name: syslog # remote-syslog-port
+      port: 5514
+      protocol: UDP
+      
+  selector:
+    app: unifi
+    role: unifi

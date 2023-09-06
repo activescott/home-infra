@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unifi
+  labels:
+    app: unifi
+    role: unifi
+spec:
+  serviceName: unifi
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi
+      role: unifi
+  template:
+    metadata:
+      labels:
+        app: unifi
+        role: unifi
+    spec:
+      containers:
+        - name: unifi
+          # container docs: https://docs.linuxserver.io/images/docker-unifi-controller
+          # container tags: https://quay.io/repository/linuxserver.io/unifi-controller?tab=tags
+          image: lscr.io/linuxserver/unifi-controller:7.4.162
+
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: America/Los_Angeles
+          
+          # container-level volume mounts:
+          volumeMounts:
+            - mountPath: /config
+              name: unifi-config
+
+          ports:
+            - name: web-admin
+              containerPort: 8443
+            - name: stun
+              containerPort: 3478
+              protocol: UDP
+            - name: ap-discovery
+              containerPort: 10001
+              protocol: UDP
+            - name: device-comms
+              containerPort: 8080
+            - name: l2-disco #make-controller-discoverable-on-l2-network-option
+              containerPort: 1900
+              protocol: UDP
+            - name: guest-https #unifi-guest-portal-https-redirect-port
+              containerPort: 8843
+            - name: guest-http #unifi-guest-portal-http-redirect-port
+              containerPort: 8880
+            - name: throughpt-test #mobile-throughput-test
+              containerPort: 6789
+            - name: syslog # remote-syslog-port
+              containerPort: 5514
+              protocol: UDP
+
+      # pod-level volumes:
+      volumes:
+        - name: unifi-config
+          hostPath:
+            path: /mnt/thedatapool/app-data/unifi-controller

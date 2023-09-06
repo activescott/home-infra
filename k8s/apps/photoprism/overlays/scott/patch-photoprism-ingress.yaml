@@ -8,10 +8,13 @@ metadata:
 spec:
   # TODO: create a custom transformer config that adds a tls.hosts and path for a specified domain like:
   #   ingressDomain:
-  #     ingess: photoprism-ingress
+  #     ingress: photoprism-ingress
   #     domains:
-  #       - photos.scott.willeke.com
+  #       - domain: photos.scott.willeke.com
   #       - photos.activescott.com
+  #     backend:
+  #       name: photoprism-service
+  #       port: web-ui
   tls:
   - hosts:
       - photos.activescott.com
