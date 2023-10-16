@@ -77,8 +77,9 @@ helmCharts:
 
 namespace: traefik
 
-buildMetadata: [managedByLabel]
+buildMetadata: [originAnnotations, transformerAnnotations]
 
-labels:
-  - pairs:
-      deployedBy: scott-via-kustomize
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: traefik
+  app.activescott.com/tenant: everyone

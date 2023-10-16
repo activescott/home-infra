@@ -6,7 +6,7 @@ if [[ -z "$THISDIR" ]]; then
     exit 1
 fi
 
-APPS_ROOT=`cd $THISDIR/..; pwd`
+APPS_ROOT=`cd $THISDIR/../apps; pwd`
 
 # Check for required argument
 if [ $# -ne 1 ]; then

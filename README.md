@@ -2,6 +2,14 @@
 
 The intent here is to maintain various apps and configurations that I run at home. Below is more detail about each.
 
+## Usage
+
+Each subdirectory of `k8s/apps` (well most of them) represents an app or some infrastructure component in support of the apps. The name of the subdirectory segment is the `app-name` below. Each script/command is as follows:
+
+- `./k8s/scripts/deploy.sh <app-name>`: Deploy the app. For example `./k8s/scripts/deploy.sh plex` will deploy the plex app to the cluster.
+- `./k8s/scripts/preview.sh <app-name>`: Spits out the final kubernetes yaml after it is resolved from kustomize. It will also reveal any client-detectable errors in the yaml. Does not deploy anything to the cluster.
+- `./k8s/scripts/clean.sh <app-name>`: Delete the app from the cluster. It _immediately_ **deletes** the app. So be careful!
+
 ## k8s/apps
 
 These are my apps running at home in Kubernetes. I am currently using k3s on either debian or TrueNAS (playing with both).
@@ -92,7 +100,9 @@ commonLabels:
   - [x] Create an overlay for photos.oksana.willeke.com w/ cert
 
 - [x] try [nextcloud's helm chart](https://github.com/nextcloud/helm/tree/main/charts/nextcloud) via kustomize
-- [ ] Flux!
+- [ ] Flux:
+  - See https://fluxcd.io/flux/get-started/
+  - See https://github.com/fluxcd/flux2-kustomize-helm-example
 - [ ] switch remaining `hostPath` k8s volumes to PVs with `local` provisioner instead [1](https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local) [2](https://kubernetes.io/docs/concepts/storage/volumes/#local)
 - [ ] add metricserver to scrap metrics via prometheus
 - [ ] add email mailrelay host - port it from docker
