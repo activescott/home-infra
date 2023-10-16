@@ -2,8 +2,10 @@ resources:
   - ./base/secret-editor-sa-role-and-binding.yaml
   - ./base/letsencrypt-secret-loader-cronjob.yaml
 
-buildMetadata: [managedByLabel]
+# NOTE: adding `managedByLabel` here causes a label like `app.kubernetes.io/managed-by: kustomize-(devel)` to be added and `kustomize-(devel)` gets rejected by k8s server side.
+buildMetadata: [originAnnotations, transformerAnnotations]
 
-labels:
-  - pairs:
-      deployedBy: scott-via-kustomize
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: letsencrypt-secret-loader
+  app.activescott.com/tenant: everyone

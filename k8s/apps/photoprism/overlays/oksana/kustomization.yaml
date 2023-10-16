@@ -3,9 +3,9 @@ resources:
 - certificate.yaml
 
 patches:
-- patch-mariadb-volume.yaml
-- patch-photoprism-statefulset.yaml
-- patch-photoprism-ingress.yaml
+- path: patch-mariadb-volume.yaml
+- path: patch-photoprism-statefulset.yaml
+- path: patch-photoprism-ingress.yaml
 
 namePrefix: oksana-
 
