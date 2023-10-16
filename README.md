@@ -6,6 +6,42 @@ The intent here is to maintain various apps and configurations that I run at hom
 
 These are my apps running at home in Kubernetes. I am currently using k3s on either debian or TrueNAS (playing with both).
 
+### [k8s/apps/home-assistant](k8s/apps/home-assistant)
+
+This is my [Home Assistant](https://www.home-assistant.io) + [ZWave JS zwavejs2mqtt Server](https://github.com/zwave-js/zwavejs2mqtt) implementation running on docker. See [containers/home-assistant/README.md](containers/home-assistant/README.md)
+
+### [k8s/apps/photoprism](k8s/apps/photoprism)
+
+Photoprism is setup for photos.scott.willeke.com and photos.oksana.willeke.com
+
+### [k8s/apps/unifi](k8s/apps/unifi)
+
+A Ubiquity/Unifi Controller app setup running.
+
+### Infrastructure/Supporting Apps
+
+The apps below here are installed to support the other apps in the cluster.
+
+#### [k8s/apps/cert-manager](k8s/apps/cert-manager)
+
+This is a cert manager instance that provisions certificates for _.scott.willeke.com, _.oksana.willeke.com, and \*.activescott.com.
+
+#### [k8s/apps/letsencrypt-certbot](k8s/apps/letsencrypt-certbot)
+
+Before I started using cert-manager I ported over a solution I used for letencrypted from docker-compose. It is simply a kubernetes `CronJob` that runs certbot on a schedule and puts the cert in `/mnt/thedatapool/app-data/letsencrypt`
+
+#### [k8s/apps/letsencrypt-secret-loader](k8s/apps/letsencrypt-secret-loader)
+
+See [k8s/apps/letsencrypt-secret-loader/readme.md](k8s/apps/letsencrypt-secret-loader/README.md).
+
+TLDR: You include the [k8s/apps/letsencrypt-secret-loader/kustomization.yaml](k8s/apps/letsencrypt-secret-loader/kustomization.yaml) file in your kustomization resources section so that it puts a secret in the app's kubernetes namespace that you can reference in the ingress. See
+
+#### k8s/apps/k8tz
+
+Sucks to see different times in logs of apps, k8tz is provisioned to ensure that all the pods/containers are provisioned with the same timezone as the host.
+
+## How it Works
+
 ### Kustomize
 
 I use Kustomize for packaging my kubernetes apps. Where with helm you create a pre-packaged component with pre-defined set of extensibility points that can be customized (i.e. in values.yaml), Kustomize references an existing Kubernetes "app" (think of these as an "example app") and Kustomize is then used to customize the the app for your needs with _patches_ to add, remove, or change values in the kubernetes resources. It can customize anything in the referenced app's Kubernetes resources. By convention, the "example app" is usually defined in a `base` folder as a standard set of kubernetes resources and each patched version is usually a subfolder of the `overlays` folder.
@@ -19,15 +55,22 @@ Reference for Kustomization files: https://kubectl.docs.kubernetes.io/references
 
 Good detail on different patches at https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/patches/
 
-## k8s/apps/home-assistant
+### K8s Labels:
 
-This is my [Home Assistant](https://www.home-assistant.io) + [ZWave JS zwavejs2mqtt Server](https://github.com/zwave-js/zwavejs2mqtt) implementation running on docker. See [containers/home-assistant/README.md](containers/home-assistant/README.md)
+I put a couple labels on various Kubernetes resources to help ensure they're organized and understandable.
 
-# containers/unifi-controller (TODO: Move to k8s)
+TLDR:
 
-A Ubiquity/Unifi Controller app setup running on docker. See [containers/unifi-controller/README.md](containers/unifi-controller/README.md)
+```yaml
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: app-name
+  app.activescott.com/tenant: everyone # or scott or oksana, etc.
+```
 
-# TODO:
+---
+
+## TODO:
 
 - [x] Setup photos.scott.willeke.com certs and ingress:
 
