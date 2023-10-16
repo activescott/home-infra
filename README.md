@@ -18,6 +18,10 @@ These are my apps running at home in Kubernetes. I am currently using k3s on eit
 
 This is my [Home Assistant](https://www.home-assistant.io) + [ZWave JS zwavejs2mqtt Server](https://github.com/zwave-js/zwavejs2mqtt) implementation running on docker. See [containers/home-assistant/README.md](containers/home-assistant/README.md)
 
+### [k8s/apps/plex](k8s/apps/plex)
+
+A [Plex Media Server](https://www.plex.tv/media-server-downloads/#plex-media-server) on kubernetes.
+
 ### [k8s/apps/photoprism](k8s/apps/photoprism)
 
 Photoprism is setup for photos.scott.willeke.com and photos.oksana.willeke.com
