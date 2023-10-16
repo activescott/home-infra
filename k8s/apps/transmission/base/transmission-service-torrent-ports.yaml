@@ -17,7 +17,7 @@ spec:
     
     - name: torrent-udp
       port: 51413
-      nodePort: 51413/udp
+      nodePort: 51413
       targetPort: torrent-udp
       protocol: UDP
 

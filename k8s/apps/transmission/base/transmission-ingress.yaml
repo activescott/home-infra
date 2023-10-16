@@ -9,7 +9,7 @@ spec:
   tls:
   - hosts:
       - transmission.activescott.com
-    secretName: transmission-activescott-com
+    secretName: transmission-activescott-com-tls
 
   rules:
   - host: transmission.activescott.com

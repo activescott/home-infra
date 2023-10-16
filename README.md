@@ -26,6 +26,10 @@ A [Plex Media Server](https://www.plex.tv/media-server-downloads/#plex-media-ser
 
 Photoprism is setup for photos.scott.willeke.com and photos.oksana.willeke.com
 
+### [k8s/apps/transmission](k8s/apps/transmission)
+
+A [Transmission Bittorrent server](https://transmissionbt.com/) to download and seed torrents.
+
 ### [k8s/apps/unifi](k8s/apps/unifi)
 
 A Ubiquity/Unifi Controller app setup running.
@@ -44,7 +48,7 @@ Before I started using cert-manager I ported over a solution I used for letencry
 
 #### [k8s/apps/letsencrypt-secret-loader](k8s/apps/letsencrypt-secret-loader)
 
-See [k8s/apps/letsencrypt-secret-loader/readme.md](k8s/apps/letsencrypt-secret-loader/README.md).
+See [k8s/apps/letsencrypt-secret-loader/readme.md](k8s/apps/letsencrypt-secret-loader/README.md). DEPRECATED for cert-manager.
 
 TLDR: You include the [k8s/apps/letsencrypt-secret-loader/kustomization.yaml](k8s/apps/letsencrypt-secret-loader/kustomization.yaml) file in your kustomization resources section so that it puts a secret in the app's kubernetes namespace that you can reference in the ingress. See
 
