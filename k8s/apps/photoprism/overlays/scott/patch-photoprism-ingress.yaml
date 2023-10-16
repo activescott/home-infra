@@ -18,7 +18,7 @@ spec:
   tls:
   - hosts:
       - photos.activescott.com
-    secretName: cert-activescott-com
+    secretName: photos-activescott-com-tls
   - hosts:
       - photos.scott.willeke.com
     secretName: photos-scott-willeke-com-tls

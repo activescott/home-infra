@@ -2,10 +2,9 @@
 
 This is a Kubernetes CronJob that uses a CronJob load Let's Encrypt certificates that are on disk and update a Kubernetes Secret with the certificates from file so that they can be used in a Service or Ingress.
 
-
 ## TODO: 
 
-**Remove the last usage of this at `/k8s/apps/photoprism/overlays/scott/patch-photoprism-ingress.yaml` by porting it to cert-manager and delete this.
+**DEPRECATED**: **Remove the last usage of this at `/k8s/apps/photoprism/overlays/scott/patch-photoprism-ingress.yaml` by porting it to cert-manager and delete this.
 
 ## Overview
 

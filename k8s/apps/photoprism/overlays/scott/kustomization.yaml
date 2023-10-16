@@ -1,10 +1,10 @@
 resources:
   - ../../base
-  - certificate.yaml
-  # letsencrypt secret for photos.activescott.com
-  # TODO: move this to cert-manager
-  - ../../../letsencrypt-secret-loader
-
+  # cert-manager-issued photos.scott.willeke.com
+  - certificate-photos-scott-willeke-com.yaml
+  # cert-manager-issued photos.activescott.com
+  - certificate-photos-activescott-com.yaml
+  
 patches:
 - path: patch-mariadb-volume.yaml
 - path: patch-photoprism-statefulset.yaml
