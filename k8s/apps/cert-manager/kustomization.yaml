@@ -5,14 +5,15 @@ resources:
 #- ./namespace.yaml # cert-manager's chart includes this namespace. We leave the file in dir since clean.sh will recognize it and clean it up.
 - ./overlays/prod
 
-buildMetadata: [managedByLabel, originAnnotations, transformerAnnotations]
-
-commonLabels:
-  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
-  app.activescott.com/name: cert-manager
-  app.activescott.com/tenant: anyone
 
 # NOTE: DO NOT put cert-manager's imported resources into the namespace. Most
 #   /are/ but if you put everything in here, it messes up their RBAC rules and
 #   errors start happening.
 # namespace: cert-manager
+
+buildMetadata: [originAnnotations, transformerAnnotations]
+
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: cert-manager
+  app.activescott.com/tenant: anyone
