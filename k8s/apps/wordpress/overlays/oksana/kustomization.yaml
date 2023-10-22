@@ -1,0 +1,27 @@
+resources:
+- namespace.yaml
+- mariadb-pv-pvc.yaml
+- wordpress-pv-pvc.yaml
+
+
+secretGenerator:
+  - name: wordpress-user-creds
+    envs:
+    - .env.secret.wordpress-user-creds
+  - name: wordpress-mariadb-creds
+    envs:
+    - .env.secret.wordpress-mariadb-creds
+
+# https://github.com/bitnami/charts/tree/main/bitnami/wordpress
+helmCharts:
+- name: wordpress
+  # NOTE: repo url found at https://docs.bitnami.com/kubernetes/get-started-gke/#step-5-install-an-application-using-a-helm-chart
+  repo: https://charts.bitnami.com/bitnami
+  version: 18.0.6
+  valuesFile: ./chart-values.yaml
+
+
+namespace: oksana-wordpress
+
+commonLabels:
+  app.activescott.com/tenant: oksana
