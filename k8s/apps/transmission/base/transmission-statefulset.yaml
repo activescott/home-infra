@@ -62,7 +62,7 @@ spec:
             path: /mnt/thedatapool/app-data/transmission/config
         - name: downloads
           hostPath:
-            path: /mnt/thedatapool/app-data/transmission/downloads
+            path: /mnt/thedatapool/no-backup/app-data/transmission/downloads
         - name: watch
           hostPath:
-            path: /mnt/thedatapool/app-data/transmission/watch
+            path: /mnt/thedatapool/no-backup/app-data/transmission/watch
