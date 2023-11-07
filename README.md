@@ -16,7 +16,7 @@ These are my apps running at home in Kubernetes. I am currently using k3s on eit
 
 ### [k8s/apps/home-assistant](k8s/apps/home-assistant)
 
-This is my [Home Assistant](https://www.home-assistant.io) + [ZWave JS zwavejs2mqtt Server](https://github.com/zwave-js/zwavejs2mqtt) implementation running on docker. See [containers/home-assistant/README.md](containers/home-assistant/README.md)
+This is my [Home Assistant](https://www.home-assistant.io) + [ZWave JS zwavejs2mqtt Server](https://github.com/zwave-js/zwavejs2mqtt) implementation running on docker. See [k8s/apps/README.md](k8s/apps/README.md)
 
 ### [k8s/apps/plex](k8s/apps/plex)
 
