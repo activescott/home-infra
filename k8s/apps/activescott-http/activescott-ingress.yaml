@@ -1,0 +1,37 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-activescott-to-willeke
+spec:
+  # see https://doc.traefik.io/traefik/middlewares/http/redirectregex/
+  redirectRegex:
+    regex: "^https?://activescott.com/(.*)"
+    replacement: "https://scott.willeke.com/$1"
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: activescott-http
+  annotations:
+    # to reference the middleware use:  <middleware-namespace>-<middleware-name>@kubernetescrd
+    #   per https://doc.traefik.io/traefik/v2.2/middlewares/overview/#provider-namespace
+    traefik.ingress.kubernetes.io/router.middlewares: activescott-http-redirect-activescott-to-willeke@kubernetescrd
+
+    # issue a cert with cert-manager for scott.willeke.com
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  rules:
+    - host: "activescott.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: dummy-service
+                port:
+                  number: 80
+  tls: # TLS configuration using cert-manager
+  - hosts:
+    - "activescott.com"
+    secretName: activescott-com-tls # This secret will be created by cert-manager

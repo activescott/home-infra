@@ -1,0 +1,16 @@
+resources:
+- ./namespace.yaml
+- ./dummy-deployment.yaml
+- ./dummy-service.yaml
+- ./activescott-ingress.yaml
+
+namespace: activescott-http
+
+# NOTE: adding `managedByLabel` here causes a label like `app.kubernetes.io/managed-by: kustomize-(devel)` to be added and `kustomize-(devel)` gets rejected by k8s server side.
+buildMetadata: [originAnnotations, transformerAnnotations]
+
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: activescott-http
+  # NOTE: tenet is specified in the overlays
+  #app.activescott.com/tenant: 
