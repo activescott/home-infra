@@ -23,6 +23,10 @@ spec:
       - name: photoprism
         image: photoprism/photoprism:230514
 
+        resources:
+          limits:
+            memory: "4Gi"
+
         # PhotoPrism configuration via environment variables: https://docs.photoprism.app/getting-started/config-options/
         env:
         # *initial* admin password (8-72 characters)
@@ -76,7 +80,7 @@ spec:
         # working dir set in the docker-compose file
         workingDir: "/photoprism"
 
-        volumeDevices:
+        #volumeDevices:
           # Share hardware devices with FFmpeg and TensorFlow (optional):
           #  Intel Quick Sync hardware acceleration is in the photoprism docker-compose file:
           # I5-13600K has it: https://www.intel.com/content/www/us/en/products/sku/230493/intel-core-i513600k-processor-24m-cache-up-to-5-10-ghz/specifications.html
