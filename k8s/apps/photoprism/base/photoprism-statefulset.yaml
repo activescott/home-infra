@@ -26,6 +26,8 @@ spec:
         resources:
           limits:
             memory: "4Gi"
+          requests:
+            memory: "256Mi"
 
         # PhotoPrism configuration via environment variables: https://docs.photoprism.app/getting-started/config-options/
         env:

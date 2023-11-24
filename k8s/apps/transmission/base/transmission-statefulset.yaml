@@ -26,6 +26,8 @@ spec:
         resources:
           limits:
             memory: "2Gi"
+          requests:
+            memory: "256Mi"
 
         env:
           - name: USER
