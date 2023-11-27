@@ -24,6 +24,12 @@ spec:
           # container tags: https://quay.io/repository/linuxserver.io/unifi-controller?tab=tags
           image: lscr.io/linuxserver/unifi-controller:7.4.162
 
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "256Mi"
+
           env:
             - name: PUID
               value: "1000"
@@ -31,6 +37,9 @@ spec:
               value: "1000"
             - name: TZ
               value: America/Los_Angeles
+            # per https://github.com/linuxserver/docker-unifi-controller#parameters
+            - name: MEM_LIMIT
+              value: "1024"
           
           # container-level volume mounts:
           volumeMounts:
