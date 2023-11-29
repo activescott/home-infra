@@ -34,4 +34,4 @@ spec:
   volumeName: nextcloud-pv
   resources:
     requests:
-      storage: 1Ti  
+      storage: 1Ti

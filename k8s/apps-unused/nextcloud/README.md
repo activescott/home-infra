@@ -13,14 +13,16 @@ su -s /bin/bash  --command "./occ" www-data
 ```
 
 References:
+
 - https://docs.nextcloud.com/server/20/admin_manual/configuration_server/occ_command.html#occ-command-directory
 - https://stackoverflow.com/a/71049540/51061
 
-
 ## TODO:
+
 ### Now:
+
 - [x] Setup [mariadb via chart](https://github.com/nextcloud/helm/blob/main/charts/nextcloud/README.md#database-configurations)
-  - [x] w/ secrets for user/db 
+  - [x] w/ secrets for user/db
   - [x] w/ PV for mariadb
 - [x] Setup chart w/ secrets for DB
 - [x] Setup [persistence via chart](https://github.com/nextcloud/helm/blob/main/charts/nextcloud/README.md#persistence-configurations):
@@ -30,4 +32,5 @@ References:
   - [x] setup ingress paths per https://docs.nextcloud.com/server/latest/admin_manual/issues/general_troubleshooting.html#service-discovery-label (also the values.yaml of chart has a config for nginx)
 
 ### Later:
+
 - [ ] Email mailrelay

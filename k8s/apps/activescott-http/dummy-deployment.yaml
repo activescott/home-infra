@@ -4,12 +4,20 @@ metadata:
   name: dummy
   labels:
     app: dummy
+
+  annotations:
+    k8tz.io/inject: "false"
+    
 spec:
   restartPolicy: Never
   containers:
-  - name: busybox
-    image: busybox
-    command: ['sh', '-c', 'echo Hello Kubernetes! && sleep 3600']
+  - name: dummy
+    
+    image: alpine:3.18
+    # Just spin & wait forever: https://stackoverflow.com/a/35770783/51061
+    command: ["/bin/sh", "-c", "--"]
+    args: ["trap : TERM INT; sleep infinity & wait"]
+
     ports:
       - name: dummy
         containerPort: 80
@@ -17,7 +25,7 @@ spec:
     resources:
       limits:
         cpu: "0.2"
-        memory: "256Mi"
+        memory: "128Mi"
       requests:
-        cpu: "0.2"
-        memory: "256Mi"
+        cpu: "0.1"
+        memory: "2Mi"

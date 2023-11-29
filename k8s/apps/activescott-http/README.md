@@ -11,4 +11,5 @@ This is a simple way to redirect https://activescott.com (NOTE: root of domain, 
   - There is also a port-forward in my router for all https/443 requests to come to the cluster.
 
 ## Todo
+
 The thing I wish would be better is to not have to spin up a pod at all but I couldn't figure out how to do that. Traefik seems to require a discoverable service, and the headless service or externalIP service didn't work.

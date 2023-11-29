@@ -5,6 +5,7 @@ I'm using ESPHome and an [Olimex ESP32-PoE](https://www.olimex.com/Products/IoT/
 ## Notes
 
 ### Olimex ESP32-PoE Notes
+
 - ESP32-POE board on platform.org (ESPHome is based on platform.org toolkit): https://docs.platformio.org/en/latest/boards/espressif32/esp32-poe.html#board-espressif32-esp32-poe
 - Use use `esp32-poe` ID for board option in ESPHome or platform.org stuff
 - To configured ethernet use the ESPHome [ethernet component](https://esphome.io/components/ethernet)
@@ -12,6 +13,7 @@ I'm using ESPHome and an [Olimex ESP32-PoE](https://www.olimex.com/Products/IoT/
   - `type: LAN8720` worked for me.
 
 ### ESPHome Stuff
+
 - To configure a output switch: https://esphome.io/components/switch/gpio
 - To setup an input: https://esphome.io/guides/getting_started_command_line#adding-a-binary-sensor
 

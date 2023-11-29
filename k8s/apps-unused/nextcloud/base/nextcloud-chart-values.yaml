@@ -46,7 +46,6 @@ nextcloud:
         ),
       );
 
-    
 ## Enable persistence using Persistent Volume Claims
 ##
 persistence:
@@ -58,7 +57,6 @@ persistence:
   existingClaim: nextcloud-pvc
   size: 1Ti
   # NOTE: Can ise an additional pvc for the data directory rather than a subpath of the default PVC. See `nextcloudData`
-
 
 ## Cronjob to execute Nextcloud background tasks
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#cron

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unifi-mongodb
+  labels:
+    app: unifi
+    role: mongodb
+spec:
+  serviceName: unifi-mongodb
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi
+      role: mongo-db
+  template:
+    metadata:
+      labels:
+        app: unifi
+        role: mongo-db
+    spec:
+      containers:
+        - name: unifi-mongo-db
+          # As of November 2023, LinuxServer said only mongodb 3.6 through 4.4 are supported: https://github.com/linuxserver/docker-unifi-network-application#setting-up-your-external-database
+          # container https://hub.docker.com/_/mongo
+          image: mongo:4.4

@@ -2,9 +2,9 @@
 
 This is a Kubernetes CronJob that uses a CronJob load Let's Encrypt certificates that are on disk and update a Kubernetes Secret with the certificates from file so that they can be used in a Service or Ingress.
 
-## TODO: 
+## TODO:
 
-**DEPRECATED**: **Remove the last usage of this at `/k8s/apps/photoprism/overlays/scott/patch-photoprism-ingress.yaml` by porting it to cert-manager and delete this.
+**DEPRECATED**: \*\*Remove the last usage of this at `/k8s/apps/photoprism/overlays/scott/patch-photoprism-ingress.yaml` by porting it to cert-manager and delete this.
 
 ## Overview
 
@@ -29,6 +29,7 @@ resources:
 namespace: my-apps-namespace
 
 ```
-The key point here is to create the CronJob and it's associated ServiceAccount, role, and RoleBinding within your app's namespace. Then it will create the secret within your app's namespace and it will be accessible to your Ingress. 
+
+The key point here is to create the CronJob and it's associated ServiceAccount, role, and RoleBinding within your app's namespace. Then it will create the secret within your app's namespace and it will be accessible to your Ingress.
 
 See photoprism at `/k8s/apps/photoprism/overlays/scott/patch-photoprism-ingress.yaml`

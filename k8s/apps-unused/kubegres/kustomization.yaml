@@ -1,0 +1,10 @@
+resources:
+  # This installs the kubgress controller per https://www.kubegres.io/doc/getting-started.html
+  - https://raw.githubusercontent.com/reactive-tech/kubegres/v1.17/kubegres.yaml
+
+buildMetadata: [originAnnotations, transformerAnnotations]
+
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: kubegress
+  app.activescott.com/tenant: everyone

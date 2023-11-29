@@ -4,6 +4,7 @@
     "middlewares",
     "nextcloud",
     "statefulset",
-    "thedatapool"
+    "thedatapool",
+    "unifi"
   ]
 }
