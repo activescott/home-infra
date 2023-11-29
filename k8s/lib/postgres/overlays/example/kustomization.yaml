@@ -1,0 +1,28 @@
+resources:
+  - ./namespace.yaml
+  - ../../base
+  - ./adminer.yaml
+
+# this configures most of postgres:
+secretGenerator:
+  - name: postgres-creds
+    envs:
+      - .env.secret.postgres-creds
+
+namespace: postgres-example-app
+
+patches:
+  # patch the mount path:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: postgres
+      spec:
+        template:
+          spec:
+            volumes:
+              - name: data
+                hostPath:
+                  path: /mnt/thedatapool/app-data/example-postgres-app/postgres-data
+

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  labels:
+    lib: postgres
+spec:
+  ports:
+    # https://www.postgresql.org/docs/current/runtime-config-connection.html
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+  # Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster
+  type: ClusterIP
+  selector:
+    lib: postgres
+    role: db

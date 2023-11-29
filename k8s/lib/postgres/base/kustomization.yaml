@@ -1,0 +1,5 @@
+resources:
+  - postgres-service.yaml
+  - postgres-configmap.yaml
+  - postgres-statefulset.yaml
+  

@@ -1,0 +1,117 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+  labels:
+    lib: postgres
+    role: db
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      lib: postgres
+      role: db
+  template:
+    metadata:
+      labels:
+        lib: postgres
+        role: db
+    spec:
+      containers:
+        # documentation: https://hub.docker.com/_/postgres
+        - name: postgres
+          image: postgres:16.1
+          ports:
+            - containerPort: 5432
+              name: postgres-port
+
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: postgres-password
+            
+            # Specifies a user with superuser privileges and a database with the same name
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: postgres-user
+            
+            # Non-standard: A user that has all privilege to the POSTGRES_DB but nothing else.
+            - name: APP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: app-user
+            
+            # Non-standard: Password for $APP_PASSWORD
+            - name: APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: app-password
+
+            # Specifies a name for your database or defaults to the POSTGRES_USER value when left blank. 
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-creds
+                  key: postgres-db
+            
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          
+          volumeMounts:        
+            - mountPath: "/var/lib/postgresql/data/pgdata"
+              name: data
+            
+            # see "Initialization scripts" at https://hub.docker.com/_/postgres for a way to create users or other one-time initialization. TLDR; put add one or more *.sql or *.sh scripts under /docker-entrypoint-initdb.d.
+            - name: configs
+              mountPath: /docker-entrypoint-initdb.d/primary_init_script.sh
+              subPath: primary_init_script.sh
+
+          # liveness/readiness from kubegres: https://github.com/reactive-tech/kubegres/blob/main/internal/controller/spec/template/yaml/PrimaryStatefulSetTemplate.yaml
+          
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready -U $POSTGRES_USER
+            failureThreshold: 10
+            initialDelaySeconds: 60
+            periodSeconds: 20
+            successThreshold: 1
+            timeoutSeconds: 15
+
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - exec pg_isready -U $POSTGRES_USER
+            failureThreshold: 3
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 3
+
+      # pod-level securityContext:
+      #securityContext:
+      #  # patch fsGroup to control the owner of files in the mounted directories.
+      #  #   i.e. create a group on the host/node and specify it here to make that group the owner/accessor of the files.
+      #  fsGroup: 1001
+
+      # pod-level volumes:
+      volumes:
+        - name: configs
+          configMap:
+            name: postgres-config-map
+            defaultMode: 0777
+
+        - name: data
+          hostPath:
+            path: /PATCH_WITH_KUSTOMIZE # e.g /mnt/thedatapool/app-data/example-app/postgres-data

@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: adminer-pod
+  labels:
+    app: adminer
+    role: app
+spec:
+  containers:
+    # Use root/example as user/password credentials
+    # see https://hub.docker.com/_/adminer/
+    - name: adminer
+      image: adminer
+      ports:
+        - containerPort: 8080
+      
+      resources:
+        limits:
+          cpu: "1"
+          memory: "512Mi"
+        
+      env:
+        - name: ADMINER_DEFAULT_SERVER
+          value: postgres
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adminer-service
+  labels:
+    app: adminer
+spec:
+  # Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster
+  # We expose it externally via an Ingress so that we can match requested domain/url to map here.
+  type: LoadBalancer
+  ports:
+    # NOTE: We're just forcing aminer to be available on 8042. So http://k8s.activescott.com:8042/ should work
+    
+    - name: web-ui
+      port: 8042
+      targetPort: 8080
+  selector:
+    app: adminer
+    role: app
