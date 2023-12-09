@@ -297,13 +297,37 @@
     target:
       entity_id: light.outdoor_lights
   mode: single
-- id: '1698547947433'
-  alias: Racoon Activated Light
-  description: ''
-  use_blueprint:
-    path: homeassistant/motion_light.yaml
-    input:
-      motion_entity: binary_sensor.lumi_lumi_sensor_motion_aq2_motion
-      light_target:
-        entity_id: light.micah_s_desk_lamp_light
-      no_motion_wait: 60
+- id: '1702149191421'
+  alias: Racoon Motion Light at Night
+  description: When motion is detected, turns on light and turns it off when motion
+    is clear after a delay.
+  trigger:
+  - platform: state
+    entity_id:
+    - binary_sensor.lumi_lumi_sensor_motion_aq2_motion
+    from: 'off'
+    to: 'on'
+  condition:
+  - condition: sun
+    after: sunset
+  action:
+  - service: light.turn_on
+    data: {}
+    target:
+      entity_id: light.micah_s_desk_lamp_light
+  - wait_for_trigger:
+    - platform: state
+      entity_id:
+      - binary_sensor.lumi_lumi_sensor_motion_aq2_motion
+      from: 'on'
+      to: 'off'
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - service: light.turn_off
+    data: {}
+    target:
+      entity_id: light.micah_s_desk_lamp_light
+  mode: single
