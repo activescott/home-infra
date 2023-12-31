@@ -331,3 +331,32 @@
     target:
       entity_id: light.micah_s_desk_lamp_light
   mode: single
+- id: '1703990781217'
+  alias: Office Switch Relay Toggles Micah Lamp
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - switch.dimmer_dry_contact_relay_2
+  condition: []
+  action:
+  - if:
+    - condition: state
+      entity_id: switch.dimmer_dry_contact_relay_2
+      state: 'on'
+    then:
+    - service: switch.turn_on
+      data: {}
+      target:
+        entity_id: switch.innr_sp_224_switch_2
+    else:
+    - if:
+      - condition: state
+        entity_id: switch.dimmer_dry_contact_relay_2
+        state: 'off'
+      then:
+      - service: switch.turn_off
+        data: {}
+        target:
+          entity_id: switch.innr_sp_224_switch_2
+  mode: single

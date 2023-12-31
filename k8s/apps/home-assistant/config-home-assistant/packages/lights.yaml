@@ -62,3 +62,5 @@ light:
     entities:
       - light.momma_s_desk_lamp_light
       - light.micah_s_desk_lamp_light
+      # this is the ZEN30 office light+relay combo switch. It exposes a light (light.dimmer_dry_contact_relay) as well as a switch for the dimmer button. It also exposes a switch for the bottom relay button.
+      - light.dimmer_dry_contact_relay
