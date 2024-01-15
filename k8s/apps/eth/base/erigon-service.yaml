@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: erigon
+  namespace: eth
+  labels:
+    app: eth
+    role: execution-client
+spec:
+  # NOTE: Using NodePort to allow EXTERNAL traffic to be forwarded to pod's port.
+  #       ...because Ingress is HTTP only and doesn't support raw UDP/TCP-level forwarding.
+  type: NodePort
+  
+  selector:
+    app: eth
+    role: execution-client-erigon
+  
+  ports:
+    - name: eth-68-peering
+      port: 30303
+      nodePort: 30303
+
+    - name: eth-67-peering
+      port: 30304
+      nodePort: 30304
+
+    - name: snap-sync-bittorrent
+      port: 42069
+      nodePort: 42069
+
+    - name: grpc-server
+      port: 9090
+      # targetPort: By default the `targetPort` is set to the same value as the `port` field.
+      # targetPort: 9090
+      # nodePort: By default the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
+      nodePort: 9090
+
+    - name: incoming-grpc
+      port: 9091
+      nodePort: 9091
+
+    #- name: http-websockets-graphql
+    #  port: 8545
+    #  nodePort: 8545

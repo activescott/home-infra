@@ -41,4 +41,4 @@ notify:
   - name: scott
     platform: group
     services:
-      - service: mobile_app_fatboy
+      - service: mobile_app_fatboy_3

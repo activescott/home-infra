@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: erigon
+  namespace: eth
+  labels:
+    app: eth
+    role: execution-client
+spec:
+  serviceName: erigon
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eth
+      role: execution-client-erigon
+  template:
+    metadata:
+      labels:
+        app: eth
+        role: execution-client-erigon
+    spec:
+      containers:
+        - name: erigon
+          # NOTE: they provide a `stable` tag, but it's very old and they have detailed release notes at https://github.com/ledgerwatch/erigon/releases?page=1 and recommend to other users (assuming not using docker) to use a current release
+          image: thorax/erigon:v2.56.2
+
+          resources:
+            limits:
+              memory: "24Gi"
+            requests:
+              memory: "4Gi"          
+
+          ports:
+            # https://github.com/ledgerwatch/erigon#default-ports-and-firewalls
+            # > Typically, 30303 and 30304 are exposed to the internet to allow incoming peering connections. 
+            # > 9090 is exposed only internally for rpcdaemon or other connections, (e.g. rpcdaemon -> erigon). 
+            # > 8551 (JWT authenticated) is exposed only internally for Engine API JSON-RPC queries from the Consensus Layer node.
+            
+            # eth/68 peering:
+            - containerPort: 30303
+            # eth/67 peering:
+            - containerPort: 30304
+            # Snap sync (Bittorrent):
+            - containerPort: 42069
+
+            # gRPC Server:
+            - containerPort: 9090
+            # incoming gRPC Connections:
+            - containerPort: 9091
+            # Engine API (JWT auth):
+            - containerPort: 8551
+            # HTTP & WebSockets & GraphQL:
+            - containerPort: 8545
+          
+          # paths can be discovered at https://github.com/ledgerwatch/erigon/blob/devel/Dockerfile
+          command: ["/usr/local/bin/erigon"]
+          # Basic Command line Options: https://erigon.gitbook.io/erigon/eli5-nodes/how-to-run-a-gnosis-chain-node#configure-erigon-client
+          # ALL command line options: https://erigon.gitbook.io/erigon/advanced-usage/command-line-options
+          args:
+            - --datadir
+            - /data/erigon
+
+            # name of the network to join (default: "mainnet")
+            # --chain "main"                                            
+
+            # They said this is good for a full node (which is sufficient for validating), and not as big as an "archive node"
+            - --prune=hrtc
+
+            # forced our ZFS RecordSize to 64KB
+            # more on zfs record size: https://jrs-s.net/2019/04/03/on-zfs-recordsize/
+            - --db.pagesize
+            - 64K
+            
+            # snapshots is using bittorent to sync chaindata: see https://erigon.gitbook.io/erigon/advanced-usage/downloader
+            # Default: use snapshots "true" for Mainnet, Goerli, Gnosis Chain and Chiado. use snapshots "false" in all other cases (default: true)
+            - --snapshots
+
+            # The intent here is that it will allow erigon to discover the proper external IP
+            - --nat
+            - any
+
+          # container-level volume mounts:
+          volumeMounts:
+            # https://erigon.gitbook.io/erigon/advanced-usage/configure-erigon#datadir-structure
+            # Datadir structure:
+            # - chaindata: recent blocks, state, recent state history. low-latency disk recommended.
+            # - snapshots: old blocks, old state history. can symlink/mount it to cheaper disk. mostly immutable. must have ~100gb free space (for merge recent files to bigger one).
+            # - temp: can grow to ~100gb, but usually empty. can symlink/mount it to cheaper disk.
+            # - txpool: pending transactions. safe to remove.
+            # - nodes: p2p peers. safe to remove.                       
+            - mountPath: /data/erigon
+              name: erigon
+            - mountPath: /data/erigon/chaindata
+              name: chaindata
+    
+      securityContext:
+        # this user is on the node's os as the file system owner
+        # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+        runAsUser:  4010
+        runAsGroup: 4010
+        fsGroup:    4010
+
+      # pod-level volumes:
+      volumes:
+      # default:
+        - name: erigon
+          hostPath:
+            path: /mnt/thedatapool/no-backup/app-data/erigon
+        - name: chaindata
+          hostPath:
+            path: /mnt/ssdspace/eth-exec/erigon/chaindata
