@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: prometheus-service
+    annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port:   '9090'
+
+spec:
+  # Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster
+  # We expose it externally via an Ingress so that we can match requested domain/url to map here.
+  type: ClusterIP
+  ports:
+    - name: web-ui
+      port: 80
+      # targetPort name/port matches the container
+      targetPort: web-ui
+  selector:
+    app: prometheus
+    

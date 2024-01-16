@@ -1,0 +1,75 @@
+# based loosely on https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: grafana
+  name: grafana
+spec:
+  serviceName: grafana
+
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  
+  template:  
+    metadata:
+      labels:
+        app: grafana
+    
+    spec:    
+      containers:
+        - name: grafana
+          # for latest tag: https://hub.docker.com/r/grafana/grafana/tags
+          image: grafana/grafana:10.1.6
+          
+          ports:
+            - containerPort: 3000
+              name: http-grafana
+              protocol: TCP
+          
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3000
+            timeoutSeconds: 1
+          
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+            limits:
+              cpu: "1.0"
+              memory: "2Gi"
+          
+          volumeMounts:
+            # https://grafana.com/docs/grafana/latest/setup-grafana/configure-docker/#default-paths
+            - mountPath: /var/lib/grafana
+              name: grafana-pv
+      
+      securityContext:
+        # this user is on the node's os as the file system owner
+        # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+        runAsUser:  4020
+        runAsGroup: 4020
+        fsGroup:    4020
+
+      # more general configuration for grafana in an ini file as described at https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/
+      volumes:
+        - name: grafana-pv
+          hostPath:
+            path: /mnt/thedatapool/app-data/grafana/var-lib-grafana

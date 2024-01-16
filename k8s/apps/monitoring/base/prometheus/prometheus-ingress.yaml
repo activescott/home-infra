@@ -1,0 +1,26 @@
+# NOTE: We use ingress here rather than a simple service so we can route traffic
+#   based on hostname and not only IP. Ingress also has the advantage of being
+#   able to serve TLS.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: prometheus-ingress
+spec:
+  tls:
+  # The patches in kustomize are ugly here (the patch is basically the whole Ingress). This could probably be made cleaner using a configMap + configMapGenerator or something to grab these values from a simple property file or labels or something
+  - hosts:
+      - prometheus.activescott.com # e.g. photos.example.com
+    secretName: prometheus-activescott-com-tls #e.g. cert-example-com
+  rules:
+  # don't forget to set this up in DNS
+  - host: prometheus.activescott.com # e.g. photos.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prometheus-service
+            # port of the referenced service. A port name or port number is required for a IngressServiceBackend.
+            port:
+              name: web-ui

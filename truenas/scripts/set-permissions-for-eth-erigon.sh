@@ -15,8 +15,8 @@ DIRECTORIES=(
 USER=4010
 GROUP=4010
 
-for PATH in "${DIRECTORIES[@]}"
+for dir in "${DIRECTORIES[@]}"
 do
-  /usr/bin/sudo chown -v -R $USER:$GROUP "$PATH"
-  /usr/bin/sudo chmod -v -R u=rwX,g=rwX,o=rX "$PATH"
+  /usr/bin/sudo chown -v -R $USER:$GROUP "$dir"
+  /usr/bin/sudo chmod -v -R u=rwX,g=rwX,o=rX "$dir"
 done

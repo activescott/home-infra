@@ -1,0 +1,18 @@
+# Reference:
+# - https://cert-manager.io/docs/concepts/certificate/
+# - https://cert-manager.io/docs/usage/certificate/
+# - tutorial: https://cert-manager.io/docs/tutorials/acme/nginx-ingress/
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-activescott-com
+spec:
+  # the secret is put in this secret by the Certificate, and should match the secretName in ingress.
+  # secret's DNS must be in public DNS (so letsencrypt can find it) and local DNS (so local LAN hosts can find it)
+  secretName: grafana-activescott-com-cert
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+  commonName: grafana.activescott.com
+  dnsNames:
+  - grafana.activescott.com

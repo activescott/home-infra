@@ -1,0 +1,13 @@
+resources:
+  - ./authorize-prometheus-to-k8s.yaml
+  - ./prometheus-configmap.yaml
+  - ./prometheus-statefulset.yaml
+  - ./prometheus-service.yaml
+  - ./certificate.yaml
+  - ./prometheus-ingress.yaml  
+
+commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  app.activescott.com/name: prometheus
+  # NOTE: tenet is specified in the overlays
+  #app.activescott.com/tenant: 

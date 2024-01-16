@@ -1,0 +1,20 @@
+resources:
+- ./namespace.yaml
+
+# grafana
+- ./base/grafana
+
+# prometheus: 
+- ./base/prometheus
+
+namespace: monitoring
+
+# NOTE: adding `managedByLabel` here causes a label like `app.kubernetes.io/managed-by: kustomize-(devel)` to be added and `kustomize-(devel)` gets rejected by k8s server side.
+buildMetadata: [originAnnotations, transformerAnnotations]
+
+# setting commonLabels in each of grafana and prometheus folders above
+#commonLabels:
+  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
+  # app.activescott.com/name: monitoring
+  # NOTE: tenet is specified in the overlays
+  #app.activescott.com/tenant: 

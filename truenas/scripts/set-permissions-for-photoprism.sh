@@ -10,9 +10,9 @@ DIRECTORIES=(
 USER=photoprism
 GROUP=photoprism
 
-for PATH in "${DIRECTORIES[@]}"
+for dir in "${DIRECTORIES[@]}"
 do
-  /usr/bin/sudo chown -R $USER:$GROUP "$PATH"
-  /usr/bin/sudo chmod -R u=rwX,g=rwX,o=rX "$PATH"
+  /usr/bin/sudo chown -R $USER:$GROUP "$dir"
+  /usr/bin/sudo chmod -R u=rwX,g=rwX,o=rX "$dir"
 done
 
