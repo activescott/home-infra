@@ -24,7 +24,7 @@ rules:
   - nonResourceURLs:
       - "/metrics"
     verbs:
-      - get  
+      - get
 ---
 apiVersion: v1
 kind: ServiceAccount

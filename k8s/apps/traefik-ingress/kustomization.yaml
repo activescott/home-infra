@@ -11,6 +11,10 @@ helmCharts:
   includeCRDs: true
   # Traefik helm chart at https://github.com/traefik/traefik-helm-chart/blob/master/traefik/values.yaml
   valuesInline:
+    podAnnotations:
+      # the prometheus config is configured to look for this
+      prometheus.io/scrape: 'true'
+
     rbac:
       enabled: true
       #namespaced: false # false = allow traefik to be used across namespaces

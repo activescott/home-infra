@@ -17,6 +17,10 @@ spec:
     metadata:
       labels:
         app: grafana
+      annotations:
+        # the prometheus config is configured to look for this
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: '3000'
     
     spec:    
       containers:

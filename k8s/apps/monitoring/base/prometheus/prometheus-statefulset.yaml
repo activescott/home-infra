@@ -26,11 +26,14 @@ spec:
       serviceAccountName: prometheus
       containers:
       - name: prometheus
-        image: prom/prometheus
+        # image tags at https://hub.docker.com/r/prom/prometheus/tags
+        image: prom/prometheus:v2.49.1
         args:
           - '--storage.tsdb.retention.time=6h'
           - '--storage.tsdb.path=/prometheus'
           - '--config.file=/etc/prometheus/prometheus.yml'
+          # enables `curl -X POST https://prometheus.activescott.com/-/reload` to reload configs per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
+          - '--web.enable-lifecycle'
         
         ports:
         - name: web-ui

@@ -1,10 +1,16 @@
 resources:
   - ./authorize-prometheus-to-k8s.yaml
-  - ./prometheus-configmap.yaml
+  #- ./prometheus-configmap.yaml
   - ./prometheus-statefulset.yaml
   - ./prometheus-service.yaml
   - ./certificate.yaml
   - ./prometheus-ingress.yaml  
+
+# kustomize help on configMapGenerator: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_configmapgenerator_
+configMapGenerator:
+  - name: prometheus-config
+    files:
+    - prometheus.yml
 
 commonLabels:
   # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.

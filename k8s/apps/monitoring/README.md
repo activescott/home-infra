@@ -1,5 +1,28 @@
 # Monitoring: Prometheus & Grafana
 
+### Usage
+
+To scrape metrics with Prometheus on a pod, use the following pod-level annotation:
+
+```yaml
+# the prometheus config is configured to look for this
+prometheus.io/scrape: "true"
+```
+
+To scrape metrics with Prometheus on a specific port or path can optionally use the below annotations:
+
+```yaml
+prometheus.io/port: "3000"
+```
+
+```yaml
+prometheus.io/path: "/metrics"
+```
+
+This works due to relabels in the prometheus.yml configuration.
+
+To determine these values it depends entirely on the app, so will need to read their docs. Sometimes others publish their own "exporters" for exporting metrics from an app in a proprietary way and publishing them in a way prometheus can consume.
+
 ## Grafana
 
 Guide: https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubernetes/
