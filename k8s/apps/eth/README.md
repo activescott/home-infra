@@ -79,9 +79,13 @@ Using Lodestar and Erigon provided containers from dockerhub in k8s
     - [+] Forward Ports from FW to k8s node
 - [+] use script to set permission in the erigon directories to the user 4010 (eerigon)
 - [ ] setup monitoring via prometheus and grafana:
-  - [ ] Setup prometheus and grafana in kubernetes: https://grafana.com/blog/2023/01/19/how-to-monitor-kubernetes-clusters-with-the-prometheus-operator/
-  - [ ] Run Erigon with --metrics
-  - [ ] Setup Prometheus to scrap erigon: https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
+
+  - [+] Setup prometheus and grafana in kubernetes: https://grafana.com/blog/2023/01/19/how-to-monitor-kubernetes-clusters-with-the-prometheus-operator/
+  - [+] Run Erigon with --metrics
+  - [+] Setup Prometheus to scrap erigon and make sure the target works: https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
+  - [+] Download some dashboards for erigon (see readme above, they provide them)
+
+- [ ] Consider migrating to their published kustomization setup at https://github.com/ledgerwatch/erigon/tree/devel/k8s
 
 #### Lodestar
 

@@ -17,6 +17,12 @@ alerting:
 rule_files:
   # - "example-file.yml"
 
+# Scrape config files specifies a list of globs. Scrape configs are read from
+# all matching files and appended to the list of scrape configs.
+scrape_config_files:
+  # [ - <filepath_glob> ... ]
+  - "*.scrape_config.yml"
+
 scrape_configs:
   - job_name: "prometheus"
     static_configs:

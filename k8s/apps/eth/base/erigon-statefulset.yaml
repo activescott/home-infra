@@ -18,6 +18,11 @@ spec:
       labels:
         app: eth
         role: execution-client-erigon
+      annotations:
+        # from erigon logs: Enabling metrics export to prometheus    path=http://127.0.0.1:6060/debug/metrics/prometheus
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "6060"
+        prometheus.io/path: "/debug/metrics/prometheus"
     spec:
       containers:
         - name: erigon
@@ -51,6 +56,8 @@ spec:
             - containerPort: 8551
             # HTTP & WebSockets & GraphQL:
             - containerPort: 8545
+            # 6060 is shown in the logs for metrics like: 'Enabling metrics export to prometheus    path=http://127.0.0.1:6060/debug/metrics/prometheus'
+            - containerPort: 6060
           
           # paths can be discovered at https://github.com/ledgerwatch/erigon/blob/devel/Dockerfile
           command: ["/usr/local/bin/erigon"]
@@ -78,6 +85,11 @@ spec:
             # The intent here is that it will allow erigon to discover the proper external IP
             - --nat
             - any
+
+            # Publish a metrics endpoint for prometheus per https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
+            - --metrics
+            - '--metrics.addr=0.0.0.0'
+            - '--metrics.port=6060'
 
           # container-level volume mounts:
           volumeMounts:

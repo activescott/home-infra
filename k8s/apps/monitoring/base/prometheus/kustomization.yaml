@@ -1,6 +1,5 @@
 resources:
   - ./authorize-prometheus-to-k8s.yaml
-  #- ./prometheus-configmap.yaml
   - ./prometheus-statefulset.yaml
   - ./prometheus-service.yaml
   - ./certificate.yaml
@@ -11,6 +10,8 @@ configMapGenerator:
   - name: prometheus-config
     files:
     - prometheus.yml
+    # I found we can scrape erigon using the pod scraper with some annotations
+    # - erigon.scrape_config.yml=scrape_config_files/erigon.scrape_config.yml
 
 commonLabels:
   # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
