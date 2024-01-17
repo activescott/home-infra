@@ -26,9 +26,9 @@ spec:
 
           resources:
             limits:
-              memory: "2Gi"
+              memory: "768Mi"
             requests:
-              memory: "256Mi"
+              memory: "128Mi"
 
           env:
             - name: PUID
@@ -39,7 +39,7 @@ spec:
               value: America/Los_Angeles
             # per https://github.com/linuxserver/docker-unifi-controller#parameters
             - name: MEM_LIMIT
-              value: "1024"
+              value: "512"
           
           # container-level volume mounts:
           volumeMounts:
