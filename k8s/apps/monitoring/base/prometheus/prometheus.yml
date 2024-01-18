@@ -1,3 +1,4 @@
+# https://prometheus.io/docs/prometheus/latest/configuration/configuration/
 global:
   # How frequently to scrape targets by default. default = 1m
   scrape_interval: 1m # 15s
