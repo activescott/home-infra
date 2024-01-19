@@ -111,8 +111,9 @@ spec:
           # note this doesn't matter much other than it allows me to dump file into it on the server
           - mountPath: /photoprism/import
             name: import
-          - mountPath: /dev/dri
-            name: intel-quick-sync
+          # TODO: See bleow. Doesn't work on truenas
+          #- mountPath: /dev/dri
+          #  name: intel-quick-sync
         
         # container-level securityContext, which has different config than pod-level securityContext: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#security-context-1
         securityContext:
@@ -136,14 +137,15 @@ spec:
       # pod-level volumes:
       volumes:
         # NOTE: this also requires the PHOTOPRISM_FFMPEG_ENCODER environment variable above to be set to something other than "software"
+        # NOTE: mounted this way won't allow it to mount on multiple containers. Look into a PV and PVC w/ accessmodes
         # Share hardware devices with FFmpeg and TensorFlow (optional):
         #  Intel Quick Sync hardware acceleration is in the photoprism docker-compose file:
         # I5-13600K has it: https://www.intel.com/content/www/us/en/products/sku/230493/intel-core-i513600k-processor-24m-cache-up-to-5-10-ghz/specifications.html
-        - name: intel-quick-sync
-          hostPath:
-            path: /dev/dri
-            # adding BlockDevice causes K8S error 'can only use volume source type of PersistentVolumeClaim or Ephemeral for block mode'. I found some other templates indicating it was unnecessary.
-            #type: BlockDevice
+        #- name: intel-quick-sync
+        #  hostPath:
+        #    path: /dev/dri
+        #    # adding BlockDevice causes K8S error 'can only use volume source type of PersistentVolumeClaim or Ephemeral for block mode'. I found some other templates indicating it was unnecessary.
+        #    #type: BlockDevice
 
         - name: import
           hostPath:
