@@ -14,6 +14,14 @@ helmCharts:
     podAnnotations:
       # the prometheus config is configured to look for this
       prometheus.io/scrape: 'true'
+    
+    resources:
+      requests:
+        cpu: "100m"
+        memory: "50Mi"
+      limits:
+        cpu: "2.0"
+        memory: "1Gi"
 
     rbac:
       enabled: true

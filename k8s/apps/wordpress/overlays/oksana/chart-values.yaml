@@ -85,6 +85,12 @@ persistence:
   ##
   existingClaim: oksana-wordpress-pvc
 
+resources:
+  limits:
+    memory: 1Gi
+  requests:
+    memory: 512Mi
+
 mariadb:
   ## @param mariadb.enabled Deploy a MariaDB server to satisfy the applications database requirements
   ## To use an external database set this to false and configure the `externalDatabase.*` parameters
@@ -112,3 +118,8 @@ mariadb:
       enabled: true
       existingClaim: oksana-wordpress-mariadb-pvc
     
+    resources:
+      limits:
+        memory: 512Mi
+      requests:
+        memory: 200Mi

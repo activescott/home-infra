@@ -25,9 +25,17 @@ spec:
         - name: zwavejs
         # container at https://hub.docker.com/r/zwavejs/zwave-js-ui/tags
           image: zwavejs/zwave-js-ui:8.23.1
+
           securityContext:
             # needed for /dev/zwave device access
             privileged: true
+          
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              memory: "112Mi"
+          
           env:
             # env docs at https://zwave-js.github.io/zwavejs2mqtt/#/guide/env-vars?id=environment-variables
             - name: SESSION_SECRET

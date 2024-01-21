@@ -5,3 +5,10 @@ helmCharts:
   version: 0.13.1
   valuesInline:
     timezone: America/Los_Angeles
+
+    resources:
+      limits:
+        memory: "128Mi"
+      requests:
+        memory: "32Mi"
+

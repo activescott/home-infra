@@ -23,6 +23,13 @@ spec:
         - name: home-assistant
           # find container versions/tags at https://registry.hub.docker.com/r/homeassistant/home-assistant/tags
           image: homeassistant/home-assistant:2023.8
+
+          resources:
+            limits:
+              memory: "2Gi"
+            requests:
+              memory: "450Mi"
+
           securityContext:
             # HASS marked the docker container privileged at https://www.home-assistant.io/installation/alternative/#docker-compose
             privileged: true

@@ -84,6 +84,31 @@ commonLabels:
   app.activescott.com/tenant: everyone # or scott or oksana, etc.
 ```
 
+## Notes to Self
+
+### Kubernetes Memory & Limits
+
+Specify a memory limit on containers (`spec.containers[].resources.limits.memory`). The limit appears to correspond to Prometheus metric `container_memory_usage_bytes`. The `container_memory_usage_bytes` metric though includes cached (think filesystem cache) items that can be evicted under memory pressure ([ref1](https://stackoverflow.com/a/66778814/51061), [ref2](https://faun.pub/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d) [ref3](https://kubernetes.io/docs/tasks/configure-pod-container/assign-memory-resource/#exceed-a-container-s-memory-limit)).
+
+The `container_memory_working_set_bytes` is what the OOMKiller watches though and that tends to be much lower. The `limit` specified in YAML is honored in two ways (this insight from [ref2](https://faun.pub/how-much-is-too-much-the-linux-oomkiller-and-used-memory-d32186f29c9d)):
+
+1. If the pod's `container_memory_usage_bytes` gets hits the limit then then the pod/container (OS?) will reduce the cache memory to keep the pod under the limit as long as `container_memory_working_set_bytes` + `container_memory_cache` < limit.
+2. If the `container_memory_working_set_bytes` isn't brought under the limit, then OOMKiller will kill the pod/container.
+
+#### Do Requests need to be specified?
+
+> Note: If you specify a limit for a resource, but do not specify any request, and no admission-time mechanism has applied a default request for that resource, then Kubernetes copies the limit you specified and uses it as the requested value for the resource. – https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
+
+Yes.
+
+#### Pods without Limits Specified
+
+To identify pods without memory resource limit specified:
+
+```sh
+$ kubectl get pods --all-namespaces -o json | jq -r '.items[] | select(.spec.containers[].resources.limits.memory == null) | .metadata.name'
+```
+
 ---
 
 ## TODO:

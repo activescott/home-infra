@@ -32,6 +32,10 @@ Guide: https://grafana.com/docs/grafana/latest/setup-grafana/installation/kubern
 Guide: https://phoenixnap.com/kb/prometheus-kubernetes
 Reference: https://prometheus.io/docs/prometheus/latest/installation/
 
+## Todo:
+
+- transmission metrics: https://github.com/sandrotosi/simple-transmission-exporter
+
 ## Notes to self
 
 ### Why not Prometheus Operator?
