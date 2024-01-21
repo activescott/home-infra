@@ -42,16 +42,6 @@ The apps below here are installed to support the other apps in the cluster.
 
 This is a cert manager instance that provisions certificates for _.scott.willeke.com, _.oksana.willeke.com, and \*.activescott.com.
 
-#### [k8s/apps/letsencrypt-certbot](k8s/apps/letsencrypt-certbot)
-
-Before I started using cert-manager I ported over a solution I used for letencrypted from docker-compose. It is simply a kubernetes `CronJob` that runs certbot on a schedule and puts the cert in `/mnt/thedatapool/app-data/letsencrypt`
-
-#### [k8s/apps/letsencrypt-secret-loader](k8s/apps/letsencrypt-secret-loader)
-
-See [k8s/apps/letsencrypt-secret-loader/readme.md](k8s/apps/letsencrypt-secret-loader/README.md). DEPRECATED for cert-manager.
-
-TLDR: You include the [k8s/apps/letsencrypt-secret-loader/kustomization.yaml](k8s/apps/letsencrypt-secret-loader/kustomization.yaml) file in your kustomization resources section so that it puts a secret in the app's kubernetes namespace that you can reference in the ingress. See
-
 #### k8s/apps/k8tz
 
 Sucks to see different times in logs of apps, k8tz is provisioned to ensure that all the pods/containers are provisioned with the same timezone as the host.

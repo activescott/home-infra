@@ -6,4 +6,4 @@ RESOURCE_ROOT="$WORKSPACE_ROOT"
 
 set -x
 
-kubectl delete cronjob letsencrypt-certbot
+kubectl -n=default delete cronjob letsencrypt-certbot
