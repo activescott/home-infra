@@ -82,11 +82,21 @@ spec:
             # Default: use snapshots "true" for Mainnet, Goerli, Gnosis Chain and Chiado. use snapshots "false" in all other cases (default: true)
             - --snapshots
 
+            # enable RPC API: https://erigon.gitbook.io/erigon/advanced-usage/rpcdaemon#built-in-rpcdaemon
+            - --http
+            - '--http.vhosts=*'
+            - '--http.addr=0.0.0.0'
+            # --http.port value HTTP-RPC server listening port (default: 8545)
+            # NOTE: change this because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
+            - --http.port=9045
+            - --http.api=eth,web3,net,debug,trace,txpool
+
             # The intent here is that it will allow erigon to discover the proper external IP
             - --nat
             - any
 
             # Publish a metrics endpoint for prometheus per https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
+
             - --metrics
             - '--metrics.addr=0.0.0.0'
             - '--metrics.port=6060'

@@ -39,6 +39,6 @@ spec:
       port: 9091
       nodePort: 9091
 
-    #- name: http-websockets-graphql
-    #  port: 8545
-    #  nodePort: 8545
+    - name: http-websockets-graphql
+      port: 9045
+      nodePort: 9045
