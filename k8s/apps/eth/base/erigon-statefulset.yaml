@@ -41,13 +41,12 @@ spec:
             # > Typically, 30303 and 30304 are exposed to the internet to allow incoming peering connections. 
             # > 9090 is exposed only internally for rpcdaemon or other connections, (e.g. rpcdaemon -> erigon). 
             # > 8551 (JWT authenticated) is exposed only internally for Engine API JSON-RPC queries from the Consensus Layer node.
-            
             # eth/68 peering:
-            - containerPort: 30303
+            - containerPort: 31303
             # eth/67 peering:
-            - containerPort: 30304
+            - containerPort: 31304
             # Snap sync (Bittorrent):
-            - containerPort: 42069
+            - containerPort: 43069
 
             # gRPC Server:
             - containerPort: 9090
@@ -56,7 +55,7 @@ spec:
             # Engine API (JWT auth):
             - containerPort: 8551
             # HTTP & WebSockets & GraphQL:
-            - containerPort: 8545
+            - containerPort: 9045
             # 6060 is shown in the logs for metrics like: 'Enabling metrics export to prometheus    path=http://127.0.0.1:6060/debug/metrics/prometheus'
             - containerPort: 6060
           
@@ -65,6 +64,16 @@ spec:
           # Basic Command line Options: https://erigon.gitbook.io/erigon/eli5-nodes/how-to-run-a-gnosis-chain-node#configure-erigon-client
           # ALL command line options: https://erigon.gitbook.io/erigon/advanced-usage/command-line-options
           args:
+            #--port value Network listening port (default: 30303)
+            # NOTE: MUST match containerPort above!
+            - --port=31303
+            #--p2p.protocol value [ --p2p.protocol value ] Version of eth p2p protocol (default: 68, 67)
+            #--p2p.allowed-ports value [ --p2p.allowed-ports value ] Allowed ports to pick for different eth p2p protocol versions as follows <porta>,<portb>,..,<porti> (default: 30303, 30304, 30305, 30306, 30307)
+
+            #--torrent.port value Port to listen and serve BitTorrent protocol (default: 42069)
+            # NOTE: MUST match containerPort above!
+            - --torrent.port=43069
+
             # --http.port value HTTP-RPC server listening port (default: 8545)
             # NOTE: change http.port because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
             - --http.port=9045

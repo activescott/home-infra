@@ -17,16 +17,16 @@ spec:
   
   ports:
     - name: eth-68-peering
-      port: 30303
-      nodePort: 30303
+      port: 31303
+      nodePort: 31303
 
     - name: eth-67-peering
-      port: 30304
-      nodePort: 30304
+      port: 31304
+      nodePort: 31304
 
     - name: snap-sync-bittorrent
-      port: 42069
-      nodePort: 42069
+      port: 43069
+      nodePort: 43069
 
     - name: grpc-server
       port: 9090
