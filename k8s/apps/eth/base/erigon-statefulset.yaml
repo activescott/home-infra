@@ -65,6 +65,23 @@ spec:
           # Basic Command line Options: https://erigon.gitbook.io/erigon/eli5-nodes/how-to-run-a-gnosis-chain-node#configure-erigon-client
           # ALL command line options: https://erigon.gitbook.io/erigon/advanced-usage/command-line-options
           args:
+            # --http.port value HTTP-RPC server listening port (default: 8545)
+            # NOTE: change http.port because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
+            - --http.port=9045
+            - --http.api=eth,web3,net,debug,trace,txpool,admin
+            
+            # Publish a metrics endpoint for prometheus per https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
+            - --metrics
+            - '--metrics.addr=0.0.0.0'
+            # NOTE: MUST match containerPort above!
+            - '--metrics.port=6060'
+
+            # The intent here is that it will allow erigon to discover the proper external IP
+            # --nat value NAT port mapping mechanism (any|none|upnp|pmp|stun|extip:<IP>)
+            - --nat
+            - stun
+
+            # --datadir value Data directory for the databases (default: /.local/share/erigon)
             - --datadir
             - /data/erigon
 
@@ -87,20 +104,6 @@ spec:
             - --http
             - '--http.vhosts=*'
             - '--http.addr=0.0.0.0'
-            # --http.port value HTTP-RPC server listening port (default: 8545)
-            # NOTE: change this because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
-            - --http.port=9045
-            - --http.api=eth,web3,net,debug,trace,txpool
-
-            # The intent here is that it will allow erigon to discover the proper external IP
-            - --nat
-            - any
-
-            # Publish a metrics endpoint for prometheus per https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
-
-            - --metrics
-            - '--metrics.addr=0.0.0.0'
-            - '--metrics.port=6060'
 
           # container-level volume mounts:
           volumeMounts:
