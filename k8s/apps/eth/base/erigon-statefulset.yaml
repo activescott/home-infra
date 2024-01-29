@@ -28,7 +28,7 @@ spec:
         - name: erigon
           # tags: https://hub.docker.com/r/thorax/erigon/tags
           # NOTE: they provide a `stable` tag, but it's very old and they have detailed release notes at https://github.com/ledgerwatch/erigon/releases?page=1 and recommend to other users (assuming not using docker) to use a current release
-          image: thorax/erigon:v2.57.1
+          image: thorax/erigon:v2.57.2
 
           resources:
             limits:
