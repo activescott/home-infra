@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  # NOTE: This must *not* be named lodestar: https://github.com/ChainSafe/lodestar/issues/6045
+  name: ethlodestar
+  namespace: eth
+  labels:
+    app: eth
+    role: consensus-client
+spec:
+  serviceName: ethlodestar
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eth
+      role: consensus-client
+  template:
+    metadata:
+      labels:
+        app: eth
+        role: consensus-client
+      annotations:
+        # https://chainsafe.github.io/lodestar/beacon-management/beacon-cli/#-metrics
+        # https://github.com/ChainSafe/lodestar/blob/unstable/prometheus.yml
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8008"
+        prometheus.io/path: "/metrics"
+    spec:
+      containers:
+        - name: ethlodestar
+          # tags: https://hub.docker.com/r/chainsafe/lodestar/tags
+          # latest is stable per https://chainsafe.github.io/lodestar/getting-started/installation/
+          image: chainsafe/lodestar:v1.15.0
+
+          resources:
+            # https://chainsafe.github.io/lodestar/#specifications
+            limits:
+              memory: "16Gi"
+            requests:
+              memory: "4Gi"          
+
+          ports:
+            # https://chainsafe.github.io/lodestar/beacon-management/networking/#firewall-management
+            
+            # 9000/TCP+UDP - Beacon node IPv4 P2P communication port
+            - containerPort: 9000
+            # 9090/TCP+UDP - Beacon node *IPv6* P2P communication port
+          
+          env:
+            - name: NODE_OPTIONS
+              value: "--max-old-space-size=8192"
+
+          # https://github.com/ChainSafe/lodestar/blob/unstable/Dockerfile
+          #command: ["node", "/usr/app/packages/cli/bin/lodestar"]
+          # https://chainsafe.github.io/lodestar/beacon-management/beacon-cli/
+          args:
+            - 'beacon'
+            # --listenAddress: description: The IPv4 address to listen for p2p UDP and TCP connections, default: "0.0.0.0"
+            # --port: description: The TCP/UDP port to listen on. The UDP port can be modified by the --discoveryPort flag.
+            # default: 9000
+            - '--port=9000'
+
+            # --rest.address: description: Set host for HTTP API, default: "127.0.0.1"
+            - '--rest.address=0.0.0.0'
+
+            # --rest.port: description: Set port for HTTP API default: 9596
+            - '--rest.port=9596'
+            # --rest.swaggerUI: description: Enable Swagger UI for API exploration at http://{address}:{port}/documentation
+            - '--rest.swaggerUI'
+
+            # --execution.urls: description: Urls to execution client engine API, default: [ "http://localhost:8551" ]
+            # NOTE: this is <service-name>.<namespace-name> per https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#services
+            - '--execution.urls=http://erigon.eth:9045'
+
+            # --metrics: description: Enable the Prometheus metrics HTTP server
+            - --metrics
+            # --metrics.address: description: Listen address for the Prometheus metrics HTTP server, default: "127.0.0.1"
+            - '--metrics.address=0.0.0.0'
+            # --metrics.port: description: Listen TCP port for the Prometheus metrics HTTP server, default: 8008
+
+            # --nat: description: Allow configuration of non-local addresses
+            - --nat
+            
+            # --dataDir: description: Lodestar root data directory
+            - '--dataDir=/data/lodestar'
+            - '--jwtSecret=/data/lodestar/erigon.jwt.hex'
+
+          # container-level volume mounts:
+          volumeMounts:
+            # https://chainsafe.github.io/lodestar/data-retention/
+            - mountPath: /data/lodestar
+              name: datadir
+            - mountPath: /data/lodestar/chain-db
+              name: chain-db
+    
+      securityContext:
+        # this user is on the node's os as the file system owner
+        # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+        runAsUser:  4010
+        runAsGroup: 4010
+        fsGroup:    4010
+
+      # pod-level volumes:
+      volumes:
+      # default:
+        - name: datadir
+          hostPath:
+            path: /mnt/thedatapool/no-backup/app-data/lodestar
+        - name: chain-db
+          hostPath:
+            path: /mnt/ssdspace/eth-consensus/lodestar/chain-db

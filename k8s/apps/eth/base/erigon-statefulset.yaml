@@ -100,6 +100,8 @@ spec:
             # They said this is good for a full node (which is sufficient for validating), and not as big as an "archive node"
             - --prune=hrtc
 
+            # --authrpc.jwtsecret value Path to the token that ensures safe connection between CL and EL: https://github.com/ledgerwatch/erigon#beacon-chain-consensus-layer
+            - '--authrpc.jwtsecret=/data/erigon/jwt.hex'
             # forced our ZFS RecordSize to 64KB
             # more on zfs record size: https://jrs-s.net/2019/04/03/on-zfs-recordsize/
             - --db.pagesize
@@ -113,6 +115,10 @@ spec:
             - --http
             - '--http.vhosts=*'
             - '--http.addr=0.0.0.0'
+
+            # --rpc.batch.limit value Maximum number of requests in a batch (default: 100)
+            # lodestar was doing batches of >600
+            - --rpc.batch.limit=1000
 
           # container-level volume mounts:
           volumeMounts:

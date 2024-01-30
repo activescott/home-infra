@@ -1,6 +1,9 @@
 resources:
 - erigon-statefulset.yaml
 - erigon-service.yaml
+- lodestar-statefulset.yaml
+- lodestar-service.yaml
+
 
 namespace: eth
 

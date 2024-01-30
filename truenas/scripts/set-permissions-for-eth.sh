@@ -6,8 +6,12 @@ set -x
 
 # compare this to the list of directories in the statefulset:
 DIRECTORIES=(
+  # erigon:
   "/mnt/ssdspace/eth-exec/erigon"
   "/mnt/thedatapool/no-backup/app-data/erigon"
+  # lodestar:
+  /mnt/thedatapool/no-backup/app-data/lodestar
+  /mnt/ssdspace/eth-consensus/lodestar/chain-db
 )
 
 # this UID/GID are set creating a user on the host/node OS
