@@ -19,3 +19,7 @@ spec:
     - name: eth-consensus-p2p
       port: 9000
       nodePort: 9000
+    
+    - name: eth-consensus-rpc
+      port: 9596
+      nodePort: 9596

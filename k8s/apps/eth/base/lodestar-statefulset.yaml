@@ -45,6 +45,9 @@ spec:
             # 9000/TCP+UDP - Beacon node IPv4 P2P communication port
             - containerPort: 9000
             # 9090/TCP+UDP - Beacon node *IPv6* P2P communication port
+
+            # 9596/TCP - Beacon node REST API port
+            - containerPort: 9596
           
           env:
             - name: NODE_OPTIONS
@@ -83,7 +86,12 @@ spec:
             
             # --dataDir: description: Lodestar root data directory
             - '--dataDir=/data/lodestar'
-            - '--jwtSecret=/data/lodestar/erigon.jwt.hex'
+            #- '--jwtSecret=/data/lodestar/erigon.jwt.hex'
+
+            
+            #--checkpointSyncUrl: description: Server url hosting Beacon Node APIs to fetch weak subjectivity state. Fetch latest finalized by default, else set --wssCheckpoint
+            # checkpoint sync servers: https://eth-clients.github.io/checkpoint-sync-endpoints/
+            - '--checkpointSyncUrl=https://beaconstate-mainnet.chainsafe.io'
 
           # container-level volume mounts:
           volumeMounts:
