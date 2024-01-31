@@ -74,10 +74,18 @@ spec:
             # NOTE: MUST match containerPort above!
             - --torrent.port=43069
 
+            # enable RPC API: https://erigon.gitbook.io/erigon/advanced-usage/rpcdaemon#built-in-rpcdaemon
+            - --http
+            - '--http.vhosts=*'
+            - '--http.addr=0.0.0.0'
+
             # --http.port value HTTP-RPC server listening port (default: 8545)
             # NOTE: change http.port because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
             - --http.port=9045
-            - --http.api=eth,web3,net,debug,trace,txpool,admin
+            # --http.api value API's offered over the HTTP-RPC interface (default: "eth,erigon,engine")
+            #- --http.api=eth,web3,net,debug,trace,txpool,erigon,engine,admin
+            - --http.api=eth,web3,net,erigon,engine
+            
             
             # Publish a metrics endpoint for prometheus per https://github.com/ledgerwatch/erigon/blob/devel/cmd/prometheus/Readme.md
             - --metrics
@@ -101,7 +109,7 @@ spec:
             - --prune=hrtc
 
             # --authrpc.jwtsecret value Path to the token that ensures safe connection between CL and EL: https://github.com/ledgerwatch/erigon#beacon-chain-consensus-layer
-            - '--authrpc.jwtsecret=/data/erigon/jwt.hex'
+            #- '--authrpc.jwtsecret=/data/erigon/jwt.hex'
             # forced our ZFS RecordSize to 64KB
             # more on zfs record size: https://jrs-s.net/2019/04/03/on-zfs-recordsize/
             - --db.pagesize
@@ -110,11 +118,6 @@ spec:
             # snapshots is using bittorent to sync chaindata: see https://erigon.gitbook.io/erigon/advanced-usage/downloader
             # Default: use snapshots "true" for Mainnet, Goerli, Gnosis Chain and Chiado. use snapshots "false" in all other cases (default: true)
             - --snapshots
-
-            # enable RPC API: https://erigon.gitbook.io/erigon/advanced-usage/rpcdaemon#built-in-rpcdaemon
-            - --http
-            - '--http.vhosts=*'
-            - '--http.addr=0.0.0.0'
 
             # --rpc.batch.limit value Maximum number of requests in a batch (default: 100)
             # lodestar was doing batches of >600
