@@ -109,7 +109,13 @@ spec:
             - --prune=hrtc
 
             # --authrpc.jwtsecret value Path to the token that ensures safe connection between CL and EL: https://github.com/ledgerwatch/erigon#beacon-chain-consensus-layer
-            #- '--authrpc.jwtsecret=/data/erigon/jwt.hex'
+            - '--authrpc.jwtsecret=/data/erigon/jwt.hex'
+            # --authrpc.addr value HTTP-RPC server listening interface for the Engine API (default: "localhost")
+            - --authrpc.addr=0.0.0.0
+            # --authrpc.port value HTTP-RPC server listening port for the Engine API (default: 8551)
+            - --authrpc.port=8551
+            - '--authrpc.vhosts=*'
+
             # forced our ZFS RecordSize to 64KB
             # more on zfs record size: https://jrs-s.net/2019/04/03/on-zfs-recordsize/
             - --db.pagesize

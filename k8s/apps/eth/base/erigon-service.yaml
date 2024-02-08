@@ -42,3 +42,7 @@ spec:
     - name: http-websockets-graphql
       port: 9045
       nodePort: 9045
+    
+    # this is only needed by the beacon client afaik so no need for nodeport.
+    - name: authrpc-engine-api
+      port: 8551
