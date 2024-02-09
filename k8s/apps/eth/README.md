@@ -15,6 +15,8 @@ An ethereum node needs two clients, an **Execution client** and a **Consensus Cl
 
 As of Jan 2024 there are only three stable clients: Besu, Geth, and Nethermind. Erigon is recommended by some and is in "alpha and beta" rather than "alpha" like the others. Geth has a concerning 84% of clients.
 
+I tried erigon and had it running but it seemed to struggle to stay in sync and it was hard to monitor it. After using nethermind on another host and finding it easy to understand from its docs and logs switching to it here too.
+
 Note we must run a "full node" for execution client in order to support PoS validator.
 
 [Nethermind (.NET) requirements](https://docs.nethermind.io/get-started/system-requirements): 4 Cores and 16 GB MEM and 1TB (min) - 2TB (recommended) of disk space.
@@ -22,28 +24,6 @@ Note we must run a "full node" for execution client in order to support PoS vali
 [BESU (Java) Requirements](https://besu.hyperledger.org/public-networks/get-started/system-requirements): 32GB RAM?? 3TB SSD full node.
 
 [Erigon (Golang) requirements](https://github.com/ledgerwatch/erigon#system-requirements): **>=16GB Mem, 400GB disk**, NOTE (>=3.5TB for archive node where Nethermind was 14TB). Like every client, they do not recommend HDD, only SSD: _Do not recommend HDD - on HDD Erigon will always stay N blocks behind chain tip, but not fall behind._
-
-### Erigon
-
-#### Erigon Docker
-
-Container: https://hub.docker.com/r/thorax/erigon#!
-A compose file using that container is at https://github.com/ledgerwatch/erigon/blob/devel/docker-compose.yml - note that this splits services up and they do not recommend that. They recommend running their single binary to orchestrate everything.
-
-https://erigon.gitbook.io/erigon/basic-usage/usage
-
-#### Erigon Config:
-
-https://erigon.gitbook.io/erigon/basic-usage/usage !!
-
-https://erigon.gitbook.io/erigon/basic-usage/getting-started/docker !!
-
-> You can run a Erigon full node using the --prune command. In this example you can run a Ethereum full node storing only the latest 90'000 blocks:
-> ./build/bin/erigon --prune=hrtc # --https://erigon.gitbook.io/erigon/basic-usage/usage/type-of-node
-
-Use --datadir to choose where to store data.
-
-Ports: https://erigon.gitbook.io/erigon/basic-usage/default-ports-and-firewalls
 
 ## Consensus Client
 

@@ -73,8 +73,7 @@ spec:
 
             # --execution.urls: description: Urls to execution client engine API, default: [ "http://localhost:8551" ]
             # NOTE: this is <service-name>.<namespace-name> per https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#services
-            #       however I found I had to use only erigon or use erigon.eth.svc.cluster.local
-            - '--execution.urls=http://erigon.eth.svc.cluster.local:8551'
+            - '--execution.urls=http://nethermind.eth.svc.cluster.local:8551'
 
             # --metrics: description: Enable the Prometheus metrics HTTP server
             - --metrics
@@ -87,7 +86,7 @@ spec:
             
             # --dataDir: description: Lodestar root data directory
             - '--dataDir=/data/lodestar'
-            - '--jwtSecret=/data/lodestar/erigon.jwt.hex'
+            - '--jwtSecret=/data/lodestar/eth-engine-api.jwt.hex'
             
             #--checkpointSyncUrl: description: Server url hosting Beacon Node APIs to fetch weak subjectivity state. Fetch latest finalized by default, else set --wssCheckpoint
             # checkpoint sync servers: https://eth-clients.github.io/checkpoint-sync-endpoints/

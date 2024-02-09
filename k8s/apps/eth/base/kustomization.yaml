@@ -1,6 +1,6 @@
 resources:
-- erigon-statefulset.yaml
-- erigon-service.yaml
+- nethermind-statefulset.yaml
+- nethermind-service.yaml
 - lodestar-statefulset.yaml
 - lodestar-service.yaml
 

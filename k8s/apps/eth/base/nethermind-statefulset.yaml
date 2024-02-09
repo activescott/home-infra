@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nethermind
+  namespace: eth
+  labels:
+    app: eth
+    role: execution-client
+spec:
+  serviceName: nethermind
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eth
+      role: execution-client
+  template:
+    metadata:
+      labels:
+        app: eth
+        role: execution-client
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9105"
+    spec:
+      containers:
+        - name: nethermind
+          # docs: https://docs.nethermind.io/get-started/installing-nethermind#docker-container
+          # tags: https://hub.docker.com/r/nethermind/nethermind/tags
+          image: nethermind/nethermind:1.25.3
+
+          resources:
+            limits:
+              memory: "24Gi"
+            requests:
+              memory: "4Gi"          
+
+          ports:
+            # eth/68 p2p peering:
+            - containerPort: 31303
+            # Engine API (JWT auth for consensus/beacon client):
+            - containerPort: 8551
+            # HTTP & WebSockets & GraphQL:
+            - containerPort: 9045 #usually 8545
+            # metrics
+            - containerPort: 9105
+          
+          command: ["/nethermind/nethermind"]
+
+          # docs for args: https://docs.nethermind.io/fundamentals/configuration
+          args:
+            - --datadir
+            - '/data/nethermind'
+            # The TCP port for incoming P2P connections. Defaults to 30303.
+            # NOTE: MUST match containerPort above!
+            - --Network.P2PPort
+            - '31303'
+            # The UDP port number for incoming discovery connections. It's recommended to keep it the same as the TCP port (P2PPort) because other values have not been tested yet. Defaults to 30303.
+            - --Network.DiscoveryPort
+            - '31303'
+
+            # https://docs.nethermind.io/fundamentals/configuration#jsonrpc
+            - --JsonRpc.Enabled
+            - 'true'
+            - --JsonRpc.Host
+            - 0.0.0.0
+            # NOTE: change http.port because k8s nodeport restriction: spec.ports[5].nodePort: Invalid value: 8545: provided port is not in the valid range. The range of valid ports is 9000-65535
+            - --JsonRpc.Port
+            - '9045'
+
+            # Engine API (for beacon/consensus clients):
+            - --JsonRpc.EngineHost
+            - '0.0.0.0'
+            - --JsonRpc.EnginePort
+            - '8551'
+            - --JsonRpc.JwtSecretFile
+            - '/data/nethermind/keystore/eth-engine-api.jwt.hex'
+
+            # https://docs.nethermind.io/monitoring/health-check
+            - --HealthChecks.Enabled
+            - 'true'
+            
+            # https://docs.nethermind.io/fundamentals/configuration#metrics
+            - --Metrics.Enabled
+            - 'true'
+            # NOTE: MUST match containerPort above!            
+            - --Metrics.ExposePort
+            - '9105'
+            
+            # automatically prune: https://docs.nethermind.io/fundamentals/configuration#pruning
+            - --Pruning.FullPruningTrigger
+            - 'StateDbSize'
+            
+          # container-level volume mounts:
+          volumeMounts:
+            - mountPath: /data/nethermind
+              name: datadir
+            - mountPath: /data/nethermind/nethermind_db
+              name: db
+    
+      securityContext:
+        # this user is on the node's os as the file system owner
+        # https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+        runAsUser:  4010
+        runAsGroup: 4010
+        fsGroup:    4010
+
+      # pod-level volumes:
+      volumes:
+      # default:
+        - name: datadir
+          hostPath:
+            path: /mnt/thedatapool/no-backup/app-data/nethermind
+        - name: db
+          hostPath:
+            path: /mnt/ssdspace/eth-exec/nethermind/db

@@ -7,8 +7,8 @@ set -x
 # compare this to the list of directories in the statefulset:
 DIRECTORIES=(
   # erigon:
-  "/mnt/ssdspace/eth-exec/erigon"
-  "/mnt/thedatapool/no-backup/app-data/erigon"
+  "/mnt/ssdspace/eth-exec/nethermind/db"
+  "/mnt/thedatapool/no-backup/app-data/nethermind"
   # lodestar:
   /mnt/thedatapool/no-backup/app-data/lodestar
   /mnt/ssdspace/eth-consensus/lodestar/chain-db

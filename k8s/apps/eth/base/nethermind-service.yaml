@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nethermind
+  namespace: eth
+  labels:
+    app: eth
+    role: execution-client
+spec:
+  # NOTE: Using NodePort to allow EXTERNAL traffic to be forwarded to pod's port.
+  #       ...because Ingress is HTTP only and doesn't support raw UDP/TCP-level forwarding.
+  type: NodePort
+  
+  selector:
+    app: eth
+    role: execution-client
+  
+  ports:
+    - name: eth1-p2p
+      port: 31303
+      nodePort: 31303
+
+    - name: http-websockets-graphql
+      port: 9045
+      nodePort: 9045
+    
+    # this is only needed by the beacon client afaik so no need for nodeport.
+    - name: engine-api
+      port: 8551
