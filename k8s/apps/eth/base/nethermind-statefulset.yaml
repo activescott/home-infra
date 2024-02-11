@@ -18,6 +18,8 @@ spec:
       labels:
         app: eth
         role: execution-client
+        job: nethermind
+        nethermind_group: k8s
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "9105"
@@ -57,6 +59,9 @@ spec:
             # The UDP port number for incoming discovery connections. It's recommended to keep it the same as the TCP port (P2PPort) because other values have not been tested yet. Defaults to 30303.
             - --Network.DiscoveryPort
             - '31303'
+            # The max allowed number of connected peers. Says it defaults to 50 but it was always at 99.
+            - --Network.MaxActivePeers
+            - "40"
 
             # https://docs.nethermind.io/fundamentals/configuration#jsonrpc
             - --JsonRpc.Enabled
