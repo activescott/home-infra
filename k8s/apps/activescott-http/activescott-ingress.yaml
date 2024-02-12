@@ -16,7 +16,6 @@ metadata:
     # to reference the middleware use:  <middleware-namespace>-<middleware-name>@kubernetescrd
     #   per https://doc.traefik.io/traefik/v2.2/middlewares/overview/#provider-namespace
     traefik.ingress.kubernetes.io/router.middlewares: activescott-http-redirect-activescott-to-willeke@kubernetescrd
-
     # issue a cert with cert-manager for scott.willeke.com
     cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
@@ -28,7 +27,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: dummy-service
+                name: activescott-http-service
                 port:
                   number: 80
   tls: # TLS configuration using cert-manager

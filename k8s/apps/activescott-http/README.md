@@ -5,6 +5,7 @@ This is a simple way to redirect https://activescott.com (NOTE: root of domain, 
 ## How it works
 
 - The redirect uses the Traefik Ingress Controller's middleware in the Ingress.
+  - NOTE: Traefik Ingress Controller middleware won't work unless there is a service and pod running though it seams. So there is a sleeping pod/service running at all times.
 - It also requires a couple external things to be setup:
   - DNS for A record of activescott.com has to direct into the cluster's IP.
   - In my case, this is a DNS entry that is manged by DynamicDNS on my router.

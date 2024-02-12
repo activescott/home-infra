@@ -3,10 +3,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: dummy-service
+  name: activescott-http-service
 spec:
   selector:
-    app: dummy
+    app: activescott-http
   ports:
     - protocol: TCP
       port: 80

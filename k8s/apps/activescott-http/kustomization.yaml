@@ -1,7 +1,7 @@
 resources:
 - ./namespace.yaml
-- ./dummy-deployment.yaml
-- ./dummy-service.yaml
+- ./activescott-http-deployment.yaml
+- ./activescott-http-service.yaml
 - ./activescott-ingress.yaml
 
 namespace: activescott-http
