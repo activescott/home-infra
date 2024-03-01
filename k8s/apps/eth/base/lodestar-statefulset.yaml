@@ -30,7 +30,7 @@ spec:
         - name: ethlodestar
           # tags: https://hub.docker.com/r/chainsafe/lodestar/tags
           # latest is stable per https://chainsafe.github.io/lodestar/getting-started/installation/
-          image: chainsafe/lodestar:v1.15.0
+          image: chainsafe/lodestar:v1.16.0
 
           resources:
             # https://chainsafe.github.io/lodestar/#specifications

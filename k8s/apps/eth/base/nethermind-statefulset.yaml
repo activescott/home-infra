@@ -28,7 +28,7 @@ spec:
         - name: nethermind
           # docs: https://docs.nethermind.io/get-started/installing-nethermind#docker-container
           # tags: https://hub.docker.com/r/nethermind/nethermind/tags
-          image: nethermind/nethermind:1.25.3
+          image: nethermind/nethermind:1.25.4
 
           resources:
             limits:
