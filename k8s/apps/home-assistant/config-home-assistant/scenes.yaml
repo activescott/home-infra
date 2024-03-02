@@ -61,3 +61,41 @@
       state: 'on'
   icon: mdi:alarm-light
   metadata: {}
+- id: '1708811850315'
+  name: Office Bright
+  entities:
+    switch.dimmer_dry_contact_relay:
+      friendly_name: Office Light
+      state: 'on'
+    light.dimmer_dry_contact_relay:
+      supported_color_modes:
+      - brightness
+      friendly_name: Office Light
+      supported_features: 32
+      color_mode: brightness
+      brightness: 255
+      state: 'on'
+    switch.dimmer_dry_contact_relay_2:
+      friendly_name: Office Light
+      state: 'off'
+  icon: mdi:chair-rolling
+  metadata: {}
+- id: '1708838603012'
+  name: Office Reading
+  entities:
+    switch.dimmer_dry_contact_relay:
+      friendly_name: Office Light
+      state: 'on'
+    light.dimmer_dry_contact_relay:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 64
+      friendly_name: Office Light
+      supported_features: 32
+      state: 'on'
+    switch.dimmer_dry_contact_relay_2:
+      friendly_name: Office Light
+      state: 'off'
+  icon: mdi:book-open-variant
+  metadata: {}

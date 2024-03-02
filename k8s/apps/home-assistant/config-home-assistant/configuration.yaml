@@ -32,8 +32,10 @@ homeassistant:
 # Setup certificates via the HTTP integration/component
 # https://www.home-assistant.io/integrations/http:
 http:
-  ssl_certificate: /etc/letsencrypt/live/activescott.com/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/activescott.com/privkey.pem
+  use_x_forwarded_for: true
+  trusted_proxies:
+    # NOTE: this is a kubernetes cluster network
+    - 172.16.1.0/24
 
 # Notify Groups:
 ## See https://www.home-assistant.io/integrations/notify.group/

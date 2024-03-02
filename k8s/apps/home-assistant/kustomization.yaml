@@ -4,6 +4,8 @@ resources:
   - ./base/zwavejs-service.yaml
   - ./base/home-assistant-statefulset.yaml
   - ./base/home-assistant-service.yaml
+  - ./base/home-assistant-ingress.yaml
+  - ./base/certificate.yaml
 
 #buildMetadata: [originAnnotations, transformerAnnotations]
 

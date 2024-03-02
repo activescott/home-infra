@@ -6,7 +6,8 @@ metadata:
   labels:
     app: home-assistant
 spec:
-  type: LoadBalancer
+  # NOTE: using ClusterIP to limit access to within cluster and letting an ingress route external traffic in.
+  type: ClusterIP
   ports:
     # port for web interface
     - name: web-ui
