@@ -12,6 +12,15 @@ scene: !include scenes.yaml
 cover garage: !include cover-garage.yaml
 lovelace: !include ui-lovelace-config.yaml
 
+# for certificate expiry per https://github.com/home-assistant/core/issues/105070#issuecomment-2015364310
+# https://www.home-assistant.io/integrations/command_line/#examples-binary-sensor-platform
+command_line:
+  - sensor:
+      name: HASS Cert Expiry CLI Sensor
+      unique_id: hass_cert_expiry_cli_sensor
+      command: curl https://hass.activescott.com -v 2>&1 | grep "expire date" | awk '{for (i=4; i<NF; i++) printf $i " "; print $NF}'
+      scan_interval: 1440 # seconds: 1440=60*60*4
+
 homeassistant:
   # see https://www.home-assistant.io/docs/configuration/basic/
   name: Home

@@ -85,32 +85,17 @@
   action:
   - if:
     - condition: template
-      value_template: '{{ states("sensor.cert_expiry_timestamp_hass_activescott_com_8123")
-        in ["unknown", "unavailable"] }}'
+      value_template: '{{ as_timestamp(strptime(states(''sensor.hass_cert_expiry_cli_sensor''),
+        "%B %d %H:%M:%S %Y %Z")) - as_timestamp(now()) < 15 * 24 * 60 * 60 }}'
     then:
     - service: notify.scott
       data:
-        message: The cert expiry sensor is not installed or not working!
-        title: ERROR
-    - service: notify.notify
-      data:
-        message: The cert expiry sensor is not installed or not working!
-        title: ERROR (backup notification)
-    else:
-    - condition: template
-      value_template: '  {{ as_timestamp(states(''sensor.cert_expiry_timestamp_hass_activescott_com_8123''))
-        - as_timestamp(now()) < 15 * 24 * 60 * 60 }}'
-    - service: notify.scott
-      data:
-        title: Home Assistant's cert expring
-        message: "Home Assistant's cert expires in {{ ((as_timestamp(states('sensor.cert_expiry_timestamp_hass_activescott_com_8123'))
-          - as_timestamp(now())) / (24 * 60 * 60)) | round(0) }} days. Restarting
-          Home Assistant (hoping cron updated the cert already \U0001F91E)..."
-      enabled: true
+        message: "Home Assistant's cert expires on {{ states('sensor.hass_cert_expiry_cli_sensor')
+          }}. Restarting Home Assistant (hoping k8s updated the cert already \U0001F91E)..."
+        title: Cert Expiring Soon
     - service: homeassistant.restart
       data: {}
       enabled: true
-  mode: restart
 - id: '1624428508974'
   alias: Server Room High Temp (repeated)
   description: Repeatedly notifies when server room temp is high
