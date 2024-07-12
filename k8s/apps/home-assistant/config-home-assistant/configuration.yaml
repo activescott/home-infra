@@ -43,8 +43,9 @@ homeassistant:
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-    # NOTE: this is a kubernetes cluster network
+    # NOTE: these are kubernetes cluster networks
     - 172.16.1.0/24
+    - 172.16.2.0/24
 
 # Notify Groups:
 ## See https://www.home-assistant.io/integrations/notify.group/
