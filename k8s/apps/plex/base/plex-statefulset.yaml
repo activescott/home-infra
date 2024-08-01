@@ -23,7 +23,7 @@ spec:
         - name: plex
           # NOTE: with subsequent 2 versions *potentially* having DVR/TV transcoding issues. See https://forums.plex.tv/t/error-4294967279/845549/3?u=activescott
           # Seen Live TV DVR freezing issues with versions: I have Plex Server version plexinc/pms-docker:1.32.4.7195-7c8f9d3b6 , plexinc/pms-docker:1.32.1.6999-91e1e2e2c , plexinc/pms-docker:1.31.1.6782-77dfff442
-          image: plexinc/pms-docker:1.40.0.7998-c29d4c0c8
+          image: plexinc/pms-docker:1.40.3.8555-fef15d30c
 
           resources:
             limits:

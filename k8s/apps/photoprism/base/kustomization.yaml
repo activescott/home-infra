@@ -10,6 +10,7 @@ secretGenerator:
 # this secret configures much of mariadb
 - name: mariadb-creds
   envs:
+    # this file is in 1Password
     - .env.secret.mariadb-creds
 
 #configurations:

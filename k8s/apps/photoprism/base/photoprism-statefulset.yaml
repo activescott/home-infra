@@ -61,6 +61,8 @@ spec:
           value: "false" # automatically flags photos as private that MAY be offensive (requires TensorFlow)
         - name: PHOTOPRISM_UPLOAD_NSFW
           value: "true" # allows uploads that MAY be offensive (no effect without TensorFlow)
+        - name: PHOTOPRISM_ORIGINALS_LIMIT	
+          value: "-1" # maximum size of media files in MB (1-100000; -1 to disable)
         
         - name: PHOTOPRISM_DATABASE_DRIVER
           value: "mysql" # use MariaDB 10.5+ or MySQL 8+ instead of SQLite for improved performance
