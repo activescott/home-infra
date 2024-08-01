@@ -21,7 +21,7 @@ patches:
         path: /spec/template/spec/containers/0/resources
         value:
           limits:
-            memory: "96Mi"
+            memory: "128Mi"
           requests:
             memory: "64Mi"
     target:
