@@ -23,7 +23,7 @@ spec:
       # Also there is now https://docs.photoprism.app/getting-started/advanced/kubernetes/
       - name: photoprism
         # tags: https://hub.docker.com/r/photoprism/photoprism/tags
-        image: photoprism/photoprism:231128
+        image: photoprism/photoprism:240711
 
         # from https://docs.photoprism.app/getting-started/advanced/kubernetes/
         readinessProbe:
