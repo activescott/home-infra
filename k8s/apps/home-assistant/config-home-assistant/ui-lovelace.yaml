@@ -20,10 +20,18 @@ views:
               navigation_path: /lovelace-alarm/0
         state_color: true
       - type: entities
+        title: Door Locks
+        state_color: true
+        entities:
+          - entity: lock.adu_front_door_lock
+          - entity: lock.adu_garage_door_lock
+      - type: entities
         entities:
           - entity: scene.tv_lights
           - entity: scene.sleep
           - entity: scene.great_room_bright
+          - entity: scene.office_reading
+          - entity: scene.office_sleep
       - type: custom:auto-entities
         card:
           type: entities
@@ -80,18 +88,6 @@ views:
             secondary_info: last-changed
         title: Person
         state_color: true
-      - type: history-graph
-        entities:
-          - entity: binary_sensor.lumi_lumi_sensor_motion_aq2_motion
-          - entity: sensor.lumi_lumi_sensor_motion_aq2_illuminance
-        hours_to_show: 24
-        title: Lumi Sensors
-      - hours_to_show: 72
-        graph: line
-        type: sensor
-        entity: sensor.lumi_lumi_weather_temperature
-        detail: 1
-        name: Office Temp
       - type: weather-forecast
         entity: weather.forecast_home
         show_forecast: false
