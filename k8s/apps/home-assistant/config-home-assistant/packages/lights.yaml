@@ -55,6 +55,7 @@ light:
     entities:
       - light.front_outdoor_light_east
       - light.deck_outdoor_light_west
+      - light.adu_front_door_outside
 
   - platform: group
     name: Bedroom Lights
