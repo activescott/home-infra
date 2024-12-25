@@ -1,11 +1,8 @@
 resources:
 - ./namespace.yaml
-
-# grafana
 - ./base/grafana
-
-# prometheus: 
 - ./base/prometheus
+- ./base/prometheus-blackbox-exporter
 
 namespace: monitoring
 

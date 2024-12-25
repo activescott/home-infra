@@ -62,6 +62,7 @@ spec:
         fsGroup:    4030      
       
       volumes:
+      # populated by configMapGenerator in kustomization.yaml
       - name: prometheus-config-volume
         configMap:
             defaultMode: 420
