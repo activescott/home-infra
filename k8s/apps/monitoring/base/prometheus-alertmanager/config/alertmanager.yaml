@@ -1,0 +1,53 @@
+global:
+  # ResolveTimeout is the default value used by alertmanager if the alert does
+  # not include EndsAt, after this time passes it can declare the alert as resolved if it has not been updated.
+  # This has no impact on alerts from Prometheus, as they always include EndsAt.
+  # default = 5m
+  resolve_timeout: 5m
+
+route:
+  # The (default) notification destination
+  receiver: "on_call_operator_default"
+  # The labels by which incoming alerts are grouped together.
+  group_by: ["alertname"]
+  # How long to initially wait to send a notification for a group
+  # of alerts. Allows to wait for an inhibiting alert to arrive or collect
+  # more initial alerts for the same group.
+  group_wait: 30s
+  # How long to wait before sending a notification about new alerts that
+  # are added to a group of alerts for which an initial notification has
+  # already been sent. (Usually ~5m or more.)
+  group_interval: 5m
+  # How long to wait before sending a notification again if it has already been sent successfully for an alert.
+  repeat_interval: 4h
+  
+  routes:
+    # severity=info: Don't send the follow-up resolved notification.
+    #- match:
+    #    severity: info
+    #  continue: false
+    #  # The notification destination
+    #  receiver: "on_call_operator_no_resolved"
+    # all other alerts get sent notifications for the initial firing _and_ resolved notifications.
+    
+      #match: We want this to match all alerts (severity=info is first though so it will stop)
+
+inhibit_rules:
+  # Inhibit rules mute a new alert (target) that matches an existing alert (source).
+  - source_match:
+      # if the existing alert (source) is severity=critical
+      severity: "critical"
+    target_match:
+      # and the new alert (target) is severity=warning
+      severity: "warning"
+      # and the alertname, job, and instance labels have the same value
+    equal: ["alertname", "job", "instance"]
+
+receivers:
+  - name: "on_call_operator_default"
+    telegram_configs:
+        # note the hardcoded path here to satisfy alertmanager (it uses the current working path by default?)
+        - bot_token_file: "/config/telegram_bot_token.secret"
+          send_resolved: true
+          # see https://gist.github.com/dazeb/5d6587e9f778ca37345a4f4956031ec1
+          chat_id: 510755639

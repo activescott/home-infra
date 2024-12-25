@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alertmanager
+  labels:
+    app: alertmanager
+spec:
+  replicas: 1
+  
+  selector:
+    matchLabels:
+      app: alertmanager
+
+  template:
+    metadata:
+      labels:
+        app: alertmanager
+
+    spec:
+      containers:
+      - name: alertmanager
+        # image tags at https://quay.io/repository/prometheus/alertmanager
+        image: quay.io/prometheus/alertmanager:v0.27.0
+        args:
+        - '--config.file=/config/alertmanager.yaml'
+        
+        ports:
+        - name: api
+          containerPort: 9093
+
+        resources:
+          limits:
+            cpu: "1.0"
+            memory: "1Gi"
+          requests:
+            cpu: "250m"
+            memory: "250Mi"
+      
+        volumeMounts:
+        - name: alertmanager-config-volume
+          mountPath: /config
+        
+      volumes:
+      # populated by configMapGenerator in kustomization.yaml
+      - name: alertmanager-config-volume
+        configMap:
+            defaultMode: 420
+            name: alertmanager-config

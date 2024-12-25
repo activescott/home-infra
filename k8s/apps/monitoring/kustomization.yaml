@@ -2,6 +2,7 @@ resources:
 - ./namespace.yaml
 - ./base/grafana
 - ./base/prometheus
+- ./base/prometheus-alertmanager
 - ./base/prometheus-blackbox-exporter
 
 namespace: monitoring

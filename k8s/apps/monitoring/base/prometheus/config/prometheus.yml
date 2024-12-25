@@ -14,15 +14,18 @@ alerting:
   alertmanagers:
     - static_configs:
         - targets:
+            # the dns name of the alertmanager workload's service per https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+            - alertmanager.monitoring.svc:9093
 
+# https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
 rule_files:
-  # - "example-file.yml"
+  - "alerting-rules.*.yaml"
 
 # Scrape config files specifies a list of globs. Scrape configs are read from
 # all matching files and appended to the list of scrape configs.
 scrape_config_files:
   # [ - <filepath_glob> ... ]
-  - "*.scrape_config.yml"
+  - "scrape-configs.*.yaml"
 
 scrape_configs:
   - job_name: "prometheus"

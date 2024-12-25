@@ -10,7 +10,8 @@ configMapGenerator:
   - name: prometheus-config
     files:
     - config/prometheus.yml
-    - config/coinpoet.scrape_config.yml
+    - config/scrape-configs.coinpoet.yaml
+    - config/alerting-rules.coinpoet.yaml
 
 commonLabels:
   # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.

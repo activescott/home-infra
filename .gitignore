@@ -2,6 +2,8 @@
 /containers/home-assistant/config-home-assistant/secrets.yaml
 
 .secrets
+# any file ending in .secret
+*.secret
 
 .env.secret.*
 

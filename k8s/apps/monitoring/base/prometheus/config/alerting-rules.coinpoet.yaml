@@ -1,0 +1,27 @@
+# https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
+groups:
+- name: coinpoet
+  #labels:
+  #  team: scott
+  rules:
+  - alert: HighRequestLatency
+    # probe_duration (request duration) is > 10.0 seconds
+    expr: probe_duration_seconds{job="coinpoet_cache"} > 10.0
+    # Alerting rules without the for clause will become active on the first evaluation.
+    #for: 10m
+    #keep_firing_for: 5m
+    labels:
+      severity: warn
+    annotations:
+      summary: High request latency. Check https://coinpoet.com/ops/cache
+      
+  - alert: ProbeFailure
+    # probe_duration (request duration) is > 0.01 seconds
+    expr: probe_success{job="coinpoet_cache"} < 1.0
+    # Alerting rules without the for clause will become active on the first evaluation.
+    #for: 10m
+    #keep_firing_for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Probe Failure. Check https://coinpoet.com/ops/cache

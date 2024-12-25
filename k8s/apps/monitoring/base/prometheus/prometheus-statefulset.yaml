@@ -27,6 +27,7 @@ spec:
       containers:
       - name: prometheus
         # image tags at https://hub.docker.com/r/prom/prometheus/tags
+        # TODO: upgrade to v3: https://prometheus.io/docs/prometheus/3.0/migration/ (looks safe)
         image: prom/prometheus:v2.49.1
         args:
           # storage config: https://prometheus.io/docs/prometheus/latest/storage/
