@@ -1,7 +1,7 @@
 scrape_configs:
   # NOTE: This scrapes https://coinpoet.com/ops/cache periodically and tracks metrics
   - job_name: "coinpoet_cache"
-    scrape_interval: 30s #10m
+    scrape_interval: 15m
     scrape_timeout: 25s
     # note you can test this path by shelling into prometheus and entering:
     #   wget -S -O - 'http://uptime-checker-service.monitoring-uptime-checker.svc:9115/probe?target=coinpoet.com%2Fops%2Fcache&module=coinpoet_cache_updater'
