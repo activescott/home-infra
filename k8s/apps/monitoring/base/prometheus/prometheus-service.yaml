@@ -3,8 +3,9 @@ kind: Service
 metadata:
     name: prometheus-service
     annotations:
-        prometheus.io/scrape: 'true'
-        prometheus.io/port:   '9090'
+      # disabled scraping here as it requires basic auth and that's better to set up as a static scrape-config.* file)
+      prometheus.io/scrape: "false"
+      prometheus.io/port: "9090"
 
 spec:
   # Exposes the Service on a cluster-internal IP. Choosing this value makes the Service only reachable from within the cluster

@@ -18,23 +18,21 @@ spec:
       labels:
         app: prometheus
 
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-
     spec:
       serviceAccountName: prometheus
       containers:
       - name: prometheus
         # image tags at https://hub.docker.com/r/prom/prometheus/tags
         # TODO: upgrade to v3: https://prometheus.io/docs/prometheus/3.0/migration/ (looks safe)
-        image: prom/prometheus:v2.49.1
+        image: prom/prometheus:v3.0.1
         args:
           # storage config: https://prometheus.io/docs/prometheus/latest/storage/
           - '--storage.tsdb.retention.time=30d' # with Erigon and K8s 6h was ~111MB
           - '--storage.tsdb.retention.size=100GB'
           - '--storage.tsdb.path=/prometheus'
-          - '--config.file=/etc/prometheus/prometheus.yml'
+          - '--config.file=/etc/prometheus/prometheus.yaml'
+          # for basic auth:
+          - '--web.config.file=/etc/prometheus/web.yaml'
           # enables `curl -X POST https://prometheus.activescott.com/-/reload` to reload configs per https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
           - '--web.enable-lifecycle'
         

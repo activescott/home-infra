@@ -9,9 +9,16 @@ resources:
 configMapGenerator:
   - name: prometheus-config
     files:
-    - config/prometheus.yml
+    - config/prometheus.yaml
+    - config/web.yaml
+    # scrape configs:
     - config/scrape-configs.coinpoet.yaml
+    - config/scrape-configs.prometheus.yaml
     - config/alerting-rules.coinpoet.yaml
+    # secrets for the prometheus scrape config:
+    - config/prom-scrape-username.secret
+    - config/prom-scrape-password.secret
+
 
 commonLabels:
   # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.

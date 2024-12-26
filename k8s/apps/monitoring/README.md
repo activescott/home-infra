@@ -4,7 +4,7 @@
 
 To scrape metrics with Prometheus on a pod, use the following pod-level or service-level (preferred) annotations.
 
-_NOTE: All of these annotations are customized in the prometheus config (prometheus.yml) based on https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config and https://github.com/prometheus/prometheus/blob/release-2.49/documentation/examples/prometheus-kubernetes.yml._
+_NOTE: All of these annotations are customized in the prometheus config (prometheus.yaml) based on https://prometheus.io/docs/prometheus/latest/configuration/configuration/#relabel_config and https://github.com/prometheus/prometheus/blob/release-2.49/documentation/examples/prometheus-kubernetes.yml._
 
 ```yaml
 # the prometheus config is configured to look for this
@@ -21,7 +21,7 @@ prometheus.io/port: "3000"
 prometheus.io/path: "/metrics"
 ```
 
-This works due to relabels in the prometheus.yml configuration.
+This works due to relabels in the prometheus.yaml configuration.
 
 To determine these values it depends entirely on the app, so will need to read their docs. Sometimes others publish their own "exporters" for exporting metrics from an app in a proprietary way and publishing them in a way prometheus can consume.
 
