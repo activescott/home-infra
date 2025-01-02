@@ -1,7 +1,20 @@
 scrape_configs:
   # NOTE: This scrapes https://coinpoet.com/ops/cache periodically and tracks metrics
   - job_name: "coinpoet_cache"
-    scrape_interval: 15m
+    # Why 30 minutes?
+    # 5GB: max bandwidth can use in a month in neon.
+    # 0.27 GB: The aprox amount used in 24hrs when using 15 minute pings from prometheus.
+    # 96: The number of pings in 24 hours @ 15min (i.e. 24*4)
+    # 0.0028125=(0.27/96): GB used in per ping
+    # 
+    # 1,777.7777777778=5/0.0028125: the number of pings we can do to make up 5GB
+    # So lets say conservatively we can do only 1500 per month:
+    # 
+    # 43,200=24*60*30: minutes per month
+    # 28.8=43,200/1500: Ping every 28.8 minutes to get ~1500 pings per month.
+    # So... Lets do it every 30.
+    scrape_interval: 30m
+
     scrape_timeout: 25s
     # note you can test this path by shelling into prometheus and entering:
     #   wget -S -O - 'http://uptime-checker-service.monitoring-uptime-checker.svc:9115/probe?target=coinpoet.com%2Fops%2Fcache&module=coinpoet_cache_updater'
