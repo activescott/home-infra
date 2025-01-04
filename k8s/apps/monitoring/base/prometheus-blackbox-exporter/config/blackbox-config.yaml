@@ -4,7 +4,7 @@ modules:
     prober: http
 
     # how long blackbox-exporter waits (there is another timeout in prometheus for it's probe too)
-    timeout: 25s
+    timeout: 30s
 
     http:
       # Accepted status codes for this probe. List between square brackets. Defaults to 2xx.
