@@ -18,7 +18,7 @@ groups:
       
   - alert: ProbeFailure
     # probe_duration (request duration) is > 0.01 seconds
-    expr: probe_success{job="coinpoet_cache"} < 1.0
+    expr: up{instance="coinpoet.com"} < 1.0
     # Alerting rules without the for clause will become active on the first evaluation.
     #for: 10m
     # keep_firing_for clause tells Prometheus to keep this alert firing for the specified duration after the firing condition was last met. Alerting rules without the keep_firing_for clause will deactivate on the first evaluation where the condition is not met (assuming any optional for duration desribed above has been satisfied).
@@ -26,4 +26,4 @@ groups:
     labels:
       severity: critical
     annotations:
-      summary: Probe Failure. Check https://coinpoet.com/ops/cache
+      summary: Probe Failure. Check https://coinpoet.com/ops/metrics
