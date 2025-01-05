@@ -73,7 +73,7 @@ sequenceDiagram
 ### TODO
 
 - [x] Grafana config dashboard for coinpoet
-- [ ] Alertmanager for coinpoet
+- [x] Alertmanager for coinpoet
 
 ### Notes to self:
 
