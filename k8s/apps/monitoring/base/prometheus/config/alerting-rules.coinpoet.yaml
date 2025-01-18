@@ -4,26 +4,30 @@ groups:
   #labels:
   #  team: scott
   rules:
-  # With recent changes the duration is consistently at 26s.
-  #- alert: HighRequestLatency
-  #  # probe_duration (request duration) is > 10.0 seconds
-  #  expr: probe_duration_seconds{job="coinpoet_cache"} > 26
-  #  # Alerting rules without the for clause will become active on the first evaluation.
-  #  #for: 10m
-  #  #keep_firing_for: 5m
-  #  labels:
-  #    severity: warn
-  #  annotations:
-  #    summary: High request latency. Check https://coinpoet.com/ops/cache
-      
+
   - alert: ProbeFailure
-    # probe_duration (request duration) is > 0.01 seconds
     expr: up{instance="coinpoet.com"} < 1.0
     # Alerting rules without the for clause will become active on the first evaluation.
     #for: 10m
     # keep_firing_for clause tells Prometheus to keep this alert firing for the specified duration after the firing condition was last met. Alerting rules without the keep_firing_for clause will deactivate on the first evaluation where the condition is not met (assuming any optional for duration desribed above has been satisfied).
-    #keep_firing_for: 5m
+    # it seems since we scrape very rarely we have to increase this value or it will resolve in 5m.
+    keep_firing_for: 35m
     labels:
       severity: critical
     annotations:
-      summary: Probe Failure. Check https://coinpoet.com/ops/metrics
+      summary: Probe failure. Check https://coinpoet.com/ops/metrics
+
+      
+  - alert: MissingMetricsFailure
+    # we're getting back 7 metrics (samples) in each scrape. sometimes vercel timeouts cause prometheus to assume a HTTP 200 response, but no metrics are received?
+    expr: scrape_samples_scraped{instance="coinpoet.com"} < 7.0
+    # Alerting rules without the for clause will become active on the first evaluation.
+    # for 35m makes it so two consecutive scrapes have to fail
+    for: 35m
+    # keep_firing_for clause tells Prometheus to keep this alert firing for the specified duration after the firing condition was last met. Alerting rules without the keep_firing_for clause will deactivate on the first evaluation where the condition is not met (assuming any optional for duration desribed above has been satisfied).
+    # it seems since we scrape very rarely we have to increase this value or it will resolve in 5m.
+    keep_firing_for: 35m
+    labels:
+      severity: critical
+    annotations:
+      summary: Missing metrics. Check https://coinpoet.com/ops/metrics
