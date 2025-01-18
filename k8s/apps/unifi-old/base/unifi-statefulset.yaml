@@ -22,7 +22,7 @@ spec:
         - name: unifi
           # container docs: https://docs.linuxserver.io/images/docker-unifi-controller
           # container tags: https://quay.io/repository/linuxserver.io/unifi-controller?tab=tags
-          image: lscr.io/linuxserver/unifi-controller:7.4.162
+          image: lscr.io/linuxserver/unifi-controller:8.0.24
 
           resources:
             limits:
