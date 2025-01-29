@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 THISDIR=$(cd $(dirname "$0"); pwd) #this script's directory
 THISSCRIPT=$(basename $0)
 WORKSPACE_ROOT=`cd $THISDIR/..; pwd` 

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 THISDIR=$(cd $(dirname "$0"); pwd) #this script's directory
 
 GIT_DIR=$THISDIR

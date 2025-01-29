@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Check if THISDIR environment variable is defined
 if [[ -z "$THISDIR" ]]; then

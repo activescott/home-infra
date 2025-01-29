@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Thanks to dirtyfreebooter at https://www.truenas.com/community/threads/scale-using-only-50-of-ram-for-zfs-by-default.95247/#post-764691
 
