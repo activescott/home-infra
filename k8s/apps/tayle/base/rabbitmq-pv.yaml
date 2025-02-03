@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # NOTE: PersistentVolume resources are cluster-wide so we have to name these accordingly
+  name: tayle-rabbitmq-pv-data
+spec:
+  storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  
+  local:
+    path: /PATCH_WITH_KUSTOMIZE # e.g /mnt/thedatapool/app-data/tayle/db-data
+  # NOTE: must set a PersistentVolume nodeAffinity when using local volumes
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - ix-truenas

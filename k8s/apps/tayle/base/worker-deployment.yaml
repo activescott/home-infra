@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      imagePullSecrets:
+      - name: github-container-registry-secret    
+      containers:
+        - name: worker
+          
+          # NOTE: this image is replaced with an images transformer in the overlay: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_imagetagtransformer
+          image: tayle-image-worker
+          # TODO: add resource limits
+
+          env:
+            - name: API_BASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: worker-creds
+                  key: API_BASE_URL
+            
+            - name: TRUSTED_SERVICE_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: worker-creds
+                  key: TRUSTED_SERVICE_AUTH_TOKEN
+            
+            - name: RABBITMQ_URL
+              valueFrom:
+                secretKeyRef:
+                  name: worker-creds
+                  key: RABBITMQ_URL
+
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: worker-creds
+                  key: OPENAI_API_KEY
+
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+
+

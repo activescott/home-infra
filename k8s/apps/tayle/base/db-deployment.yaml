@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: db
+spec:
+  serviceName: db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: db
+          # NOTE: this image is replaced with an images transformer in the overlay: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_imagetagtransformer
+          image: tayle-image-db
+
+          ports:
+            - containerPort: 5432
+
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-creds
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-creds
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-creds
+                  key: POSTGRES_DB
+          
+          # note session.user.id=0 is used to create this config that the apps uses in RLS policies with set_config/current_setting
+          args: ["-c", "session.user.id=0"]
+          
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+          # TODO: add resource limits
+  
+  # set the .spec.volumeClaimTemplates field to create a PersistentVolumeClaim
+  #   https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#volume-claim-templates
+  #   https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/stateful-set-v1/#StatefulSetSpec
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-data
+    spec:
+      storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+      accessModes: ["ReadWriteOnce"]
+     # volumeName is the binding reference to the PersistentVolume backing this claim.
+      volumeName: tayle-db-pv-data
+      resources:
+        requests:
+          # the minimum amount that must be available:
+          storage: 5Gi

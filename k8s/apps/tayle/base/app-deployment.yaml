@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      imagePullSecrets:
+      - name: github-container-registry-secret
+      containers:
+        - name: app
+          # NOTE: this image is replaced with an images transformer in the overlay: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_imagetagtransformer
+          image: tayle-image-app
+          
+          ports:
+            - containerPort: 3100
+          # TODO: add resource limits
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: DATABASE_URL
+                  
+            - name: RABBITMQ_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: RABBITMQ_URL
+
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: AUTH_SECRET
+
+            - name: TRUSTED_SERVICE_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: TRUSTED_SERVICE_AUTH_TOKEN
+            
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: OPENAI_API_KEY
+
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: SMTP_USER
+            
+            - name: SMTP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: SMTP_PASSWORD
+
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: SMTP_HOST
+            
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: SMTP_PORT                  
+
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: app-creds
+                  key: EMAIL_FROM
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3100
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3100
+            initialDelaySeconds: 10
+            periodSeconds: 10

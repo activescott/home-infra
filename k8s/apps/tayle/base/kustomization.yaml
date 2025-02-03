@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ghcr-secret.yaml
+  
+  - app-deployment.yaml
+  - app-service.yaml
+  - app-ingress.yaml
+
+  - worker-deployment.yaml
+  
+  - db-deployment.yaml
+  - db-pv.yaml
+  - db-service.yaml
+  
+  - rabbitmq-deployment.yaml
+  - rabbitmq-pv.yaml
+  - rabbitmq-service.yaml

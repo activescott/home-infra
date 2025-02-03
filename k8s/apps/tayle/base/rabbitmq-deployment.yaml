@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+spec:
+  serviceName: rabbitmq
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      containers:
+        - name: rabbitmq
+
+          # NOTE: this image is replaced with an images transformer in the overlay: https://kubectl.docs.kubernetes.io/references/kustomize/builtins/#_imagetagtransformer
+          image: tayle-image-rabbitmq
+          
+          # https://www.rabbitmq.com/blog/2020/08/10/deploying-rabbitmq-to-kubernetes-whats-involved#readiness-probe
+          readinessProbe: # probe to know when RMQ is ready to accept traffic
+            exec:
+              command: ["rabbitmq-diagnostics", "ping"]
+            initialDelaySeconds: 20
+            periodSeconds: 60
+            timeoutSeconds: 10
+          
+          # https://www.rabbitmq.com/blog/2020/08/10/deploying-rabbitmq-to-kubernetes-whats-involved#liveness-probe
+          livenessProbe:
+            exec:
+              command: ["rabbitmq-diagnostics", "status"]
+            initialDelaySeconds: 60
+            # See https://www.rabbitmq.com/monitoring.html for monitoring frequency recommendations.
+            periodSeconds: 60
+            timeoutSeconds: 15
+          
+          ports:
+            - containerPort: 5672
+            - containerPort: 15672
+          
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-creds
+                  key: RABBITMQ_DEFAULT_USER
+            
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq-creds
+                  key: RABBITMQ_DEFAULT_PASS
+
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+
+          # TODO: add resource limits
+
+# set the .spec.volumeClaimTemplates field to create a PersistentVolumeClaim
+  #   https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#volume-claim-templates
+  #   https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/stateful-set-v1/#StatefulSetSpec
+  volumeClaimTemplates:
+  - metadata:
+      name: rabbitmq-data
+    spec:
+      storageClassName: "" # Empty string must be explicitly set otherwise default StorageClass will be set
+      accessModes: ["ReadWriteOnce"]
+     # volumeName is the binding reference to the PersistentVolume backing this claim.
+      volumeName: tayle-rabbitmq-pv-data
+      resources:
+        requests:
+          # the minimum amount that must be available:
+          storage: 1Gi

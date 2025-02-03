@@ -4,6 +4,7 @@
 .secrets
 # any file ending in .secret
 *.secret
+*.secrets
 
 .env.secret.*
 
