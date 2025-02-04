@@ -103,6 +103,56 @@ $ kubectl get pods --all-namespaces -o json | jq -r '.items[] | select(.spec.con
 
 ## TODO:
 
+### port this to a flux repo:
+
+note: flex will not garabage collect resources that it did not create: https://github.com/fluxcd/flux2/discussions/2901
+steps:
+
+#### Move all secrets to SOPS and age: https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age. Something like this:
+
+- [ ] generate key (aka "recipient"): `age-keygen -o private.agekey`
+      NOTE: Create a secret with the age private key, the key name must end with .agekey to be detected as an age key:
+
+> You can specify the location of this file manually by setting the environment variable SOPS_AGE_KEY_FILE. Alternatively, you can provide the key(s) directly by setting the SOPS_AGE_KEY environment variable. - https://github.com/getsops/sops?tab=readme-ov-file#encrypting-using-age
+
+so something like:
+
+SOPS_AGE_KEY_FILE=<keyfile location>
+
+```
+sops encrypt --input-type dotenv myfile.secret > myfile.env.enc
+```
+
+Then commit them to the repo in the right place.
+
+    - [ ] follow new-repo creation guide at https://fluxcd.io/flux/get-started/. It will essentially bootstrap a repo and it will be empty
+
+To enable flux to decrypt them do (per https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age):
+
+```
+cat age.agekey |
+kubectl create secret generic sops-age \
+--namespace=flux-system \
+--from-file=age.agekey=/dev/stdin
+```
+
+> And finally set the decryption secret in the Flux Kustomization to sops-age.
+>
+> - https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age
+>   Huh?
+
+#### Install flux & Bootstrap
+
+Install: https://fluxcd.io/flux/installation/
+
+Bootstrap Repo/Cluster: https://fluxcd.io/flux/installation/bootstrap/github/
+
+#### Migrate Workloads
+
+Start migrating workloads to flux repo from the old home-infra repo
+
+---
+
 - [x] Setup photos.scott.willeke.com certs and ingress:
 
   - [x] Dynamic DNS Update the DNS records using OPNSense:

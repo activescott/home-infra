@@ -30,10 +30,10 @@ secretGenerator:
 images:
 - name: tayle-image-app
   newName: ghcr.io/activescott/tayle/app
-  newTag: pr-9-fae3147 # replace this tag to update app
+  newTag: main-8c5dfce # replace this tag to update app
 - name: tayle-image-worker
   newName: ghcr.io/activescott/tayle/worker
-  newTag: pr-9-fae3147 # replace this tag to update worker
+  newTag: main-8c5dfce # replace this tag to update worker
 - name: tayle-image-db
   newName: postgres
   newTag: "17"
