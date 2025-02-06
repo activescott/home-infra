@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: tayle-rabbitmq-pv-data
-spec:
-  local:
-    path: /mnt/thedatapool/app-data/tayle/prod/rabbitmq-data

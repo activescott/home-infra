@@ -12,6 +12,9 @@ Each subdirectory of `k8s/apps` (well most of them) represents an app or some in
 
 ## k8s/apps
 
+Most of these are now in the process of being moved to https://github.com/activescott/home-infra-k8s-flux
+They are largely unchanged only minor modifications to support flux (e.g. secrets management).
+
 These are my apps running at home in Kubernetes. I am currently using k3s on either debian or TrueNAS (playing with both).
 
 ### [k8s/apps/home-assistant](k8s/apps/home-assistant)
@@ -108,9 +111,18 @@ $ kubectl get pods --all-namespaces -o json | jq -r '.items[] | select(.spec.con
 note: flex will not garabage collect resources that it did not create: https://github.com/fluxcd/flux2/discussions/2901
 steps:
 
+#### Install Flux CLI
+
+per https://fluxcd.io/flux/installation/#install-the-flux-cli
+
+```sh
+brew install fluxcd/tap/flux
+. <(flux completion zsh)
+```
+
 #### Move all secrets to SOPS and age: https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age. Something like this:
 
-- [ ] generate key (aka "recipient"): `age-keygen -o private.agekey`
+- [ ] generate key (aka "recipient"): `age-keygen -o home-infra-private.agekey`
       NOTE: Create a secret with the age private key, the key name must end with .agekey to be detected as an age key:
 
 > You can specify the location of this file manually by setting the environment variable SOPS_AGE_KEY_FILE. Alternatively, you can provide the key(s) directly by setting the SOPS_AGE_KEY environment variable. - https://github.com/getsops/sops?tab=readme-ov-file#encrypting-using-age
@@ -119,8 +131,8 @@ so something like:
 
 SOPS_AGE_KEY_FILE=<keyfile location>
 
-```
-sops encrypt --input-type dotenv myfile.secret > myfile.env.enc
+```sh
+SOPS_AGE_KEY_FILE=/Users/scott/src/activescott/home-infra/k8s/home-infra-private.agekey sops encrypt --age age1nur86m07v4f94xpc8ugg0cmum9fpyp3hcha2cya6x09uphu4zg5szrtzgt --input-type dotenv --output-type dotenv .env.secret.transmission > .env.enc.transmission
 ```
 
 Then commit them to the repo in the right place.
@@ -177,7 +189,7 @@ Start migrating workloads to flux repo from the old home-infra repo
   - See https://fluxcd.io/flux/get-started/
   - See https://github.com/fluxcd/flux2-kustomize-helm-example
 - [ ] switch remaining `hostPath` k8s volumes to PVs with `local` provisioner instead [1](https://kubernetes.io/docs/reference/kubernetes-api/config-and-storage-resources/persistent-volume-v1/#local) [2](https://kubernetes.io/docs/concepts/storage/volumes/#local)
-- [ ] add metricserver to scrap metrics via prometheus
+- [x] add metricserver to scrap metrics via prometheus
 - [ ] add email mailrelay host - port it from docker
 - [ ] Remote syslog server routed into kibana or similar.
 - [ ] Alerting needs setup if a cron job fails. Kibana container with alerting? stdin+logstash?
