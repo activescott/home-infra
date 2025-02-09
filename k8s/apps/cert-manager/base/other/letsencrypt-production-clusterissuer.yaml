@@ -19,6 +19,7 @@ spec:
       http01:
         ingress:
           # podTemplate & ingressTemplate are optional just so i can identify these odd pods if I spot them
+          # https://cert-manager.io/docs/configuration/acme/http01/#podtemplate
           podTemplate:
             metadata:
               labels:
