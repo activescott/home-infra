@@ -391,3 +391,15 @@
     entity_id: 3543e11714ecfd239f46d54d74beec32
     domain: switch
   mode: single
+- id: '1739168720748'
+  alias: 'Backups: Delete old backups'
+  description: ''
+  trigger:
+  - platform: time
+    at: 03:15:00
+  condition: []
+  action:
+  - alias: Create backup now
+    action: shell_command.delete_old_backups
+    data: {}
+  mode: single
