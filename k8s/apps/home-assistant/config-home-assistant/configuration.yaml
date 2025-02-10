@@ -54,3 +54,9 @@ notify:
     platform: group
     services:
       - service: mobile_app_fatboy_3
+
+# Shell Commands: Expose regular shell commands as actions. Actions can be called from a script or in automation
+# https://www.home-assistant.io/integrations/shell_command/
+shell_command:
+  # TEST VERSION: delete_old_backups: cd /config/backups && [ "$(ls -1 *.tar 2>/dev/null | wc -l)" -ge 10 ] && find . -type f -name "*.tar" -mtime +60 -exec echo "would have deleted {}" \;
+  delete_old_backups: cd /config/backups && [ "$(ls -1 *.tar 2>/dev/null | wc -l)" -ge 10 ] && find . -type f -name "*.tar" -mtime +60 -exec rm -fv "{}" \;

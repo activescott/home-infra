@@ -205,16 +205,17 @@
     state: not_home
   action:
   - delay: '{{ range(1, 30) | random }}'
-  - service: light.turn_off
-    target:
+  - target:
       entity_id: light.great_room_track_lighting
-  - service: switch.turn_off
-    target:
+    action: light.turn_off
+    data: {}
+  - target:
       entity_id:
       - switch.dining_table_light
       - switch.kitchen_light
-      - switch.innr_sp_224_switch_2
       - switch.innr_sp_224_switch
+    action: switch.turn_off
+    data: {}
   mode: single
 - id: '1635223858648'
   alias: Turn outdoor lights off at dawn
@@ -359,4 +360,34 @@
         data: {}
         target:
           entity_id: switch.innr_sp_224_switch_2
+  mode: single
+- id: '1737415136569'
+  alias: Plants Switch On
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: '7'
+    minutes: '0'
+    seconds: '0'
+  condition: []
+  action:
+  - type: turn_on
+    device_id: 63e988d98ea0b4ddb11c7091c8888097
+    entity_id: 3543e11714ecfd239f46d54d74beec32
+    domain: switch
+  mode: single
+- id: '1737415256447'
+  alias: Plant Switch Off
+  description: ''
+  trigger:
+  - platform: time_pattern
+    hours: '21'
+    minutes: '0'
+    seconds: '0'
+  condition: []
+  action:
+  - type: turn_off
+    device_id: 63e988d98ea0b4ddb11c7091c8888097
+    entity_id: 3543e11714ecfd239f46d54d74beec32
+    domain: switch
   mode: single
