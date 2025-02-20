@@ -1,0 +1,23 @@
+# https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/
+groups:
+- name: tayle
+  #labels:
+  #  team: scott
+  rules:
+
+  - alert: FailedPods
+    expr: kube_pod_status_phase{exported_namespace="tayle-prod",phase="Failed"}>0
+    # Alerting rules without the for clause will become active on the first evaluation.
+    #for: 10m
+    # keep_firing_for clause tells Prometheus to keep this alert firing for the
+    # specified duration after the firing condition was last met. Alerting rules
+    # without the keep_firing_for clause will deactivate on the first evaluation
+    # where the condition is not met (assuming any optional for duration
+    # desribed above has been satisfied).
+    keep_firing_for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: Tayle pod failure. Check https://grafana.activescott.com/d/cc030cf0-cde1-46c1-bc49-fd5c88d7f002/tayle-prod-status?orgId=1&refresh=1m and k9s and look at pod logs.
+
+      
