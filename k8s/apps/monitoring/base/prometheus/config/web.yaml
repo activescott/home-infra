@@ -1,4 +1,0 @@
-# see https://prometheus.io/docs/guides/basic-auth/
-# and https://prometheus.io/docs/prometheus/latest/configuration/https/ 
-basic_auth_users:
-  activescott: $2b$12$bblaIMqgcTHZbsrRSB/5vOVHIvRaz1CU5L30kd2RwxgVaSDd/E0Qe
