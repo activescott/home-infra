@@ -1,5 +1,7 @@
 # home-infra
 
+**NOTE:** Most of this now at https://github.com/activescott/home-infra-k8s-flux/
+
 The intent here is to maintain various apps and configurations that I run at home. Below is more detail about each.
 
 ## Usage
