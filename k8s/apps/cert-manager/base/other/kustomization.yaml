@@ -1,8 +1,0 @@
-resources:
-#- ./letsencrypt-staging-clusterissuer.yaml
-- ./letsencrypt-production-clusterissuer.yaml
-#- ./letsencrypt-staging-certificate-photos.scott.willeke.com.yaml
-#- ./test-certificateissuer.yaml # for testing only
-
-# put all this jazz in the cert-manager namespace, but not cert-manager components themselves, as it messes up their RBAC rules
-namespace: cert-manager

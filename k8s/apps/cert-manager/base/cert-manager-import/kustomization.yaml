@@ -1,6 +1,0 @@
-# NOTE: We separate this so that we don't have to apply a namespace to the
-#   cert-manager namespace to all cert-manager components themselves, as it
-#   messes up their RBAC rules (some things are in the namespace: kube-system
-#   namespace).
-resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.12.0/cert-manager.yaml
