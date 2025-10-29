@@ -1,9 +1,0 @@
-resources:
-  - overlays/oksana
-
-buildMetadata: [originAnnotations, transformerAnnotations]
-
-commonLabels:
-  # use `app.activescott.com/name` to avoid conflicts with other people's resources using "app" label.
-  app.activescott.com/name: wordpress
-  app.activescott.com/tenant: oksana
